@@ -24,5 +24,13 @@ export interface UpdateTextbookReq {
   parentId?: number;
   label: string;
   key: string;
+  pathDepth: number; // 深度需要前端根据选择的栏目自己提供
   sortOrder: number;
+}
+
+export interface TextbookOption {
+  label: string;
+  value: string;
+  raw: Textbook;
+  children?: TextbookOption[];
 }

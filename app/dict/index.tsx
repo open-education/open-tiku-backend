@@ -1,16 +1,16 @@
-import { Layout, Menu, Spin, theme, type MenuProps } from "antd";
-import React, { useEffect, useState } from "react";
-import { NavLink, Outlet } from "react-router";
-import { LoadingOutlined } from "@ant-design/icons";
+import {Layout, Menu, type MenuProps, Spin, theme} from "antd";
+import React, {useEffect, useState} from "react";
+import {NavLink, Outlet} from "react-router";
+import {LoadingOutlined} from "@ant-design/icons";
 
-const { Content, Sider } = Layout;
+const {Content, Sider} = Layout;
 
 ///
 /// 每一个顶部菜单下面这个首页其实都是重复的, 直接拷贝即可如果界面相同
 ///
 export default function Index(props: any) {
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: {colorBgContainer, borderRadiusLG},
   } = theme.useToken();
 
   const [leftMenuItemSelectKey, setLeftMenuItemSelectKey] =
@@ -36,36 +36,20 @@ export default function Index(props: any) {
       return () => window.removeEventListener("resize", checkMobile);
     }, [breakpoint]);
 
-    return { isMobile, isSSR };
+    return {isMobile, isSSR};
   };
 
   let leftMenuItems: MenuProps["items"] = [
     {
-      key: "subject",
-      label: <NavLink to={"subject"}>科目</NavLink>,
-    },
-    {
-      key: "publisher",
-      label: <NavLink to={"publisher"}>出版社</NavLink>,
-    },
-    {
-      key: "stage",
-      label: <NavLink to={"stage"}>学段</NavLink>,
-    },
-    {
-      key: "tag",
-      label: <NavLink to={"tag"}>标签</NavLink>,
-    },
-    {
-      key: "question_type",
-      label: <NavLink to={"question_type"}>题型</NavLink>,
+      key: "textbook",
+      label: <NavLink to={"textbook"}>教材配置</NavLink>,
     },
   ];
 
   const showLeftOrTopMenu = () => {
-    const { isMobile, isSSR } = useIsMobile();
+    const {isMobile, isSSR} = useIsMobile();
     if (isSSR) {
-      return <Spin indicator={<LoadingOutlined spin />} />;
+      return <Spin indicator={<LoadingOutlined spin/>}/>;
     }
 
     if (leftMenuItems.length == 0) {
@@ -74,12 +58,12 @@ export default function Index(props: any) {
 
     if (isMobile) {
       return (
-        <Layout style={{ padding: "0 12px 12px" }}>
+        <Layout style={{padding: "0 12px 12px"}}>
           <Menu
             mode="inline"
             defaultSelectedKeys={[leftMenuItemSelectKey]}
             defaultOpenKeys={[]}
-            style={{ borderInlineEnd: 0 }}
+            style={{borderInlineEnd: 0}}
             onClick={onLeftMenuClick}
             items={leftMenuItems}
           />
@@ -92,7 +76,7 @@ export default function Index(props: any) {
           mode="inline"
           defaultSelectedKeys={[leftMenuItemSelectKey]}
           defaultOpenKeys={[]}
-          style={{ borderInlineEnd: 0 }}
+          style={{borderInlineEnd: 0}}
           onClick={onLeftMenuClick}
           items={leftMenuItems}
         />
@@ -106,7 +90,7 @@ export default function Index(props: any) {
       {showLeftOrTopMenu()}
 
       {/* 右边主体内容部分 */}
-      <Layout style={{ padding: "0 12px 12px", minHeight: "100vh" }}>
+      <Layout style={{padding: "0 12px 12px", minHeight: "100vh"}}>
         {/* 导航对应的实际内容 */}
         <Content
           style={{
@@ -116,7 +100,7 @@ export default function Index(props: any) {
             borderRadius: borderRadiusLG,
           }}
         >
-          <Outlet />
+          <Outlet/>
         </Content>
       </Layout>
     </Layout>

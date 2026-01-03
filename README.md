@@ -1,10 +1,10 @@
 # 开放题库管理后台
 
-开放题库分为两个前端项目, 一个为用户使用的前端项目, 另一个为管理员维护基础信息和做审核等管理的管理后台项目
+开放题库分为两个前端项目, 一个为用户使用的前端项目 [open-tiku](https://github.com/open-education/open-tiku), 该项目为管理员维护基础信息和做审核等的管理后台项目
 
 ## 开发
 
-现在因为有两个前端服务, 部署在一台机器上, 因此需要配置两个前端访问路径
+现在因为有两个前端服务, 部署在一台机器上, 因此需要配置两个前端访问路径. 如果你未做同样的配置, 需要将以下要注意的4点也做对应的更改, 更改后要注意部署机器上的配置, 否则不要盲目将该更改提交到主分支
 
 ```
 server {
@@ -45,9 +45,11 @@ server {
 ```
 注意以下4点, 如果自己的配置不一样请对应调整
 
-1. `proxy_pass http://127.0.0.1:5174;` 这个配置后面没有 `/`, 转发后要保留 `/frontend`
+#### 1. `proxy_pass http://127.0.0.1:5174;` 
 
-2. [vite.config.ts](vite.config.ts) 文件中的这个属性要配置跟 nginx 对应
+这个配置后面没有 `/`, 转发后要保留 `/backend` 一样的路径, 不然浏览器区分不了资源, ip和端口使用自己电脑的即可
+
+#### 2. [vite.config.ts](vite.config.ts) 文件中的这个属性要配置跟 nginx 对应
 
 ```
 export default defineConfig({
@@ -56,7 +58,7 @@ export default defineConfig({
 });
 ``` 
 
-3. [react-router.config.ts](react-router.config.ts) 也要对应配置
+#### 3. [react-router.config.ts](react-router.config.ts) 也要对应配置
 
 ```
 export default {
@@ -65,5 +67,4 @@ export default {
 } satisfies Config;
 ```
 
-4. 前端访问路径为 `http://127.0.0.1/backend`
-
+#### 4. 前端访问 `http://127.0.0.1/backend/`

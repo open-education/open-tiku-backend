@@ -23,6 +23,7 @@ export const StringValidator = {
   }
 }
 
+// 字符串相关工具函数
 export const StringUtil = {
   getFirstPart: (str: string | undefined, separator: string = '_'): string => {
     return str === undefined ? "" : str.split(separator)[0] || '';
@@ -50,8 +51,8 @@ export const StringUtil = {
   }
 }
 
+// 常量维护
 export const StringConst = {
-  dict: "dict",
-  textbook: "textbook",
-  user: "user",
+  dictTextbookAdd: "dictTextbookAdd", // 教材字典新增标识
+  dictTextbookEdit: "dictTextbookEdit", // 教材字典编辑标识
 }
