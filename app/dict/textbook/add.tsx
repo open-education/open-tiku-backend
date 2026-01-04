@@ -97,8 +97,13 @@ export default function Add(props: any) {
 
       <div>
         <Typography.Title level={5}>父级菜单</Typography.Title>
-        <Cascader changeOnSelect={true} options={props.textbookOptions} onChange={onParentLevelChange}
-                  placeholder="请选择父级菜单"/>
+        <Cascader
+          style={{width: "30%"}}
+          changeOnSelect={true}
+          options={props.textbookOptions}
+          onChange={onParentLevelChange}
+          placeholder="请选择父级菜单"
+        />
         <Typography.Text type="secondary" italic={true}>
           选择当前栏目对应的父级菜单, 不选择任何父级菜单则是顶级菜单
         </Typography.Text>
@@ -107,7 +112,7 @@ export default function Add(props: any) {
       <div>
         <Typography.Title level={5}>* 菜单名称简称 - 必填</Typography.Title>
         <Input
-          defaultValue={label}
+          value={label}
           type="text"
           name="label"
           placeholder="请输入菜单名称简称"
@@ -122,7 +127,7 @@ export default function Add(props: any) {
       <div>
         <Typography.Title level={5}>菜单标识 - 选填可以为空, 仅特殊项用</Typography.Title>
         <Input
-          defaultValue={code}
+          value={code}
           type="text"
           name="code"
           placeholder="请输入菜单标识"
@@ -137,7 +142,7 @@ export default function Add(props: any) {
       <div>
         <Typography.Title level={5}>排序编号(数字) - 关注顺序要填</Typography.Title>
         <InputNumber
-          defaultValue={sortOrder}
+          value={sortOrder}
           type={"number"}
           name="sortOrder"
           mode="spinner"

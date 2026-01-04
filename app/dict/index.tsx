@@ -42,7 +42,11 @@ export default function Index(props: any) {
   let leftMenuItems: MenuProps["items"] = [
     {
       key: "textbook",
-      label: <NavLink to={"textbook"}>教材配置</NavLink>,
+      label: <NavLink to={"textbook"}>教材元数据配置</NavLink>,
+    },
+    {
+      key: "chapter",
+      label: <NavLink to={"chapter"}>章节和知识点配置</NavLink>,
     },
   ];
 

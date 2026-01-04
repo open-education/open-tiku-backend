@@ -132,6 +132,7 @@ export default function Add(props: any) {
       <div>
         <Typography.Title level={5}>父级菜单</Typography.Title>
         <Cascader
+          style={{width: "30%"}}
           defaultValue={selectValues}
           changeOnSelect={true}
           options={textbookOptions}

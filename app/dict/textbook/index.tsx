@@ -1,4 +1,4 @@
-import {Alert, Button, Col, Drawer, Empty, Flex, Row, Tree, type TreeDataNode, Typography,} from "antd";
+import {Alert, Button, Col, Divider, Drawer, Empty, Flex, Row, Tree, type TreeDataNode, Typography,} from "antd";
 import React, {useState} from "react";
 import Add from "~/dict/textbook/add";
 import Edit from "~/dict/textbook/edit";
@@ -18,8 +18,8 @@ export default function Index(props: any) {
       key: item.id,
       // 自定义渲染标题
       title: (
-        <Row gutter={[12, 12]} align="middle" style={{width: '100%'}} key={item.id}>
-          <Col flex="auto" span={12}>{item.label}</Col>
+        <Row gutter={[12, 12]} align="middle" key={item.id}>
+          <Col span={12}>{item.label}</Col>
           <Col span={12}>
             <Flex gap="small">
               <Button
@@ -31,16 +31,19 @@ export default function Index(props: any) {
                 }}>
                 编辑
               </Button>
-              <Button
-                type="link"
-                size="small"
-                danger
-                onClick={(e) => {
-                  e.stopPropagation(); // 阻止事件冒泡
-                  onDeleteClick(item.id);
-                }}>
-                删除
-              </Button>
+              {
+                /* 只有末级菜单可删除 */
+                (!item.children || item.children.length == 0) && <Button
+                  type="link"
+                  size="small"
+                  danger
+                  onClick={(e) => {
+                    e.stopPropagation(); // 阻止事件冒泡
+                    onDeleteClick(item.id);
+                  }}>
+                  删除
+                </Button>
+              }
             </Flex>
           </Col>
         </Row>
@@ -111,7 +114,7 @@ export default function Index(props: any) {
       <Typography.Title level={5}>菜单列表</Typography.Title>
       <Typography.Text type="secondary" italic={true}>
         该栏目只展示5级菜单, 否则太深不便于展示也不便于操作, 菜单一般只需要建到教材列表即可, 比如 学科-学段-出版社-类型-教材列表,
-        即 数学-初中-湘教版-教材章节-七年级上册
+        即 数学-初中-湘教版-教材章节-七年级上册; 只有末级菜单可以删除;
       </Typography.Text>
 
       {/* 添加入口 */}
@@ -127,6 +130,9 @@ export default function Index(props: any) {
         </Row>
       </div>
 
+      {/* 菜单分割线 */}
+      <Divider titlePlacement="start" variant="dashed" style={{borderColor: '#7cb305'}} dashed/>
+
       {/* 展示错误信息 */}
       {catchError}
 
@@ -137,7 +143,7 @@ export default function Index(props: any) {
       <div className="mt-2">
         <Tree
           showLine
-          style={{width: "100%"}}
+          blockNode // 这个属性让剩余水平空间尽可能宽, 否则变形严重
           switcherIcon={<DownOutlined/>}
           defaultExpandedKeys={['0-0-0']}
           treeData={get_items(textbooks)}

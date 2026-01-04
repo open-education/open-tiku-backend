@@ -9,6 +9,7 @@ class HttpClient {
 
   async get<T = any>(path: string, options?: RequestInit): Promise<T> {
     const url = this.buildUrl(path);
+    console.log("get: ", url);
     const response = await fetch(url, {
       method: "GET",
       ...options,
@@ -23,6 +24,7 @@ class HttpClient {
   ): Promise<T> {
     const url = this.buildUrl(path);
     const reqBody = JSON.stringify(data);
+    console.log("post: ", url, reqBody);
     const response = await fetch(url, {
       method: "POST",
       headers: {

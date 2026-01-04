@@ -28,9 +28,21 @@ export interface UpdateTextbookReq {
   sortOrder: number;
 }
 
+// 选择父级菜单时下拉列表数据结构
 export interface TextbookOption {
   label: string;
   value: string;
   raw: Textbook;
   children?: TextbookOption[];
+}
+
+// fetcher 请求字典表单数据
+export interface TextbookFetcherReq {
+  source: string,
+  reqId: number;
+  parentId: number;
+  label: string;
+  code: string;
+  sortOrder: number;
+  pathDepth: number;
 }

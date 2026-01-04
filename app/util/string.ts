@@ -55,4 +55,13 @@ export const StringUtil = {
 export const StringConst = {
   dictTextbookAdd: "dictTextbookAdd", // 教材字典新增标识
   dictTextbookEdit: "dictTextbookEdit", // 教材字典编辑标识
+  dictChapterNameAdd: "dictChapterNameAdd", // 教材章节和知识点类节点添加
+  dictChapterPartNameAdd: "dictChapterPartNameAdd", // 章节小节和知识点小类节点添加
+  dictChapterNameEdit: "dictChapterNameEdit", // 教材章节和知识点类节点编辑
+  dictChapterPartNameEdit: "dictChapterPartNameEdit", // 章节小节和知识点小类节点编辑
+}
+
+export const StringConstUtil = {
+  dictChapterNameAddSet: new Set([StringConst.dictChapterNameAdd, StringConst.dictChapterPartNameAdd]),
+  dictChapterNameEditSet: new Set([StringConst.dictChapterNameEdit, StringConst.dictChapterPartNameEdit]),
 }
