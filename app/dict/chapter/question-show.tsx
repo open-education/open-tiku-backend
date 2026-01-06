@@ -15,6 +15,11 @@ export default function QuestionShow(props: any) {
   const [selectChapterOptions, setSelectChapterOptions] = React.useState<TextbookOption[]>([]);
   const [chapterLabelList, setChapterLabelList] = React.useState<QuestionCateResp[]>([]);
   const onSelectChapterOptionChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
+    if (selectedOptions === undefined) {
+      setChapterLabelList([]);
+      return;
+    }
+
     const info = selectedOptions[selectedOptions.length - 1].raw;
     // 此时我并不知道选择的类型是知识点还是章节, 因此需要查询关联标识
     httpClient.get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${info.id}`).then(res => {
@@ -32,6 +37,11 @@ export default function QuestionShow(props: any) {
   const [selectKnowledgeOptions, setSelectKnowledgeOptions] = React.useState<TextbookOption[]>([]);
   const [knowledgeLabelList, setKnowledgeLabelList] = React.useState<QuestionCateResp[]>([]);
   const onSelectKnowledgeOptionChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
+    if (selectedOptions === undefined) {
+      setKnowledgeLabelList([]);
+      return;
+    }
+
     const info = selectedOptions[selectedOptions.length - 1].raw;
     // 此时我并不知道选择的类型是知识点还是章节, 因此需要查询关联标识
     httpClient.get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${info.id}`).then(res => {

@@ -24,9 +24,7 @@ export default function Question(props: any) {
 
   const currentStep: number = props.currentStep ?? 0;
 
-  // 章节节点小类
-  const [selectOptions, setSelectOptions] = React.useState<TextbookOption[]>([]);
-  const [selectOption, setSelectOption] = React.useState<Textbook>({
+  const optionInit: Textbook = {
     children: [],
     id: 0,
     key: "",
@@ -34,9 +32,18 @@ export default function Question(props: any) {
     parentId: 0,
     pathDepth: 0,
     sortOrder: 0
-  });
+  };
+
+  // 章节节点小类
+  const [selectOptions, setSelectOptions] = React.useState<TextbookOption[]>([]);
+  const [selectOption, setSelectOption] = React.useState<Textbook>(optionInit);
   const [selectOptionIsEmpty, setSelectOptionIsEmpty] = React.useState<boolean>(false);
   const onSelectOptionChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
+    if (selectedOptions === undefined) {
+      setSelectOption(optionInit);
+      return;
+    }
+
     setSelectOption(selectedOptions[selectedOptions.length - 1].raw);
   };
 

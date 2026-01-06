@@ -16,6 +16,11 @@ export default function RelationShow(props: any) {
   const [selectChapterOptions, setSelectChapterOptions] = React.useState<TextbookOption[]>([]);
   const [knowledgeLabelList, setKnowledgeLabelList] = React.useState<Textbook[]>([]);
   const onSelectChapterOptionChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
+    if (selectedOptions === undefined) {
+      setKnowledgeLabelList([]);
+      return;
+    }
+
     const info = selectedOptions[selectedOptions.length - 1].raw;
     httpClient.post<Textbook[]>("/chapter-knowledge/knowledge", {ids: [info.id]}).then((res) => {
       setKnowledgeLabelList(res);
@@ -28,6 +33,11 @@ export default function RelationShow(props: any) {
   const [selectKnowledgeOptions, setSelectKnowledgeOptions] = React.useState<TextbookOption[]>([]);
   const [chapterLabelList, setChapterLabelList] = React.useState<Textbook[]>([]);
   const onSelectKnowledgeOptionChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
+    if (selectedOptions === undefined) {
+      setKnowledgeLabelList([]);
+      return;
+    }
+
     const info = selectedOptions[selectedOptions.length - 1].raw;
     httpClient.post<Textbook[]>("/chapter-knowledge/chapter", {ids: [info.id]}).then((res) => {
       setChapterLabelList(res);

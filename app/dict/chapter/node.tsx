@@ -9,7 +9,11 @@ export default function Node(props: any) {
 
   const onParentLevelChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
     if (setNodeTextbookOption) {
-      setNodeTextbookOption(selectedOptions[selectedOptions.length - 1].raw);
+      if (selectedOptions === undefined) {
+        setNodeTextbookOption({children: [], id: 0, key: "", label: "", parentId: 0, pathDepth: 0, sortOrder: 0});
+      } else {
+        setNodeTextbookOption(selectedOptions[selectedOptions.length - 1].raw);
+      }
     }
   };
 

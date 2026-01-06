@@ -13,9 +13,7 @@ export default function Relation(props: any) {
   // 操作进度提示
   const currentStep: number = props.currentStep ?? 0;
 
-  // 章节节点小类
-  const [selectChapterOptions, setSelectChapterOptions] = useState<TextbookOption[]>([]);
-  const [selectChapterOption, setSelectChapterOption] = useState<Textbook>({
+  const optionInit: Textbook = {
     children: [],
     id: 0,
     key: "",
@@ -23,30 +21,32 @@ export default function Relation(props: any) {
     parentId: 0,
     pathDepth: 0,
     sortOrder: 0
-  });
+  };
+
+  // 章节节点小类
+  const [selectChapterOptions, setSelectChapterOptions] = useState<TextbookOption[]>([]);
+  const [selectChapterOption, setSelectChapterOption] = useState<Textbook>(optionInit);
   const [selectChapterOptionIsEmpty, setSelectChapterOptionIsEmpty] = useState<boolean>(false);
   const [selectChapterOptionMaxDepthLimit, setSelectChapterOptionMaxDepthLimit] = useState<boolean>(false);
   const onSelectChapterOptionChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
-    console.log("chapter", selectedOptions[selectedOptions.length - 1].raw);
-    setSelectChapterOption(selectedOptions[selectedOptions.length - 1].raw);
+    if (selectedOptions === undefined) {
+      setSelectChapterOption(optionInit);
+    } else {
+      setSelectChapterOption(selectedOptions[selectedOptions.length - 1].raw);
+    }
   };
 
   // 知识点小类
   const [selectKnowledgeOptions, setSelectKnowledgeOptions] = useState<TextbookOption[]>([]);
-  const [selectKnowledgeOption, setSelectKnowledgeOption] = useState<Textbook>({
-    children: [],
-    id: 0,
-    key: "",
-    label: "",
-    parentId: 0,
-    pathDepth: 0,
-    sortOrder: 0
-  });
+  const [selectKnowledgeOption, setSelectKnowledgeOption] = useState<Textbook>(optionInit);
   const [selectKnowledgeOptionIsEmpty, setSelectKnowledgeOptionIsEmpty] = useState<boolean>(false);
   const [selectKnowledgeOptionMaxDepthLimit, setSelectKnowledgeOptionMaxDepthLimit] = useState<boolean>(false);
   const onSelectKnowledgeOptionChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
-    console.log("knowledge: ", selectedOptions[selectedOptions.length - 1].raw);
-    setSelectKnowledgeOption(selectedOptions[selectedOptions.length - 1].raw);
+    if (selectedOptions === undefined) {
+      setSelectKnowledgeOption(optionInit);
+    } else {
+      setSelectKnowledgeOption(selectedOptions[selectedOptions.length - 1].raw);
+    }
   };
 
   // 监听进度条是否是第四步, 如果步骤顺序调整请顺带更新索引, 其它步骤不关注该区块内容
