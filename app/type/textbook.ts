@@ -38,11 +38,59 @@ export interface TextbookOption {
 
 // fetcher 请求字典表单数据
 export interface TextbookFetcherReq {
-  source: string,
   reqId: number;
   parentId: number;
   label: string;
   code: string;
   sortOrder: number;
   pathDepth: number;
+}
+
+// 章节和知识点关联请求结构
+export interface ChapterAndKnowledgeFetcherReq {
+  reqId: number;
+  chapterId: number;
+  knowledgeId: number;
+}
+
+// 章节和知识点请求结构
+export interface CreateChapterAndKnowledgeReq {
+  chapterId: number;
+  knowledgeId: number;
+}
+
+// 删除章节和知识点关联结构体
+export interface DeleteChapterAndKnowledgeReq {
+  id: number;
+}
+
+// 章节和知识点返回结构体
+export interface ChapterAndKnowledgeResp {
+  id: number;
+  chapterId: number;
+  knowledgeId: number;
+}
+
+// 题型前端结构体数据结构
+export interface QuestionCateFetcherReq {
+  reqId: number;
+  relatedId: number;
+  label: string;
+  sortOrder: number;
+}
+
+// 题型前端结构体数据结构
+export interface CreateQuestionCateReq {
+  relatedId: number;
+  label: string;
+  sortOrder: number;
+}
+
+// 题型前端结构体数据结构
+export interface QuestionCateResp {
+  id: number;
+  relatedId: number;
+  label: string;
+  key: string;
+  sortOrder: number;
 }

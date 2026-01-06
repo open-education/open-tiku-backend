@@ -12,15 +12,15 @@ import {
   Row,
   Splitter
 } from "antd";
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import type {Textbook, TextbookOption} from "~/type/textbook";
-import {StringConst, StringValidator} from "~/util/string";
+import {StringConst, StringConstUtil, StringValidator} from "~/util/string";
 import {useFetcher} from "react-router";
 import {httpClient} from "~/util/http";
 import {ArrayUtil} from "~/util/object";
 
 // 展示章节和知识点追加效果
-export default function Show(props: any) {
+export default function AppendShow(props: any) {
   let fetcher = useFetcher();
 
   /// 展示区域层级数据
@@ -61,7 +61,6 @@ export default function Show(props: any) {
       const textbookOptions: TextbookOption[] = ArrayUtil.mapTextbookToOption(res);
       setEditChapterNameOptions(textbookOptions);
 
-      // 为了友好需要选定默认值
       // 需要默认值信息
       const pathNodes = ArrayUtil.findPath(textbookOptions, id.toString());
       // 去掉最后一层, 该层为当前自己
@@ -96,6 +95,7 @@ export default function Show(props: any) {
 
   // 为空判断
   const [chapterNodeIsEmpty, setChapterNodeIsEmpty] = React.useState(false);
+  const [chapterNodeMaxDepthLimit, setChapterNodeMaxDepthLimit] = React.useState<boolean>(false);
   const [chapterIsEmpty, setChapterIsEmpty] = React.useState(false);
 
   // 提交编辑
@@ -104,11 +104,16 @@ export default function Show(props: any) {
       return;
     }
     // 该处编辑只能选择章节或者章节小节, 就是第6,7级菜单
-    if (editChapterNameOption.pathDepth <= 5) {
+    if (editChapterNameOption.id <= 0) {
       setChapterNodeIsEmpty(true);
       return;
     }
     setChapterNodeIsEmpty(false);
+    if (StringConstUtil.dictChapterNameAddMaxDepthSet.has(editChapterNameOption.pathDepth)) {
+      setChapterNodeMaxDepthLimit(true);
+      return;
+    }
+    setChapterNodeMaxDepthLimit(false);
 
     // 名称为空
     if (!StringValidator.isNonEmpty(editChapterName)) {
@@ -132,8 +137,21 @@ export default function Show(props: any) {
     });
   }
 
+  // 编辑时需要刷新节点展示列表
+  const setChapterShowItems: React.Dispatch<React.SetStateAction<Textbook[]>> = props.setChapterShowItems;
+  useEffect(() => {
+    // 父标识由 action 传递过来
+    if (fetcher.data?.result === true && fetcher.data.parentId > 0) {
+      httpClient.get<Textbook[]>(`/textbook/list/${fetcher.data.parentId}/part`).then(res => {
+        setChapterShowItems(res);
+      }).catch(err => {
+        console.log("err: ", err);
+      });
+    }
+  }, [fetcher.data])
+
   return <div className="mt-4">
-    <Splitter style={{minHeight: 200, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'}}>
+    <Splitter style={{minHeight: 100, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'}}>
       <Splitter.Panel
         defaultSize="40%"
         resizable={false}
@@ -160,9 +178,12 @@ export default function Show(props: any) {
                         <Button color="primary" variant="link" onClick={() => onEditChapterNameClick(item.id)}>
                           编辑
                         </Button>
-                        <Button color="danger" variant="link" onClick={() => onDeleteChapterNameClick(item.id)}>
-                          删除
-                        </Button>
+                        {
+                          item.children?.length == 0 &&
+                          <Button color="danger" variant="link" onClick={() => onDeleteChapterNameClick(item.id)}>
+                            删除
+                          </Button>
+                        }
                       </Flex>
                     </div>
                   </div>
@@ -186,10 +207,10 @@ export default function Show(props: any) {
 
                             <div>
                               <Flex gap="small" justify="flex-start">
-                                <Button color="primary" variant="link" onClick={() => onEditChapterNameClick(item.id)}>
+                                <Button color="primary" variant="link" onClick={() => onEditChapterNameClick(row.id)}>
                                   编辑
                                 </Button>
-                                <Button color="danger" variant="link" onClick={() => onDeleteChapterNameClick(item.id)}>
+                                <Button color="danger" variant="link" onClick={() => onDeleteChapterNameClick(row.id)}>
                                   删除
                                 </Button>
                               </Flex>
@@ -227,14 +248,14 @@ export default function Show(props: any) {
               <Col span={24}>
                 <Form
                   layout="horizontal"
-                  labelCol={{span: 4}}
+                  labelCol={{span: 5}}
                   wrapperCol={{span: 16}}
                 >
                   <Form.Item label="选择教材章节或知识点类别">
                     <Cascader
                       style={{width: "80%"}}
                       changeOnSelect={true}
-                      defaultValue={selectValues}
+                      value={selectValues}
                       options={editChapterNameOptions}
                       onChange={onParentLevelChange}
                       placeholder="请选择教材章节或知识点类别"
@@ -256,12 +277,13 @@ export default function Show(props: any) {
                     />
                   </Form.Item>
                   <Form.Item>
-                    <Button type="primary" onClick={submitEditChapterName}>编辑</Button>
+                    <Button color="primary" variant="dashed" onClick={submitEditChapterName}>编辑</Button>
                   </Form.Item>
                 </Form>
               </Col>
               <Col span={24}>
                 {chapterNodeIsEmpty && <Alert title="请先选择 第一步: 选择教材章节或知识点类别" type={"error"}/>}
+                {chapterNodeMaxDepthLimit && <Alert title="教材章节或知识点类别父级只能是第5级或第6级" type={"error"}/>}
                 {chapterIsEmpty && <Alert title="名称不能为空" type={"error"}/>}
               </Col>
             </Row>

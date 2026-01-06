@@ -1,20 +1,23 @@
 import {Alert, Col, Row, Steps} from "antd";
 import React, {useEffect, useState} from "react";
 import Append from "~/dict/chapter/append";
-import Show from "~/dict/chapter/show";
+import AppendShow from "~/dict/chapter/append-show";
 import Relation from "~/dict/chapter/relation";
 import Node from "~/dict/chapter/node";
 import type {Textbook} from "~/type/textbook";
 import {useFetcher} from "react-router";
-import {StringConst, StringValidator} from "~/util/string";
+import {StringConst, StringConstUtil, StringValidator} from "~/util/string";
 import {httpClient} from "~/util/http";
+import RelationShow from "~/dict/chapter/relation-show";
+import Question from "~/dict/chapter/question";
+import QuestionShow from "~/dict/chapter/question-show";
 
 // 教材章节和知识点类管理
 export default function Index(props: any) {
   let fetcher = useFetcher();
 
   // 进度条状态维护
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState<number>(0);
   const onStepChange = (value: number) => {
     setCurrentStep(value);
   };
@@ -27,6 +30,7 @@ export default function Index(props: any) {
   // 教材章节或者知识点名称, 需要根据父级菜单知道当前属于那一类型
   const [chapterName, setChapterName] = useState<string>("");
   const [chapterNodeIsEmpty, setChapterNodeIsEmpty] = useState<boolean>(false);
+  const [chapterNodeMaxDepthLimit, setChapterNodeMaxDepthLimit] = useState<boolean>(false);
   const [chapterIsEmpty, setChapterIsEmpty] = useState<boolean>(false);
 
   // 教材章节和知识点名称排序编号
@@ -34,13 +38,19 @@ export default function Index(props: any) {
 
   // 添加教材章节和知识点名称
   const appendChapterName = () => {
-    console.log("appendChapterName: ", chapterName);
-    // 必须有父节点暂时不限制深度
+    // 必须有父节点
     if (nodeTextbookOption.id <= 0 || nodeTextbookOption.parentId <= 0) {
       setChapterNodeIsEmpty(true);
       return;
     }
     setChapterNodeIsEmpty(false);
+
+    // 并且该处只能添加第6级和第7级 - 对应的父节点就是 第5级和第6级
+    if (!StringConstUtil.dictChapterNameAddMaxDepthSet.has(nodeTextbookOption.pathDepth)) {
+      setChapterNodeMaxDepthLimit(true);
+      return;
+    }
+    setChapterNodeMaxDepthLimit(false);
 
     // 名称不能为空
     if (!StringValidator.isNonEmpty(chapterName)) {
@@ -56,47 +66,17 @@ export default function Index(props: any) {
       sortOrder: chapterSortOrder,
       parentId: nodeTextbookOption.id,
       pathDepth: nodeTextbookOption.pathDepth + 1
-    }, {method: "post"}).then(res => {
+    }, {method: "post"}).then(_ => {
       // 要刷新第一步的菜单列表
-      console.log("res: ", res);
+      // 要刷新第一步的菜单列表
+      httpClient.get<Textbook[]>(`/textbook/list/${nodeTextbookOption.id}/part`).then(res => {
+        setChapterShowItems(res);
+      }).catch(err => {
+        console.log("err: ", err);
+      });
     }).catch(err => {
       // 请求接口错误
       console.log("err: ", err);
-    });
-  }
-  const [chapterPartName, setChapterPartName] = useState<string>("");
-  const [chapterPartNodeIsEmpty, setChapterPartNodeIsEmpty] = useState<boolean>(false);
-  const [chapterPartNameIsEmpty, setChapterPartNameIsEmpty] = useState<boolean>(false);
-
-  // 排序编号
-  const [chapterPartSortOrder, setChapterPartSortOrder] = useState<number>(0);
-  const appendChapterPartName = () => {
-    console.log("appendChapterPartName submit: ", chapterPartName);
-    // 必须有父节点暂时不限制深度
-    if (nodeTextbookOption.id <= 0 || nodeTextbookOption.parentId <= 0) {
-      setChapterPartNodeIsEmpty(true);
-      return;
-    }
-    setChapterPartNodeIsEmpty(false);
-
-    // 名称不能为空
-    if (!StringValidator.isNonEmpty(chapterPartName)) {
-      setChapterPartNameIsEmpty(true);
-      return;
-    }
-    setChapterPartNameIsEmpty(false);
-
-    // 提交到路由对应的 action 去处理
-    fetcher.submit({
-      source: StringConst.dictChapterPartNameAdd, // 章节小节和知识点小类节点添加
-      label: chapterPartName,
-      sortOrder: chapterPartSortOrder,
-      parentId: nodeTextbookOption.id,
-      pathDepth: nodeTextbookOption.pathDepth + 1
-    }, {method: "post"}).then(res => {
-      // 要刷新第一步的菜单列表
-    }).catch(err => {
-      // 请求接口错误
     });
   }
 
@@ -110,6 +90,7 @@ export default function Index(props: any) {
       httpClient.get<Textbook[]>(`/textbook/list/${nodeTextbookOption.id}/part`).then(res => {
         setChapterShowItems(res);
       }).catch(err => {
+        console.log("err: ", err);
       });
     }
   }, [nodeTextbookOption]);
@@ -166,37 +147,43 @@ export default function Index(props: any) {
               chapterSortOrder={chapterSortOrder}
               setChapterSortOrder={setChapterSortOrder}
               chapterNodeIsEmpty={chapterNodeIsEmpty}
+              chapterNodeMaxDepthLimit={chapterNodeMaxDepthLimit}
               chapterIsEmpty={chapterIsEmpty}
-              chapterPartName={chapterPartName}
-              setChapterPartName={setChapterPartName}
-              appendChapterPartName={appendChapterPartName}
-              chapterPartSortOrder={chapterPartSortOrder}
-              setChapterPartSortOrder={setChapterPartSortOrder}
-              chapterPartNodeIsEmpty={chapterPartNodeIsEmpty}
-              chapterPartNameIsEmpty={chapterPartNameIsEmpty}
             />,
           },
           {
-            title: '第三步. 节点展示',
-            content: <Show
+            title: '第三步. 节点追加查看',
+            content: <AppendShow
               chapterShowItems={chapterShowItems}
+              setChapterShowItems={setChapterShowItems}
             />,
           },
           {
             title: '第四步. 关联章节小节和知识点小类',
-            content: <Relation/>,
+            content: <Relation
+              currentStep={currentStep}
+            />,
           },
           {
-            title: '第五步. 追加题型',
-            content: <div>hello</div>,
+            title: '第五步. 关联章节小节和知识点小类查看',
+            content: <RelationShow
+              currentStep={currentStep}
+            />,
           },
           {
-            title: '第六步. 题型展示',
-            content: <div>hello</div>,
+            title: '第六步. 追加题型',
+            content: <Question
+              currentStep={currentStep}
+            />,
+          },
+          {
+            title: '第七步. 题型查看',
+            content: <QuestionShow
+              currentStep={currentStep}
+            />,
           },
         ]}
       />
     </div>
-
   </div>
 }

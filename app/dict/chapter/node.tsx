@@ -1,5 +1,5 @@
 import React from "react";
-import {Cascader, type CascaderProps, Col, Row} from "antd";
+import {Cascader, type CascaderProps, Splitter} from "antd";
 import type {Textbook, TextbookOption} from "~/type/textbook";
 
 // 父级菜单管理, 不同的类型下会有深度差别
@@ -13,9 +13,12 @@ export default function Node(props: any) {
     }
   };
 
-  return <Row gutter={[12, 12]}>
-    <Col span={24}>
-      <div>
+  return <Splitter style={{minHeight: 50, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'}}>
+    <Splitter.Panel
+      defaultSize="100%"
+      resizable={false}
+    >
+      <div className="p-3">
         <Cascader
           style={{width: "50%"}}
           changeOnSelect={true}
@@ -24,6 +27,6 @@ export default function Node(props: any) {
           placeholder="请选择选择教材章节或知识点类别"
         />
       </div>
-    </Col>
-  </Row>
+    </Splitter.Panel>
+  </Splitter>
 }

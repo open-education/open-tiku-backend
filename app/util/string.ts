@@ -53,15 +53,22 @@ export const StringUtil = {
 
 // 常量维护
 export const StringConst = {
+  dictTextbookMaxDepth: 5, // 教材元数据字段最大深度
   dictTextbookAdd: "dictTextbookAdd", // 教材字典新增标识
   dictTextbookEdit: "dictTextbookEdit", // 教材字典编辑标识
   dictChapterNameAdd: "dictChapterNameAdd", // 教材章节和知识点类节点添加
-  dictChapterPartNameAdd: "dictChapterPartNameAdd", // 章节小节和知识点小类节点添加
   dictChapterNameEdit: "dictChapterNameEdit", // 教材章节和知识点类节点编辑
-  dictChapterPartNameEdit: "dictChapterPartNameEdit", // 章节小节和知识点小类节点编辑
+  dictChapterKnowledgeRelation: "dictChapterKnowledgeRelation", // 关联章节和知识点
+  dictChapterKnowledgeRelationRemove: "dictChapterKnowledgeRelationRemove", // 移除关联章节和知识点
+  dictChapterKnowledgeRelationMaxDepth: 7, // 章节和知识点关联只能关联第7级
+  dictQuestionsAdd: "dictQuestionsAdd", // 追加题型
+  dictQuestionsRemove: "dictQuestionsRemove", // 编辑题型
 }
 
+// 常量整合工具
 export const StringConstUtil = {
-  dictChapterNameAddSet: new Set([StringConst.dictChapterNameAdd, StringConst.dictChapterPartNameAdd]),
-  dictChapterNameEditSet: new Set([StringConst.dictChapterNameEdit, StringConst.dictChapterPartNameEdit]),
+  dictChapterNameAddMaxDepthSet: new Set<number>([5, 6]),
+  dictChapterNameSet: new Set<string>([StringConst.dictChapterNameAdd, StringConst.dictChapterNameEdit]),
+  dictChapterKnowledgeSet: new Set<string>([StringConst.dictChapterKnowledgeRelation, StringConst.dictChapterKnowledgeRelationRemove]),
+  dictQuestionSet: new Set<string>([StringConst.dictQuestionsAdd, StringConst.dictQuestionsRemove]),
 }

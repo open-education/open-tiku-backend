@@ -46,7 +46,7 @@ export default function Index(props: any) {
     },
     {
       key: "chapter",
-      label: <NavLink to={"chapter"}>章节和知识点配置</NavLink>,
+      label: <NavLink to={"chapter"}>章节知识点题型配置</NavLink>,
     },
   ];
 

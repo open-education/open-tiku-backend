@@ -19,6 +19,7 @@ export default function Add(props: any) {
   let fetcher = useFetcher();
 
   // 父级菜单选择信息
+  const [maxDepthLimit, setMaxDepthLimit] = useState<boolean>(false);
   const [textbookOption, setTextbookOption] = useState<Textbook>({
     children: [], id: 0, key: "", label: "", parentId: 0, pathDepth: 0, sortOrder: 0
   });
@@ -54,6 +55,13 @@ export default function Add(props: any) {
 
   // 保存
   const add = () => {
+    // 菜单深度限制
+    if (StringConst.dictTextbookMaxDepth < textbookOption.pathDepth) {
+      setMaxDepthLimit(true);
+      return;
+    }
+    setMaxDepthLimit(false);
+
     // 名称
     if (!StringValidator.isNonEmpty(label)) {
       setLabelIsEmpty(true);
@@ -104,6 +112,7 @@ export default function Add(props: any) {
           onChange={onParentLevelChange}
           placeholder="请选择父级菜单"
         />
+        {maxDepthLimit && <Alert title="菜单深度不能超过第5级" type="error"/>}
         <Typography.Text type="secondary" italic={true}>
           选择当前栏目对应的父级菜单, 不选择任何父级菜单则是顶级菜单
         </Typography.Text>

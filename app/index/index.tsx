@@ -13,7 +13,7 @@ const {Header} = Layout;
 const items: MenuProps["items"] = [
   {
     key: "textbook",
-    label: <NavLink to={"/textbook"}>教材</NavLink>,
+    label: <NavLink to={"/textbook"}>题目</NavLink>,
   },
   {
     key: "dict",
