@@ -96,7 +96,7 @@ export default function Index(props: any) {
   // 删除菜单-实际上写在 组件客户端还灵活一些, 提交到 action 反而捕获错误要特殊处理监听
   const onDeleteClick = (id: number) => {
     if (confirm("确定删除?")) {
-      httpClient.get<number>(`/textbook/delete/${id}`)
+      httpClient.get<boolean>(`/textbook/delete/${id}`)
         .then((res) => {
           setCatchError("");
           // 刷新页面数据

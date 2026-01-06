@@ -64,6 +64,11 @@ export const TextbookReqUtil = {
     }
     return httpClient.post<Textbook>("/textbook/edit", editReq);
   },
+
+  // 删除菜单
+  delete: async (req: TextbookFetcherReq): Promise<boolean> => {
+    return httpClient.get<boolean>(`/textbook/delete/${req.reqId}`);
+  }
 }
 
 // 章节和知识点关联工具
