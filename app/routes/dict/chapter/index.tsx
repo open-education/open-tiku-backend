@@ -27,62 +27,98 @@ export async function clientAction({request}: Route.ClientActionArgs) {
 
   if (StringConstUtil.dictChapterNameSet.has(source)) { // 章节节点和知识点添加操作
     let req: TextbookFetcherReq = TextbookReqUtil.get_fetcher_form_data(formData);
+
+    // 删除只有id
+    try {
+      if (StringConst.dictChapterNameRemove === source) {
+        let res = await TextbookReqUtil.delete(req);
+        if (res) {
+          return {error: "", result: true};
+        }
+        return {error: "菜单删除失败", result: false};
+      }
+    } catch (err) {
+      return {error: httpClient.getErrorMessage(err), result: false};
+    }
+
     if (!StringValidator.isNonEmpty(req.label)) {
       return {error: "节点名称不能为空", result: false};
     }
 
     if (StringConst.dictChapterNameEdit === source) {
-      let res = await TextbookReqUtil.edit(req);
-      if (res && res.id > 0) {
-        return {result: true, parentId: req.parentId};
+      try {
+        let res = await TextbookReqUtil.edit(req);
+        if (res && res.id > 0) {
+          return {result: true, parentId: req.parentId};
+        }
+        return {error: "节点追加编辑失败", result: false};
+      } catch (err) {
+        return {error: httpClient.getErrorMessage(err), result: false};
       }
-
-      // 发生错误返回对象
-      return {error: "节点追加编辑失败", result: false};
     } else {
-      let res = await TextbookReqUtil.add(req);
-      if (res && res.id > 0) {
-        return {error: "", result: true};
+      try {
+        let res = await TextbookReqUtil.add(req);
+        if (res && res.id > 0) {
+          return {error: "", result: true};
+        }
+        return {error: "节点追加提交失败", result: false};
+      } catch (err) {
+        return {error: httpClient.getErrorMessage(err), result: false};
       }
-
-      // 发生错误返回对象
-      return {error: "节点追加提交失败", result: false};
     }
   } else if (StringConstUtil.dictChapterKnowledgeSet.has(source)) { // 章节和知识点关联相关操作
     let relationReq: ChapterAndKnowledgeFetcherReq = ChapterAndKnowledgeUtil.get_fetcher_form_data(formData);
+    // 如果是解除关联只有id标识
+    if (StringConst.dictChapterKnowledgeRelationRemove === source) {
+      try {
+        let res = await ChapterAndKnowledgeUtil.delete(relationReq);
+        if (res) {
+          return {error: "", result: true};
+        }
+        return {error: "解除关联失败", result: false};
+      } catch (err) {
+        return {error: httpClient.getErrorMessage(err), result: false};
+      }
+    }
+
+    // 剩下添加关联一个请求
     if (relationReq.chapterId <= 0) {
       return {error: "请选择章节", result: false};
     }
     if (relationReq.knowledgeId <= 0) {
       return {error: "请选择知识点", result: false};
     }
-    if (StringConst.dictChapterKnowledgeRelation === source) {
+    try {
       let res = await ChapterAndKnowledgeUtil.add(relationReq);
       if (res && res.id > 0) {
         return {error: "", result: true};
       }
       return {error: "添加关联失败", result: false};
-    } else {
-      let res = await ChapterAndKnowledgeUtil.delete(relationReq);
-      if (res) {
-        return {error: "", result: true};
-      }
-      return {error: "解除关联失败", result: false};
+    } catch (err) {
+      return {error: httpClient.getErrorMessage(err), result: false};
     }
   } else if (StringConstUtil.dictQuestionSet.has(source)) { // 题型相关
     const questionReq = QuestionCateUtil.get_fetcher_form_data(formData);
     if (StringConst.dictQuestionsAdd === source) {
-      let res = await QuestionCateUtil.add(questionReq);
-      if (res) {
-        return {error: "", result: true};
+      try {
+        let res = await QuestionCateUtil.add(questionReq);
+        if (res) {
+          return {error: "", result: true};
+        }
+        return {error: "追加题型失败", result: false};
+      } catch (err) {
+        return {error: httpClient.getErrorMessage(err), result: false};
       }
-      return {error: "追加题型失败", result: false};
     } else {
-      let res = await QuestionCateUtil.delete(questionReq);
-      if (res) {
-        return {error: "", result: true};
+      try {
+        let res = await QuestionCateUtil.delete(questionReq);
+        if (res) {
+          return {error: "", result: true};
+        }
+        return {error: "删除题型失败", result: false};
+      } catch (err) {
+        return {error: httpClient.getErrorMessage(err), result: false};
       }
-      return {error: "删除题型失败", result: false};
     }
   } else {
     return {error: "未知行为", result: false};

@@ -28,7 +28,7 @@ export default function AppendShow(props: any) {
 
   /// 编辑区域菜单层级
   const [editChapterNameOptions, setEditChapterNameOptions] = React.useState<TextbookOption[]>([]);
-  const [editChapterNameOption, setEditChapterNameOption] = React.useState<Textbook>({
+  const editOptionInit: Textbook = {
     children: [],
     id: 0,
     key: "",
@@ -36,10 +36,15 @@ export default function AppendShow(props: any) {
     parentId: 0,
     pathDepth: 0,
     sortOrder: 0
-  });
+  };
+  const [editChapterNameOption, setEditChapterNameOption] = React.useState<Textbook>(editOptionInit);
   const [selectValues, setSelectValues] = useState<string[]>([]);
   const onParentLevelChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
-    setEditChapterNameOption(selectedOptions[selectedOptions.length - 1].raw);
+    if (selectedOptions === undefined) {
+      setEditChapterNameOption(editOptionInit);
+    } else {
+      setEditChapterNameOption(selectedOptions[selectedOptions.length - 1].raw);
+    }
   };
 
   /// 点击编辑区域编辑按钮
@@ -63,19 +68,29 @@ export default function AppendShow(props: any) {
 
       // 需要默认值信息
       const pathNodes = ArrayUtil.findPath(textbookOptions, id.toString());
-      // 去掉最后一层, 该层为当前自己
-      const _values = pathNodes ? pathNodes.slice(0, -1).map(node => node.label) : [];
-      setSelectValues(_values);
+      if (pathNodes) {
+        const nodes = pathNodes.slice(0, -1);
+        // 同时填充默认选择的菜单信息
+        setEditChapterNameOption(nodes[nodes.length - 1].raw);
+        // 去掉最后一层, 该层为当前自己
+        setSelectValues(nodes.map(node => node.label));
+      }
     }).catch(err => {
       console.log(err);
     });
   }
 
   // 点击删除
-  const [deleteChapterNameId, setDeleteChapterNameId] = React.useState<number>(0);
   const onDeleteChapterNameClick = (id: number) => {
-    console.log("deleteChapterName", id);
-    setDeleteChapterNameId(id);
+    if (confirm("确定删除?")) {
+      fetcher.submit({
+        source: StringConst.dictChapterNameRemove,
+        id,
+      }, {method: "post"}).then(res => {
+      }).catch(err => {
+        console.log(err);
+      });
+    }
   }
 
   // 编辑名称
@@ -109,7 +124,7 @@ export default function AppendShow(props: any) {
       return;
     }
     setChapterNodeIsEmpty(false);
-    if (StringConstUtil.dictChapterNameAddMaxDepthSet.has(editChapterNameOption.pathDepth)) {
+    if (!StringConstUtil.dictChapterNameAddMaxDepthSet.has(editChapterNameOption.pathDepth)) {
       setChapterNodeMaxDepthLimit(true);
       return;
     }
@@ -139,6 +154,7 @@ export default function AppendShow(props: any) {
 
   // 编辑时需要刷新节点展示列表
   const setChapterShowItems: React.Dispatch<React.SetStateAction<Textbook[]>> = props.setChapterShowItems;
+
   useEffect(() => {
     // 父标识由 action 传递过来
     if (fetcher.data?.result === true && fetcher.data.parentId > 0) {
@@ -179,7 +195,7 @@ export default function AppendShow(props: any) {
                           编辑
                         </Button>
                         {
-                          item.children?.length == 0 &&
+                          (!item.children || item.children.length == 0) &&
                           <Button color="danger" variant="link" onClick={() => onDeleteChapterNameClick(item.id)}>
                             删除
                           </Button>

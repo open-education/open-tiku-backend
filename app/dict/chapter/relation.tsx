@@ -1,5 +1,5 @@
 import {Alert, Button, Cascader, type CascaderProps, Col, Row, Splitter} from "antd";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import type {Textbook, TextbookOption} from "~/type/textbook";
 import {httpClient} from "~/util/http";
 import {ArrayUtil} from "~/util/object";
@@ -14,8 +14,8 @@ export default function Relation(props: any) {
   const currentStep: number = props.currentStep ?? 0;
 
   // 章节节点小类
-  const [selectChapterOptions, setSelectChapterOptions] = React.useState<TextbookOption[]>([]);
-  const [selectChapterOption, setSelectChapterOption] = React.useState<Textbook>({
+  const [selectChapterOptions, setSelectChapterOptions] = useState<TextbookOption[]>([]);
+  const [selectChapterOption, setSelectChapterOption] = useState<Textbook>({
     children: [],
     id: 0,
     key: "",
@@ -24,15 +24,16 @@ export default function Relation(props: any) {
     pathDepth: 0,
     sortOrder: 0
   });
-  const [selectChapterOptionIsEmpty, setSelectChapterOptionIsEmpty] = React.useState<boolean>(false);
-  const [selectChapterOptionMaxDepthLimit, setSelectChapterOptionMaxDepthLimit] = React.useState<boolean>(false);
+  const [selectChapterOptionIsEmpty, setSelectChapterOptionIsEmpty] = useState<boolean>(false);
+  const [selectChapterOptionMaxDepthLimit, setSelectChapterOptionMaxDepthLimit] = useState<boolean>(false);
   const onSelectChapterOptionChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
+    console.log("chapter", selectedOptions[selectedOptions.length - 1].raw);
     setSelectChapterOption(selectedOptions[selectedOptions.length - 1].raw);
   };
 
   // 知识点小类
-  const [selectKnowledgeOptions, setSelectKnowledgeOptions] = React.useState<TextbookOption[]>([]);
-  const [selectKnowledgeOption, setSelectKnowledgeOption] = React.useState<Textbook>({
+  const [selectKnowledgeOptions, setSelectKnowledgeOptions] = useState<TextbookOption[]>([]);
+  const [selectKnowledgeOption, setSelectKnowledgeOption] = useState<Textbook>({
     children: [],
     id: 0,
     key: "",
@@ -41,9 +42,10 @@ export default function Relation(props: any) {
     pathDepth: 0,
     sortOrder: 0
   });
-  const [selectKnowledgeOptionIsEmpty, setSelectKnowledgeOptionIsEmpty] = React.useState<boolean>(false);
-  const [selectKnowledgeOptionMaxDepthLimit, setSelectKnowledgeOptionMaxDepthLimit] = React.useState<boolean>(false);
+  const [selectKnowledgeOptionIsEmpty, setSelectKnowledgeOptionIsEmpty] = useState<boolean>(false);
+  const [selectKnowledgeOptionMaxDepthLimit, setSelectKnowledgeOptionMaxDepthLimit] = useState<boolean>(false);
   const onSelectKnowledgeOptionChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
+    console.log("knowledge: ", selectedOptions[selectedOptions.length - 1].raw);
     setSelectKnowledgeOption(selectedOptions[selectedOptions.length - 1].raw);
   };
 
@@ -93,13 +95,6 @@ export default function Relation(props: any) {
     }, {method: "post"}).then((res) => {
     });
   }
-
-  // 监听是否有关联完毕的返回
-  useEffect(() => {
-    if (fetcher.data?.result === true) {
-
-    }
-  }, [fetcher.data]);
 
   return <div className="mt-4">
     <Splitter style={{minHeight: 100, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'}}>

@@ -20,11 +20,23 @@ export default function Add(props: any) {
 
   // 父级菜单选择信息
   const [maxDepthLimit, setMaxDepthLimit] = useState<boolean>(false);
-  const [textbookOption, setTextbookOption] = useState<Textbook>({
-    children: [], id: 0, key: "", label: "", parentId: 0, pathDepth: 0, sortOrder: 0
-  });
+  const textbookOptionInit: Textbook = {
+    children: [],
+    id: 0,
+    key: "",
+    label: "",
+    parentId: 0,
+    pathDepth: 0,
+    sortOrder: 0
+  };
+  const [textbookOption, setTextbookOption] = useState<Textbook>(textbookOptionInit);
   const onParentLevelChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
-    setTextbookOption(selectedOptions[selectedOptions.length - 1].raw);
+    // 点击清除时并没有返回空数组, 而是 undefined
+    if (selectedOptions === undefined) {
+      setTextbookOption(textbookOptionInit);
+    } else {
+      setTextbookOption(selectedOptions[selectedOptions.length - 1].raw);
+    }
   };
 
   // 名称

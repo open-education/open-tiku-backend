@@ -1,11 +1,15 @@
-import {Cascader, type CascaderProps, Col, Row, Splitter} from "antd";
+import {Alert, Button, Cascader, type CascaderProps, Col, Row, Splitter} from "antd";
 import React, {useEffect} from "react";
 import type {Textbook, TextbookOption} from "~/type/textbook";
 import {ArrayUtil} from "~/util/object";
 import {httpClient} from "~/util/http";
+import {useFetcher} from "react-router";
+import {StringConst} from "~/util/string";
 
 // 关联章节小节和知识点展示
 export default function RelationShow(props: any) {
+  let fetcher = useFetcher();
+
   let currentStep: number = props.currentStep ?? 0;
 
   // 章节节点小类
@@ -32,6 +36,25 @@ export default function RelationShow(props: any) {
     });
   };
 
+  // 通过章节或者知识点解除关联
+  const [chapterIsSelect, setChapterIsSelect] = React.useState<boolean>(false);
+  const [knowledgeIsSelect, setKnowledgeIsSelect] = React.useState<boolean>(false);
+  const onRemoveKnowledgeOptionChange = (id: number, type: string) => {
+    if (confirm("确认解除关联?")) {
+      setChapterIsSelect(type === "chapter");
+      setKnowledgeIsSelect(type === "knowledge");
+
+      fetcher.submit({
+        source: StringConst.dictChapterKnowledgeRelationRemove,
+        id,
+      }, {method: "post"}).then((res) => {
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
+  }
+
+  // 触发该步骤时刷新菜单数据
   useEffect(() => {
     if (currentStep === 4) {
       // 刷新菜单列表
@@ -60,7 +83,7 @@ export default function RelationShow(props: any) {
           </div>
 
           <div className="mt-2.5">
-            <Row gutter={[12, 12]}>
+            <Row gutter={[12, 12]} align={"middle"}>
               <Col span={24}>
                 <div>
                   <Cascader
@@ -76,13 +99,22 @@ export default function RelationShow(props: any) {
 
           <div className="mt-2.5">
             {knowledgeLabelList.map((item) => {
-              return <Row gutter={[12, 12]} key={item.id}>
-                <Col span={24}>{item.label}</Col>
+              return <Row gutter={[12, 12]} key={item.id} align={"middle"}>
+                <Col span={10}>{item.label}</Col>
+                <Col span={4}>
+                  <Button color="danger" variant="link" onClick={() => {
+                    onRemoveKnowledgeOptionChange(item.id, "chapter")
+                  }}>解除关联</Button>
+                </Col>
+                <Col span={10}>
+                  {chapterIsSelect && fetcher.data?.error && <Alert title={fetcher.data.error} type="error"/>}
+                </Col>
               </Row>
             })}
           </div>
         </div>
       </Splitter.Panel>
+
       <Splitter.Panel
         defaultSize="50%"
         resizable={false}
@@ -112,7 +144,15 @@ export default function RelationShow(props: any) {
           <div className="mt-2.5">
             {chapterLabelList.map((item) => {
               return <Row gutter={[12, 12]} key={item.id}>
-                <Col span={24}>{item.label}</Col>
+                <Col span={10}>{item.label}</Col>
+                <Col span={4}>
+                  <Button color="danger" variant="link" onClick={() => {
+                    onRemoveKnowledgeOptionChange(item.id, "knowledge")
+                  }}>解除关联</Button>
+                </Col>
+                <Col span={10}>
+                  {knowledgeIsSelect && fetcher.data?.error && <Alert title={fetcher.data.error} type="error"/>}
+                </Col>
               </Row>
             })}
           </div>

@@ -1,4 +1,4 @@
-import type { ApiResponse } from "~/type/response";
+import type {ApiResponse} from "~/type/response";
 
 class HttpClient {
   private readonly baseURL: string;
@@ -54,6 +54,13 @@ class HttpClient {
       throw new Error(`HTTP error! msg: ${apiResponse.msg}`);
     }
     return apiResponse.data as T;
+  }
+
+  // 获取错误信息文案
+  getErrorMessage(err: any): string {
+    if (!err) return "未知错误";
+    if (err instanceof Error) return err.message;
+    return String(err);
   }
 }
 

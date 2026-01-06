@@ -56,8 +56,10 @@ export const StringConst = {
   dictTextbookMaxDepth: 5, // 教材元数据字段最大深度
   dictTextbookAdd: "dictTextbookAdd", // 教材字典新增标识
   dictTextbookEdit: "dictTextbookEdit", // 教材字典编辑标识
+  dictTextbookRemove: "dictTextbookRemove", // 教材字典删除
   dictChapterNameAdd: "dictChapterNameAdd", // 教材章节和知识点类节点添加
   dictChapterNameEdit: "dictChapterNameEdit", // 教材章节和知识点类节点编辑
+  dictChapterNameRemove: "dictChapterNameRemove", // 教材章节和知识点类删除
   dictChapterKnowledgeRelation: "dictChapterKnowledgeRelation", // 关联章节和知识点
   dictChapterKnowledgeRelationRemove: "dictChapterKnowledgeRelationRemove", // 移除关联章节和知识点
   dictChapterKnowledgeRelationMaxDepth: 7, // 章节和知识点关联只能关联第7级
@@ -68,7 +70,7 @@ export const StringConst = {
 // 常量整合工具
 export const StringConstUtil = {
   dictChapterNameAddMaxDepthSet: new Set<number>([5, 6]),
-  dictChapterNameSet: new Set<string>([StringConst.dictChapterNameAdd, StringConst.dictChapterNameEdit]),
+  dictChapterNameSet: new Set<string>([StringConst.dictChapterNameAdd, StringConst.dictChapterNameEdit, StringConst.dictChapterNameRemove]),
   dictChapterKnowledgeSet: new Set<string>([StringConst.dictChapterKnowledgeRelation, StringConst.dictChapterKnowledgeRelationRemove]),
   dictQuestionSet: new Set<string>([StringConst.dictQuestionsAdd, StringConst.dictQuestionsRemove]),
 }

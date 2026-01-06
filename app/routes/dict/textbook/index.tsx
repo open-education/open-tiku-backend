@@ -37,21 +37,25 @@ export async function clientAction({request}: Route.ClientActionArgs) {
 
   // 如果存在 reqId 则认为是更新操作
   if (StringConst.dictTextbookEdit === source) {
-    let res = await TextbookReqUtil.edit(req);
-    if (res && res.id > 0) {
-      return {result: true};
+    try {
+      let res = await TextbookReqUtil.edit(req);
+      if (res && res.id > 0) {
+        return {result: true};
+      }
+      return {error: "菜单编辑失败", result: false};
+    } catch (err) {
+      return {error: httpClient.getErrorMessage(err), result: false};
     }
-
-    // 发生错误返回对象
-    return {error: "菜单编辑失败", result: false};
   } else if (StringConst.dictTextbookAdd === source) {
-    let res = await TextbookReqUtil.add(req);
-    if (res && res.id > 0) {
-      return {result: true};
+    try {
+      let res = await TextbookReqUtil.add(req);
+      if (res && res.id > 0) {
+        return {result: true};
+      }
+      return {error: "菜单提交失败", result: false};
+    } catch (err) {
+      return {error: httpClient.getErrorMessage(err), result: false};
     }
-
-    // 发生错误返回对象
-    return {error: "菜单提交失败", result: false};
   } else {
     return {error: "未知行为", result: false};
   }

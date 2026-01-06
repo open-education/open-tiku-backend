@@ -46,7 +46,7 @@ export default function Append(props: any) {
               <Col span={24}>
                 <Form
                   layout="horizontal"
-                  labelCol={{span: 1}}
+                  labelCol={{span: 2}}
                   wrapperCol={{span: 8}}
                 >
                   <Form.Item label="名称: ">
