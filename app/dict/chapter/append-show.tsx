@@ -80,12 +80,13 @@ export default function AppendShow(props: any) {
     });
   }
 
-  // 点击删除
-  const onDeleteChapterNameClick = (id: number) => {
+  // 点击删除, 删除成功后需要刷新节点展示列表
+  const onDeleteChapterNameClick = (id: number, parentId: number) => {
     if (confirm("确定删除?")) {
       fetcher.submit({
         source: StringConst.dictChapterNameRemove,
         id,
+        parentId,
       }, {method: "post"}).then(res => {
       }).catch(err => {
         console.log(err);
@@ -155,6 +156,7 @@ export default function AppendShow(props: any) {
   // 编辑时需要刷新节点展示列表
   const setChapterShowItems: React.Dispatch<React.SetStateAction<Textbook[]>> = props.setChapterShowItems;
 
+  // 展示页面需要接收父级标识来刷新最新的子菜单列表
   useEffect(() => {
     // 父标识由 action 传递过来
     if (fetcher.data?.result === true && fetcher.data.parentId > 0) {
@@ -191,12 +193,14 @@ export default function AppendShow(props: any) {
                     </div>
                     <div>
                       <Flex gap="small" justify="flex-start">
-                        <Button color="primary" variant="link" onClick={() => onEditChapterNameClick(item.id)}>
+                        <Button color="primary" variant="link"
+                                onClick={() => onEditChapterNameClick(item.id)}>
                           编辑
                         </Button>
                         {
                           (!item.children || item.children.length == 0) &&
-                          <Button color="danger" variant="link" onClick={() => onDeleteChapterNameClick(item.id)}>
+                          <Button color="danger" variant="link"
+                                  onClick={() => onDeleteChapterNameClick(item.id, item.parentId)}>
                             删除
                           </Button>
                         }
@@ -210,7 +214,9 @@ export default function AppendShow(props: any) {
                       {
                         /* border-l-2: 宽度 | border-dashed: 虚线 | border-blue-950: 颜色 */
                       }
-                      return <div className="ml-1 border-l-2 border-dashed border-blue-950/40 pl-6 mt-1" key={row.id}>
+                      return <div
+                        className="ml-1 border-l-2 border-dashed border-blue-950/40 pl-6 mt-1"
+                        key={row.id}>
 
                         {/* 子目录 */}
                         <div className="relative py-3 group">
@@ -223,10 +229,12 @@ export default function AppendShow(props: any) {
 
                             <div>
                               <Flex gap="small" justify="flex-start">
-                                <Button color="primary" variant="link" onClick={() => onEditChapterNameClick(row.id)}>
+                                <Button color="primary" variant="link"
+                                        onClick={() => onEditChapterNameClick(row.id)}>
                                   编辑
                                 </Button>
-                                <Button color="danger" variant="link" onClick={() => onDeleteChapterNameClick(row.id)}>
+                                <Button color="danger" variant="link"
+                                        onClick={() => onDeleteChapterNameClick(row.id, item.parentId)}>
                                   删除
                                 </Button>
                               </Flex>
@@ -237,7 +245,8 @@ export default function AppendShow(props: any) {
                         {/* 最后一个子目录要特殊展示该行 这是一个技巧：用背景色块遮住最后一条子目录以下的垂直虚线 */}
                         {
                           item.children?.length - 1 == index &&
-                          <div className="absolute -left-7 top-[50%] bottom-0 w-2 bg-white"></div>
+                          <div
+                            className="absolute -left-7 top-[50%] bottom-0 w-2 bg-white"></div>
                         }
                       </div>
                     })
@@ -278,7 +287,8 @@ export default function AppendShow(props: any) {
                     />
                   </Form.Item>
                   <Form.Item label="名称: ">
-                    <Input value={editChapterName} placeholder="请输入名称" onChange={onEditChapterChange}/>
+                    <Input value={editChapterName} placeholder="请输入名称"
+                           onChange={onEditChapterChange}/>
                   </Form.Item>
                   <Form.Item label="排序编号: ">
                     <InputNumber
@@ -293,13 +303,16 @@ export default function AppendShow(props: any) {
                     />
                   </Form.Item>
                   <Form.Item>
-                    <Button color="primary" variant="dashed" onClick={submitEditChapterName}>编辑</Button>
+                    <Button color="primary" variant="dashed"
+                            onClick={submitEditChapterName}>编辑</Button>
                   </Form.Item>
                 </Form>
               </Col>
               <Col span={24}>
-                {chapterNodeIsEmpty && <Alert title="请先选择 第一步: 选择教材章节或知识点类别" type={"error"}/>}
-                {chapterNodeMaxDepthLimit && <Alert title="教材章节或知识点类别父级只能是第5级或第6级" type={"error"}/>}
+                {chapterNodeIsEmpty &&
+                  <Alert title="请先选择 第一步: 选择教材章节或知识点类别" type={"error"}/>}
+                {chapterNodeMaxDepthLimit &&
+                  <Alert title="教材章节或知识点类别父级只能是第5级或第6级" type={"error"}/>}
                 {chapterIsEmpty && <Alert title="名称不能为空" type={"error"}/>}
               </Col>
             </Row>

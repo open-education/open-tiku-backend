@@ -13,7 +13,6 @@ export interface Textbook {
 export interface CreateTextbookReq {
   parentId?: number;
   label: string;
-  key: string;
   pathDepth: number; // 深度需要前端根据选择的栏目自己提供
   sortOrder: number;
 }
@@ -23,7 +22,6 @@ export interface UpdateTextbookReq {
   id: number;
   parentId?: number;
   label: string;
-  key: string;
   pathDepth: number; // 深度需要前端根据选择的栏目自己提供
   sortOrder: number;
 }
@@ -41,7 +39,6 @@ export interface TextbookFetcherReq {
   reqId: number;
   parentId: number;
   label: string;
-  code: string;
   sortOrder: number;
   pathDepth: number;
 }

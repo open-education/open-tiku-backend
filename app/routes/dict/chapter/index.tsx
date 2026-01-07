@@ -33,7 +33,7 @@ export async function clientAction({request}: Route.ClientActionArgs) {
       if (StringConst.dictChapterNameRemove === source) {
         let res = await TextbookReqUtil.delete(req);
         if (res) {
-          return {error: "", result: true};
+          return {error: "", result: true, parentId: req.parentId};
         }
         return {error: "菜单删除失败", result: false};
       }
@@ -49,7 +49,7 @@ export async function clientAction({request}: Route.ClientActionArgs) {
       try {
         let res = await TextbookReqUtil.edit(req);
         if (res && res.id > 0) {
-          return {result: true, parentId: req.parentId};
+          return {error: "", result: true, parentId: req.parentId};
         }
         return {error: "节点追加编辑失败", result: false};
       } catch (err) {
@@ -73,7 +73,7 @@ export async function clientAction({request}: Route.ClientActionArgs) {
       try {
         let res = await ChapterAndKnowledgeUtil.delete(relationReq);
         if (res) {
-          return {error: "", result: true};
+          return {error: "", result: true, reqType: source};
         }
         return {error: "解除关联失败", result: false};
       } catch (err) {
@@ -113,7 +113,7 @@ export async function clientAction({request}: Route.ClientActionArgs) {
       try {
         let res = await QuestionCateUtil.delete(questionReq);
         if (res) {
-          return {error: "", result: true};
+          return {error: "", result: true, reqType: source};
         }
         return {error: "删除题型失败", result: false};
       } catch (err) {

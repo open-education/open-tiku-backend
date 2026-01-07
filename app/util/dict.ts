@@ -27,7 +27,6 @@ export const TextbookReqUtil = {
   // 从 fetcher 请求中获取表单数据
   get_fetcher_form_data: (formData: FormData): TextbookFetcherReq => {
     return {
-      code: formData.get("code")?.toString() ?? "",
       label: formData.get("label")?.toString() ?? "",
       parentId: Number(formData.get("parentId")?.toString() ?? 0),
       pathDepth: Number(formData.get("pathDepth")?.toString() ?? 1),
@@ -40,7 +39,6 @@ export const TextbookReqUtil = {
   add: async (req: TextbookFetcherReq): Promise<Textbook> => {
     const addReq: CreateTextbookReq = {
       label: req.label,
-      key: req.code,
       pathDepth: req.pathDepth,
       sortOrder: req.sortOrder,
     };
@@ -55,7 +53,6 @@ export const TextbookReqUtil = {
     let editReq: UpdateTextbookReq = {
       id: req.reqId,
       label: req.label,
-      key: req.code,
       sortOrder: req.sortOrder,
       pathDepth: req.pathDepth,
     };

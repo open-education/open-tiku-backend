@@ -53,15 +53,6 @@ export default function Add(props: any) {
   // 名称不能为空
   const [labelIsEmpty, setLabelIsEmpty] = useState<boolean>(false);
 
-  // 标识
-  const [code, setCode] = useState<string>(item.key);
-  const onCodeChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setCode(e.target.value);
-    },
-    []
-  );
-
   // 排序编号
   const [sortOrder, setSortOrder] = useState<number>(item.sortOrder);
   const onSortOrderChange: InputNumberProps["onChange"] = (value) => {
@@ -80,7 +71,6 @@ export default function Add(props: any) {
         setItem(res);
         // 触发 ui 渲染最新的默认值
         setLabel(res.label);
-        setCode(res.key);
         setSortOrder(res.sortOrder);
       });
     }
@@ -107,7 +97,6 @@ export default function Add(props: any) {
       source: StringConst.dictTextbookEdit, // 标记是教材字典编辑来源
       id: item.id,
       label,
-      code,
       sortOrder,
       parentId, // 这两个字段需要使用最新的目标值
       pathDepth
@@ -164,21 +153,6 @@ export default function Add(props: any) {
         {labelIsEmpty && <Alert title="菜单名称简称不能为空" type="error"/>}
         <Typography.Text type="secondary" italic={true}>
           比如 科目菜单 语文, 数学; 出版社菜单为 人教版, 湘教版等; 其它类似...
-        </Typography.Text>
-      </div>
-
-      <div>
-        <Typography.Title level={5}>菜单标识 - 选填可以为空, 仅特殊项用</Typography.Title>
-        <Input
-          value={code}
-          type="text"
-          name="code"
-          placeholder="请输入菜单标识"
-          onChange={onCodeChange}
-        />
-        <Typography.Text type="secondary" italic={true}>
-          比如 语文 对应的英语单词是 chinese, 多个单词中间用下划线连接, 比如
-          this is 应该输入 this_is, 为空保存后会默认生成一个唯一的标识
         </Typography.Text>
       </div>
 
