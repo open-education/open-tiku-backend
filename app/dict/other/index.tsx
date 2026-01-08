@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
-import type {Textbook, TextbookOption} from "~/type/textbook";
+import type {Textbook, TextbookOption, TextbookOtherDictResp} from "~/type/textbook";
 import {
   Alert,
   Button,
@@ -16,7 +16,8 @@ import {
   Splitter
 } from "antd";
 import {useFetcher} from "react-router";
-import {StringValidator} from "~/util/string";
+import {StringConst, StringValidator} from "~/util/string";
+import {httpClient} from "~/util/http";
 
 // 其它类型字典配置
 export default function Index(props: any) {
@@ -66,7 +67,7 @@ export default function Index(props: any) {
       setTagValueIsEmpty(true);
       return;
     }
-    setLabelIsEmpty(false);
+    setTagValueIsEmpty(false);
 
     if (nodeOption.id <= 0) {
       setNodeOptionIsEmpty(true);
@@ -85,16 +86,49 @@ export default function Index(props: any) {
       return;
     }
     setSortOrderIsEmpty(false);
+
+    fetcher.submit({
+      source: StringConst.dictTextbookOtherAdd,
+      textbookId: nodeOption.id,
+      typeCode: tagValue,
+      label,
+      sortOrder,
+    }, {method: "post"}).then(res => {
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   // 删除
   const onDeleteClick = (id: number) => {
+    if (id <= 0) {
+      return;
+    }
 
+    fetcher.submit({
+      source: StringConst.dictTextbookOtherRemove,
+      id,
+    }, {method: "post"}).then(res => {
+    }).catch(err => {
+      console.log(err);
+    });
   }
+
+  // 字典内容列表
+  const [otherDictItems, setOtherDictItems] = useState<TextbookOtherDictResp[]>([]);
+  const [otherDictError, setOtherDictError] = useState<React.ReactNode>("");
 
   // 监听字典类型和菜单变化刷新字典列表
   useEffect(() => {
+    if (!StringValidator.isNonEmpty(tagValue) || nodeOption.id <= 0 || nodeOption.pathDepth != 3 || fetcher.data?.error) {
+      return;
+    }
 
+    httpClient.get<TextbookOtherDictResp[]>(`/other/dict/list/${nodeOption.id}/${tagValue}`).then((res) => {
+      setOtherDictItems(res);
+    }).catch(err => {
+      setOtherDictError(<Alert title={`请求错误: ${err}`} type={"error"}/>);
+    });
   }, [tagValue, nodeOption, fetcher.data]);
 
   return <Splitter vertical style={{height: 500, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'}}>
@@ -191,23 +225,31 @@ export default function Index(props: any) {
       resizable={false}
     >
       <div className="p-3">
-        <Row gutter={[12, 12]} align={"middle"}>
-          <Col span={4}>
-            hello
-          </Col>
-          <Col span={2}>
-            <Flex gap="small" justify="flex-start">
-              <Button
-                color="danger"
-                variant="link"
-                onClick={() => {
-                  onDeleteClick(0)
-                }}
-              >删除
-              </Button>
-            </Flex>
-          </Col>
-        </Row>
+        {
+          otherDictItems.map(item => {
+            return <Row gutter={[12, 12]} align={"middle"} key={item.id}>
+              <Col span={4}>
+                {item.itemValue}
+              </Col>
+              <Col span={2}>
+                <Flex gap="small" justify="flex-start">
+                  <Button
+                    color="danger"
+                    variant="link"
+                    onClick={() => {
+                      onDeleteClick(item.id)
+                    }}
+                  >删除
+                  </Button>
+                </Flex>
+              </Col>
+            </Row>
+          })
+        }
+
+        {fetcher.data?.error && <Alert title={fetcher.data.error} type={"error"}/>}
+
+        {otherDictError}
       </div>
     </Splitter.Panel>
   </Splitter>

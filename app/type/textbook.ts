@@ -91,3 +91,29 @@ export interface QuestionCateResp {
   key: string;
   sortOrder: number;
 }
+
+// 教材其它字典
+export interface TextbookOtherDictFetcherReq {
+  reqId: number;
+  textbookId: number;
+  typeCode: string;
+  label: string;
+  sortOrder: number;
+}
+
+// 教材其它字典创建请求
+export interface CreateTextbookOtherDictReq {
+  textbookId: number;
+  typeCode: string;
+  itemValue: string;
+  sortOrder: number;
+}
+
+// 教材其它字典返回
+export interface TextbookOtherDictResp {
+  id: number;
+  textbookId: number;
+  typeCode: string;
+  itemValue: string;
+  sortOrder: number;
+}

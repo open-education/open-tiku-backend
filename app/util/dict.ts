@@ -3,12 +3,15 @@ import type {
   ChapterAndKnowledgeResp,
   CreateChapterAndKnowledgeReq,
   CreateQuestionCateReq,
+  CreateTextbookOtherDictReq,
   CreateTextbookReq,
   DeleteChapterAndKnowledgeReq,
   QuestionCateFetcherReq,
   QuestionCateResp,
   Textbook,
   TextbookFetcherReq,
+  TextbookOtherDictFetcherReq,
+  TextbookOtherDictResp,
   UpdateTextbookReq
 } from "~/type/textbook";
 import {httpClient} from "~/util/http";
@@ -123,4 +126,32 @@ export const QuestionCateUtil = {
   delete: async (req: QuestionCateFetcherReq): Promise<boolean> => {
     return httpClient.get<boolean>(`/question-cate/remove/${req.reqId}`);
   },
+}
+
+// 教材其它字典
+export const OtherDictUtil = {
+  // 从 fetcher 请求中获取表单数据
+  get_fetcher_form_data: (formData: FormData): TextbookOtherDictFetcherReq => {
+    return {
+      reqId: Number(formData.get("id")?.toString() ?? 0),
+      textbookId: Number(formData.get("textbookId")?.toString() ?? 0),
+      typeCode: formData.get("typeCode")?.toString() ?? "",
+      label: formData.get("label")?.toString() ?? "",
+      sortOrder: Number(formData.get("sortOrder")?.toString() ?? 0),
+    };
+  },
+
+  add: async (req: TextbookOtherDictFetcherReq): Promise<TextbookOtherDictResp> => {
+    const addReq: CreateTextbookOtherDictReq = {
+      itemValue: req.label,
+      sortOrder: req.sortOrder,
+      textbookId: req.textbookId,
+      typeCode: req.typeCode,
+    }
+    return httpClient.post<TextbookOtherDictResp>("/other/dict/add", addReq);
+  },
+
+  remove: async (req: TextbookOtherDictFetcherReq): Promise<boolean> => {
+    return httpClient.get<boolean>(`/other/dict/remove/${req.reqId}`);
+  }
 }

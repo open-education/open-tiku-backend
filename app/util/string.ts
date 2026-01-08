@@ -65,6 +65,8 @@ export const StringConst = {
   dictChapterKnowledgeRelationMaxDepth: 7, // 章节和知识点关联只能关联第7级
   dictQuestionsAdd: "dictQuestionsAdd", // 追加题型
   dictQuestionsRemove: "dictQuestionsRemove", // 编辑题型
+  dictTextbookOtherAdd: "dictTextbookOtherAdd", // 教材其它字典添加
+  dictTextbookOtherRemove: "dictTextbookOtherRemove", // 教材其它字典删除
 }
 
 // 常量整合工具
@@ -73,4 +75,5 @@ export const StringConstUtil = {
   dictChapterNameSet: new Set<string>([StringConst.dictChapterNameAdd, StringConst.dictChapterNameEdit, StringConst.dictChapterNameRemove]),
   dictChapterKnowledgeSet: new Set<string>([StringConst.dictChapterKnowledgeRelation, StringConst.dictChapterKnowledgeRelationRemove]),
   dictQuestionSet: new Set<string>([StringConst.dictQuestionsAdd, StringConst.dictQuestionsRemove]),
+  dictOtherSet: new Set<string>([StringConst.dictTextbookOtherAdd, StringConst.dictTextbookOtherRemove]),
 }

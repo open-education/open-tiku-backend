@@ -5,7 +5,8 @@ import Index from "~/dict/other/index";
 import type {Textbook} from "~/type/textbook";
 import {httpClient} from "~/util/http";
 import {ArrayUtil} from "~/util/object";
-import {DictSourceUtil} from "~/util/dict";
+import {DictSourceUtil, OtherDictUtil} from "~/util/dict";
+import {StringConst, StringConstUtil} from "~/util/string";
 
 // 路由加载时获取所有层级信息
 export async function clientLoader({params}: Route.ClientLoaderArgs) {
@@ -23,6 +24,34 @@ export async function clientAction({request}: Route.ClientActionArgs) {
   const formData = await request.formData();
 
   let source: string = DictSourceUtil.get_fetcher_source(formData);
+
+  if (StringConstUtil.dictOtherSet.has(source)) {
+    const req = OtherDictUtil.get_fetcher_form_data(formData);
+
+    if (StringConst.dictTextbookOtherAdd === source) {
+      try {
+        const res = await OtherDictUtil.add(req);
+        if (res && res.id > 0) {
+          return {error: "", result: true}
+        }
+        return {error: "其它类型字典添加失败", result: false}
+      } catch (err) {
+        return {error: httpClient.getErrorMessage(err), result: false}
+      }
+    } else {
+      try {
+        const res = await OtherDictUtil.remove(req);
+        if (res) {
+          return {error: "", result: true}
+        }
+        return {error: "其它类型字典删除失败", result: false}
+      } catch (err) {
+        return {error: httpClient.getErrorMessage(err), result: false}
+      }
+    }
+  } else {
+    return {error: "未知行为", result: false}
+  }
 }
 
 // HydrateFallback is rendered while the client loader is running
