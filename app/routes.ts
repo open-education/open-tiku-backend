@@ -6,6 +6,7 @@ export default [
     route("dict", "routes/dict/index.tsx", [
       route("textbook", "routes/dict/textbook/index.tsx"),
       route("chapter", "routes/dict/chapter/index.tsx"),
+      route("other", "routes/dict/other/index.tsx"),
     ]),
     route("user", "routes/user/index.tsx", [
       route("account", "routes/user/account.tsx"),

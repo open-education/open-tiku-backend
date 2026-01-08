@@ -48,6 +48,10 @@ export default function Index(props: any) {
       key: "chapter",
       label: <NavLink to={"chapter"}>章节知识点题型配置</NavLink>,
     },
+    {
+      key: "other",
+      label: <NavLink to={"other"}>其它元数据配置</NavLink>,
+    },
   ];
 
   const showLeftOrTopMenu = () => {
