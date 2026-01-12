@@ -3,7 +3,7 @@
 set -e
 
 # 配置
-PROJECT_NAME="open-tiku"
+PROJECT_NAME="open-tiku-backend"
 BUILD_DIR="build"
 TARGET_DIR="target"
 PACKAGE_NAME="${TARGET_DIR}/${PROJECT_NAME}.tgz"

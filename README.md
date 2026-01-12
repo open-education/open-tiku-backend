@@ -43,7 +43,7 @@ server {
     }
 }
 ```
-注意以下4点, 如果自己的配置不一样请对应调整
+注意以下5点, 如果自己的配置不一样请对应调整
 
 #### 1. `proxy_pass http://127.0.0.1:5174;` 
 
@@ -68,3 +68,14 @@ export default {
 ```
 
 #### 4. 前端访问 `http://127.0.0.1/backend/`
+
+#### 5. [server.js](server.js) 文件中类似下面的访问
+
+```
+  // 静态文件 - 长缓存
+app.use('/backend/assets', express.static('./build/client/assets', {
+    maxAge: '1y', immutable: true,
+}));
+```
+
+通常线上才有该配置, 也需要一起调整
