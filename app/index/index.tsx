@@ -12,8 +12,8 @@ const {Header} = Layout;
 // 后台菜单直接手动配置即可
 const items: MenuProps["items"] = [
   {
-    key: "textbook",
-    label: <NavLink to={"/textbook"}>题目</NavLink>,
+    key: "question",
+    label: <NavLink to={"/question"}>题目</NavLink>,
   },
   {
     key: "dict",

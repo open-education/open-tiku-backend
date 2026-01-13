@@ -117,3 +117,13 @@ export interface TextbookOtherDictResp {
   itemValue: string;
   sortOrder: number;
 }
+
+// 教材章节其它字典
+export interface TextbookOtherDict {
+  id: number;
+  textbookId: number;
+  typeCode: string;
+  itemValue: string;
+  sortOrder: number;
+}
+

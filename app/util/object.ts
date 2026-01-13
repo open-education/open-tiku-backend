@@ -39,4 +39,15 @@ export const ArrayUtil = {
     // 4. 没找到返回 null
     return null;
   },
+
+  // 数组转为字典
+  arrayToDict<T, K extends keyof T>(
+    array: T[],
+    key: K
+  ): Record<T[K] extends PropertyKey ? T[K] : never, T> {
+    return array.reduce((acc, item) => {
+      acc[item[key] as any] = item;
+      return acc;
+    }, {} as any);
+  }
 };

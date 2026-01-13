@@ -2,7 +2,7 @@ import {route, type RouteConfig} from "@react-router/dev/routes";
 
 export default [
   route("/", "routes/index/index.tsx", [
-    route("textbook", "routes/textbook/index.tsx"),
+    route("question", "routes/question/index.tsx"),
     route("dict", "routes/dict/index.tsx", [
       route("textbook", "routes/dict/textbook/index.tsx"),
       route("chapter", "routes/dict/chapter/index.tsx"),
