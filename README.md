@@ -43,6 +43,37 @@ server {
     }
 }
 ```
+
+Mac 环境可能 nginx 时间不一致导致资源过期, 如果遇到可尝试在每个配置下增加如下配置 `autoindex_localtime on` :
+
+错误类似
+
+```
+Summary
+    URL: http://127.0.0.1/backend/node_modules/.vite/deps/react-router.js?v=63655cd9
+    Status: 504 Outdated Optimize Dep
+    Source: Network
+    Initiator: 
+    backend:489
+```
+
+```
+# API 代理到后端服务
+location /api/ {
+    # 代理到后端服务器
+    autoindex_localtime on;
+    proxy_pass http://localhost:8081/;
+}
+```
+
+或者开发时需要运行 
+
+```
+npm run dev -- --force
+```
+
+vite 这个垃圾玩意, 又想自动刷新又搞不定，还不如剩下资源自己手动刷新
+
 注意以下5点, 如果自己的配置不一样请对应调整
 
 #### 1. `proxy_pass http://127.0.0.1:5174;` 
