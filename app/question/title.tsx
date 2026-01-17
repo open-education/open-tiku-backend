@@ -35,8 +35,8 @@ export function CommonTitle(questionInfo: QuestionBaseInfoResp) {
       <Flex gap="small" wrap>
         {questionInfo.images?.map(imageName => {
           return (
-            <div className="w-125" key={imageName}>
-              <Image alt="basic" src={`/api/file/read/${imageName}`}/>
+            <div key={imageName}>
+              <Image height={200} alt="basic" src={`/api/file/read/${imageName}`}/>
             </div>
           );
         })}

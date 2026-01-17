@@ -260,16 +260,27 @@ export default function Index(props: any) {
         questionListResp.list?.map(questionInfo => {
           return <div key={questionInfo.id}>
             <div
-              className="pt-4 pl-4 pr-4 pb-1 hover:border border-blue-950 border-dashed"
+              className="group relative p-4 pb-4 hover:pb-12 border border-transparent hover:border-blue-500 transition-all duration-300 ease-in-out bg-white overflow-hidden"
             >
               {/* 标签 */}
               {CommonTag(questionInfo, questionTypeList, questionTagList)}
+
               {/* 标题 */}
-              {CommonTitle(questionInfo)}
+              <div className="mt-2.5">
+                {CommonTitle(questionInfo)}
+              </div>
+
               {/* 选项内容 */}
-              {CommonSelect(questionInfo)}
+              <div className="mt-2.5">
+                {CommonSelect(questionInfo)}
+              </div>
+
               {/* 审核信息 */}
-              {Approve(questionInfo, questionTypeList, questionTagList, setOpenDrawer, setDrawerContent, setIsModalOpen, setApproveVal, setModalSelectId)}
+              <div
+                className="absolute bottom-3 right-4 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 flex gap-2"
+              >
+                {Approve(questionInfo, questionTypeList, questionTagList, setOpenDrawer, setDrawerContent, setIsModalOpen, setApproveVal, setModalSelectId)}
+              </div>
             </div>
 
             <Divider size="small"/>
