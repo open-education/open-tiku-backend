@@ -99,6 +99,7 @@ export interface TextbookOtherDictFetcherReq {
   typeCode: string;
   label: string;
   sortOrder: number;
+  isSelect: boolean;
 }
 
 // 教材其它字典创建请求
@@ -107,6 +108,7 @@ export interface CreateTextbookOtherDictReq {
   typeCode: string;
   itemValue: string;
   sortOrder: number;
+  isSelect: boolean;
 }
 
 // 教材其它字典返回
@@ -116,6 +118,7 @@ export interface TextbookOtherDictResp {
   typeCode: string;
   itemValue: string;
   sortOrder: number;
+  isSelect: boolean;
 }
 
 // 教材章节其它字典

@@ -138,6 +138,7 @@ export const OtherDictUtil = {
       typeCode: formData.get("typeCode")?.toString() ?? "",
       label: formData.get("label")?.toString() ?? "",
       sortOrder: Number(formData.get("sortOrder")?.toString() ?? 0),
+      isSelect: Boolean(formData.get("isSelect")?.toString() === "true"),
     };
   },
 
@@ -147,6 +148,7 @@ export const OtherDictUtil = {
       sortOrder: req.sortOrder,
       textbookId: req.textbookId,
       typeCode: req.typeCode,
+      isSelect: req.isSelect,
     }
     return httpClient.post<TextbookOtherDictResp>("/other/dict/add", addReq);
   },

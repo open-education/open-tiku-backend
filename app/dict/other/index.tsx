@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from "react";
-import type {Textbook, TextbookOption, TextbookOtherDictResp} from "~/type/textbook";
+import React, { useCallback, useEffect, useState } from "react";
+import type { Textbook, TextbookOption, TextbookOtherDictResp } from "~/type/textbook";
 import {
   Alert,
   Button,
@@ -11,13 +11,16 @@ import {
   Input,
   InputNumber,
   type InputNumberProps,
+  Radio,
+  type RadioChangeEvent,
   Row,
   Select,
   Splitter
 } from "antd";
-import {useFetcher} from "react-router";
-import {StringConst, StringValidator} from "~/util/string";
-import {httpClient} from "~/util/http";
+import { useFetcher } from "react-router";
+import { StringConst, StringValidator } from "~/util/string";
+import { httpClient } from "~/util/http";
+import type { CheckboxGroupProps } from 'antd/es/checkbox';
 
 // 其它类型字典配置
 export default function Index(props: any) {
@@ -30,10 +33,24 @@ export default function Index(props: any) {
   const [tagValueIsEmpty, setTagValueIsEmpty] = useState<boolean>(false);
   const onTagValueChange = (value: string) => {
     setTagValue(value);
+    setSelectQuestionType(StringConst.dictTextbookOtherType === value);
+  };
+
+  // 选择题样式
+  const isSelectOptions: CheckboxGroupProps<string>['options'] = [
+    { label: '是', value: '1' },
+    { label: '否', value: '0' },
+  ];
+  // 是否选择题型
+  const [selectQuestionType, setSelectQuestionType] = useState<boolean>(false);
+  // 是否是选择题
+  const [isSelect, setIsSelect] = useState<string>('0');
+  const onIsSelectChange = ({ target: { value } }: RadioChangeEvent) => {
+    setIsSelect(value);
   };
 
   // 菜单变化处理
-  const optionInit: Textbook = {children: [], id: 0, key: "", label: "", parentId: 0, pathDepth: 0, sortOrder: 0};
+  const optionInit: Textbook = { children: [], id: 0, key: "", label: "", parentId: 0, pathDepth: 0, sortOrder: 0 };
   const [nodeOption, setNodeOption] = useState<Textbook>(optionInit);
   const [nodeOptionIsEmpty, setNodeOptionIsEmpty] = useState<boolean>(false);
   const onParentLevelChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
@@ -93,7 +110,8 @@ export default function Index(props: any) {
       typeCode: tagValue,
       label,
       sortOrder,
-    }, {method: "post"}).then(res => {
+      isSelect: selectQuestionType ? Number(isSelect) === 1 : false,
+    }, { method: "post" }).then(res => {
     }).catch(err => {
       console.log(err);
     });
@@ -108,7 +126,7 @@ export default function Index(props: any) {
     fetcher.submit({
       source: StringConst.dictTextbookOtherRemove,
       id,
-    }, {method: "post"}).then(res => {
+    }, { method: "post" }).then(res => {
     }).catch(err => {
       console.log(err);
     });
@@ -127,17 +145,17 @@ export default function Index(props: any) {
     httpClient.get<TextbookOtherDictResp[]>(`/other/dict/list/${nodeOption.id}/${tagValue}`).then((res) => {
       setOtherDictItems(res);
     }).catch(err => {
-      setOtherDictError(<Alert title={`请求错误: ${err}`} type={"error"}/>);
+      setOtherDictError(<Alert title={`请求错误: ${err}`} type={"error"} />);
     });
   }, [tagValue, nodeOption, fetcher.data]);
 
-  return <Splitter vertical style={{height: 500, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'}}>
+  return <Splitter vertical style={{ height: 500, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
     {/* 操作区域 */}
     <Splitter.Panel
       defaultSize="50%"
       resizable={false}
     >
-      <Splitter style={{minHeight: 100, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'}}>
+      <Splitter style={{ minHeight: 100, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
         {/* 搜索区域 */}
         <Splitter.Panel
           defaultSize="50%"
@@ -146,32 +164,32 @@ export default function Index(props: any) {
           <div className="p-3">
             <Form
               layout="horizontal"
-              labelCol={{span: 3}}
-              wrapperCol={{span: 16}}
+              labelCol={{ span: 3 }}
+              wrapperCol={{ span: 16 }}
             >
               <Form.Item label="选择字典类型: ">
                 <Select
                   value={tagValue}
-                  style={{width: 120}}
+                  style={{ width: 120 }}
                   onChange={onTagValueChange}
                   options={[
-                    {value: 'question_type', label: '题型'},
-                    {value: 'question_tag', label: '标签'},
+                    { value: StringConst.dictTextbookOtherType, label: '题型' },
+                    { value: StringConst.dictTextbookOtherTag, label: '标签' },
                   ]}
                 />
-                {tagValueIsEmpty && <Alert title="字典类型为空" type={"error"}/>}
+                {tagValueIsEmpty && <Alert title="字典类型为空" type={"error"} />}
               </Form.Item>
 
               <Form.Item label="选择学段: ">
                 <Cascader
-                  style={{width: "50%"}}
+                  style={{ width: "50%" }}
                   changeOnSelect={true}
                   options={textbookOptions}
                   onChange={onParentLevelChange}
                   placeholder="请选择学段"
                 />
               </Form.Item>
-              {nodeOptionIsEmpty && <Alert title="学段为空" type={"error"}/>}
+              {nodeOptionIsEmpty && <Alert title="学段为空" type={"error"} />}
             </Form>
           </div>
         </Splitter.Panel>
@@ -184,12 +202,12 @@ export default function Index(props: any) {
           <div className="p-3">
             <Form
               layout="horizontal"
-              labelCol={{span: 3}}
-              wrapperCol={{span: 16}}
+              labelCol={{ span: 3 }}
+              wrapperCol={{ span: 16 }}
             >
               <Form.Item label="字典名称: ">
-                <Input value={label} onChange={onLabelChange} placeholder="请输入名称"/>
-                {labelIsEmpty && <Alert title="字典名称为空" type={"error"}/>}
+                <Input value={label} onChange={onLabelChange} placeholder="请输入名称" />
+                {labelIsEmpty && <Alert title="字典名称为空" type={"error"} />}
               </Form.Item>
               <Form.Item label="排序编号: ">
                 <InputNumber
@@ -202,8 +220,20 @@ export default function Index(props: any) {
                   placeholder="请输入排序编号, 数字"
                   onChange={onSortOrderChange}
                 />
-                {sortOrderIsEmpty && <Alert title="排序字段为空" type={"error"}/>}
+                {sortOrderIsEmpty && <Alert title="排序字段为空" type={"error"} />}
               </Form.Item>
+              {
+                selectQuestionType &&
+                <Form.Item label="是选择题">
+                  <Radio.Group
+                    options={isSelectOptions}
+                    onChange={onIsSelectChange}
+                    value={isSelect}
+                    optionType="button"
+                    buttonStyle="solid"
+                  />
+                </Form.Item>
+              }
               <Form.Item>
                 <Button
                   color="primary"
@@ -247,7 +277,7 @@ export default function Index(props: any) {
           })
         }
 
-        {fetcher.data?.error && <Alert title={fetcher.data.error} type={"error"}/>}
+        {fetcher.data?.error && <Alert title={fetcher.data.error} type={"error"} />}
 
         {otherDictError}
       </div>

@@ -1,9 +1,10 @@
 // 题目列表展示标签样式 题目类型在前 标签依次在后
-import type {QuestionBaseInfoResp} from "~/type/question";
-import type {TextbookOtherDict} from "~/type/textbook";
-import {ArrayUtil} from "~/util/object";
-import {Col, Flex, Row, Tag} from "antd";
-import {getStatusLabel, type Label} from "~/util/approve";
+import type { QuestionBaseInfoResp } from "~/type/question";
+import type { TextbookOtherDict } from "~/type/textbook";
+import { ArrayUtil } from "~/util/object";
+import { Col, Flex, Row, Tag } from "antd";
+import { getStatusLabel, type Label } from "~/util/approve";
+import { StarFilled } from "@ant-design/icons";
 
 export function CommonTag(
   questionInfo: QuestionBaseInfoResp,
@@ -25,12 +26,13 @@ export function CommonTag(
     <Col span={24}>
       <Flex gap="small" wrap>
         <Tag color="geekblue"
-             key={questionInfo.questionTypeId}>{questionTypeDict[questionInfo.questionTypeId].itemValue}</Tag>
+          key={questionInfo.questionTypeId}>{questionTypeDict[questionInfo.questionTypeId].itemValue}</Tag>
         {
           questionInfo.questionTagIds?.map(tagKey => {
             return <Tag color="green" key={tagKey}>{tagsDict[tagKey].itemValue}</Tag>
           })
         }
+        <Tag color="red">{questionInfo.difficultyLevel} <StarFilled style={{ color: "green" }} /></Tag>
         {getApproveTag(questionInfo.status)}
       </Flex>
     </Col>

@@ -67,6 +67,8 @@ export const StringConst = {
   dictQuestionsRemove: "dictQuestionsRemove", // 编辑题型
   dictTextbookOtherAdd: "dictTextbookOtherAdd", // 教材其它字典添加
   dictTextbookOtherRemove: "dictTextbookOtherRemove", // 教材其它字典删除
+  dictTextbookOtherType: "question_type", // 题型类型
+  dictTextbookOtherTag: "question_tag", // 题型标签
 }
 
 // 常量整合工具
