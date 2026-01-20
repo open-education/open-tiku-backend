@@ -9,12 +9,12 @@ import {
   type InputNumberProps,
   Typography,
 } from "antd";
-import React, {useCallback, useEffect, useState} from "react";
-import {StringConst, StringValidator} from "~/util/string";
-import {useFetcher} from "react-router";
-import type {Textbook, TextbookOption} from "~/type/textbook";
-import {httpClient} from "~/util/http";
-import {ArrayUtil} from "~/util/object";
+import React, { useCallback, useEffect, useState } from "react";
+import { StringConst, StringValidator } from "~/util/string";
+import { useFetcher } from "react-router";
+import type { Textbook, TextbookOption } from "~/type/textbook";
+import { httpClient } from "~/util/http";
+import { ArrayUtil } from "~/util/object";
 
 // 菜单信息维护
 export default function Add(props: any) {
@@ -26,18 +26,30 @@ export default function Add(props: any) {
 
   // 详情标识
   const id: number = props.id ?? 0;
-  const [item, setItem] = useState<Textbook>({id: 0, key: "", label: "", parentId: 0, pathDepth: 0, sortOrder: 0});
+  const [item, setItem] = useState<Textbook>({
+    id: 0,
+    key: "",
+    label: "",
+    parentId: 0,
+    pathDepth: 0,
+    sortOrder: 0,
+  });
 
   // 需要默认值信息
   const pathNodes = ArrayUtil.findPath(textbookOptions, id.toString());
   // 去掉最后一层, 该层为当前自己
-  const _values = pathNodes ? pathNodes.slice(0, -1).map(node => node.label) : [];
+  const _values = pathNodes
+    ? pathNodes.slice(0, -1).map((node) => node.label)
+    : [];
   const [selectValues, _] = useState<string[]>(_values);
 
   // 这个地方需要注意处理, 如果是编辑可以不选择这部分, 此时这部分是没有实际值的, 默认的空是合法的, action 需要特殊处理
   // 如果存在有效值则该值才是目标值
-  const onParentLevelChange: CascaderProps<TextbookOption>['onChange'] = (_, selectedOptions) => {
-    const option = selectedOptions[selectedOptions.length - 1].raw
+  const onParentLevelChange: CascaderProps<TextbookOption>["onChange"] = (
+    _,
+    selectedOptions,
+  ) => {
+    const option = selectedOptions[selectedOptions.length - 1].raw;
     setParentId(option.id);
     setPathDepth(option.pathDepth + 1);
   };
@@ -48,7 +60,7 @@ export default function Add(props: any) {
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setLabel(e.target.value);
     },
-    []
+    [],
   );
   // 名称不能为空
   const [labelIsEmpty, setLabelIsEmpty] = useState<boolean>(false);
@@ -67,7 +79,7 @@ export default function Add(props: any) {
   useEffect(() => {
     // 因为没有对应的路由需要在组件中获取最新的详情
     if (id > 0) {
-      httpClient.get<Textbook>(`/textbook/info/${id}`).then(res => {
+      httpClient.get<Textbook>(`/textbook/info/${id}`).then((res) => {
         setItem(res);
         // 触发 ui 渲染最新的默认值
         setLabel(res.label);
@@ -93,19 +105,24 @@ export default function Add(props: any) {
     // 其它都是可选项
 
     // 提交到路由对应的 action 去处理
-    fetcher.submit({
-      source: StringConst.dictTextbookEdit, // 标记是教材字典编辑来源
-      id: item.id,
-      label,
-      sortOrder,
-      parentId, // 这两个字段需要使用最新的目标值
-      pathDepth
-    }, {method: "post"}).then(r => {
-    });
+    fetcher
+      .submit(
+        {
+          source: StringConst.dictTextbookEdit, // 标记是教材字典编辑来源
+          id: item.id,
+          label,
+          sortOrder,
+          parentId, // 这两个字段需要使用最新的目标值
+          pathDepth,
+        },
+        { method: "post" },
+      )
+      .then((r) => {});
   };
 
   // 关闭抽屉
-  const setOpenDrawer: React.Dispatch<React.SetStateAction<boolean>> = props.setOpenDrawer;
+  const setOpenDrawer: React.Dispatch<React.SetStateAction<boolean>> =
+    props.setOpenDrawer;
   useEffect(() => {
     if (fetcher.data?.result === true) {
       setOpenDrawer(false);
@@ -121,21 +138,19 @@ export default function Add(props: any) {
       </div>
 
       {/* 提交错误展示错误信息 */}
-      {fetcher.data?.error && (
-        <Alert title={fetcher.data.error} type="error"/>
-      )}
+      {fetcher.data?.error && <Alert title={fetcher.data.error} type="error" />}
 
       <div>
         <Typography.Title level={5}>父级菜单</Typography.Title>
         <Cascader
-          style={{width: "30%"}}
+          style={{ width: "30%" }}
           defaultValue={selectValues}
           changeOnSelect={true}
           options={textbookOptions}
           onChange={onParentLevelChange}
           placeholder="请选择父级菜单"
         />
-        {maxDepthLimit && <Alert title="菜单深度不能超过第5级" type="error"/>}
+        {maxDepthLimit && <Alert title="菜单深度不能超过第5级" type="error" />}
         <Typography.Text type="secondary" italic={true}>
           选择当前栏目对应的父级菜单, 不选择任何父级菜单则是顶级菜单
         </Typography.Text>
@@ -150,14 +165,16 @@ export default function Add(props: any) {
           placeholder="请输入菜单名称简称"
           onChange={onLabelChange}
         />
-        {labelIsEmpty && <Alert title="菜单名称简称不能为空" type="error"/>}
+        {labelIsEmpty && <Alert title="菜单名称简称不能为空" type="error" />}
         <Typography.Text type="secondary" italic={true}>
           比如 科目菜单 语文, 数学; 出版社菜单为 人教版, 湘教版等; 其它类似...
         </Typography.Text>
       </div>
 
       <div>
-        <Typography.Title level={5}>排序编号(数字) - 关注顺序要填</Typography.Title>
+        <Typography.Title level={5}>
+          排序编号(数字) - 关注顺序要填
+        </Typography.Title>
         <InputNumber
           value={sortOrder}
           type={"number"}

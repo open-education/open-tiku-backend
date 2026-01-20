@@ -9,32 +9,38 @@ import { StarFilled } from "@ant-design/icons";
 export function CommonTag(
   questionInfo: QuestionBaseInfoResp,
   questionTypeList: TextbookOtherDict[],
-  questionTagList: TextbookOtherDict[]
+  questionTagList: TextbookOtherDict[],
 ) {
-  const questionTypeDict = ArrayUtil.arrayToDict(questionTypeList, 'id');
-  const tagsDict = ArrayUtil.arrayToDict(questionTagList, 'id');
+  const questionTypeDict = ArrayUtil.arrayToDict(questionTypeList, "id");
+  const tagsDict = ArrayUtil.arrayToDict(questionTagList, "id");
 
   // 审核状态标签
   const getApproveTag = (status: number) => {
     const label: Label = getStatusLabel(status);
-    return <Tag color={label.color}>
-      {label.text}
-    </Tag>
-  }
+    return <Tag color={label.color}>{label.text}</Tag>;
+  };
 
-  return <Row gutter={[10, 10]}>
-    <Col span={24}>
-      <Flex gap="small" wrap>
-        <Tag color="geekblue"
-          key={questionInfo.questionTypeId}>{questionTypeDict[questionInfo.questionTypeId].itemValue}</Tag>
-        {
-          questionInfo.questionTagIds?.map(tagKey => {
-            return <Tag color="green" key={tagKey}>{tagsDict[tagKey].itemValue}</Tag>
-          })
-        }
-        <Tag color="red">{questionInfo.difficultyLevel} <StarFilled style={{ color: "green" }} /></Tag>
-        {getApproveTag(questionInfo.status)}
-      </Flex>
-    </Col>
-  </Row>
+  return (
+    <Row gutter={[10, 10]}>
+      <Col span={24}>
+        <Flex gap="small" wrap>
+          <Tag color="geekblue" key={questionInfo.questionTypeId}>
+            {questionTypeDict[questionInfo.questionTypeId].itemValue}
+          </Tag>
+          {questionInfo.questionTagIds?.map((tagKey) => {
+            return (
+              <Tag color="green" key={tagKey}>
+                {tagsDict[tagKey].itemValue}
+              </Tag>
+            );
+          })}
+          <Tag color="red">
+            {questionInfo.difficultyLevel}{" "}
+            <StarFilled style={{ color: "green" }} />
+          </Tag>
+          {getApproveTag(questionInfo.status)}
+        </Flex>
+      </Col>
+    </Row>
+  );
 }

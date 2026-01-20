@@ -1,9 +1,9 @@
-import React, {useState} from "react";
-import {Layout, Menu, type MenuProps} from "antd";
-import {NavLink, Outlet} from "react-router";
+import React, { useState } from "react";
+import { Layout, Menu, type MenuProps } from "antd";
+import { NavLink, Outlet } from "react-router";
 import User from "~/index/user";
 
-const {Header} = Layout;
+const { Header } = Layout;
 
 ///
 /// 后台入口
@@ -53,11 +53,11 @@ export default function Index(props: any) {
           onClick={onMenuClick}
           mode="horizontal"
           items={items}
-          style={{flex: 1, minWidth: 0}}
+          style={{ flex: 1, minWidth: 0 }}
         />
-        <User/>
+        <User />
       </Header>
-      <Outlet/>
+      <Outlet />
     </Layout>
   );
 }

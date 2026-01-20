@@ -1,18 +1,22 @@
 import { Avatar, Badge, Dropdown, Space, type MenuProps } from "antd";
 import { NavLink } from "react-router";
-import {LogoutOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons";
+import {
+  LogoutOutlined,
+  SettingOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
 // 用户菜单配置即可
 const items: MenuProps["items"] = [
   {
     key: "my_account",
     label: <NavLink to={"user/account"}>我的信息</NavLink>,
-    icon: <UserOutlined />
+    icon: <UserOutlined />,
   },
   {
     key: "setting",
     label: <NavLink to={"user/setting"}>账户设置</NavLink>,
-    icon: <SettingOutlined />
+    icon: <SettingOutlined />,
   },
   {
     type: "divider",
@@ -20,7 +24,7 @@ const items: MenuProps["items"] = [
   {
     key: "logout",
     label: <NavLink to={"user/logout"}>退出系统</NavLink>,
-    icon: <LogoutOutlined />
+    icon: <LogoutOutlined />,
   },
 ];
 
