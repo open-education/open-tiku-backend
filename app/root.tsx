@@ -12,6 +12,16 @@ import "./app.css";
 import React from "react";
 
 export const links: Route.LinksFunction = () => [
+  {
+    rel: "icon",
+    href: "/backend/favicon.ico", // 必须带上前缀
+    type: "image/x-icon",
+  },
+  // 建议同时加上这个，增加兼容性
+  {
+    rel: "shortcut icon",
+    href: "/backend/favicon.ico",
+  },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
