@@ -1,10 +1,6 @@
 import { Avatar, Badge, Dropdown, Space, type MenuProps } from "antd";
 import { NavLink } from "react-router";
-import {
-  LogoutOutlined,
-  SettingOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { LogoutOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
 
 // 用户菜单配置即可
 const items: MenuProps["items"] = [
@@ -34,10 +30,7 @@ export default function User() {
     <Dropdown menu={{ items }}>
       <Space>
         <Badge count={100}>
-          <Avatar
-            shape="square"
-            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-          />
+          <Avatar shape="square" src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" />
         </Badge>
       </Space>
     </Dropdown>

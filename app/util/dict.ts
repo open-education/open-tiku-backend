@@ -12,18 +12,17 @@ import type {
   TextbookFetcherReq,
   TextbookOtherDictFetcherReq,
   TextbookOtherDictResp,
-  UpdateTextbookReq
+  UpdateTextbookReq,
 } from "~/type/textbook";
-import {httpClient} from "~/util/http";
+import { httpClient } from "~/util/http";
 
 // 字典相关来源获取
 export const DictSourceUtil = {
-
   // 获取 fetcher 提交中的来源
   get_fetcher_source: (formData: FormData): string => {
     return formData.get("source")?.toString() ?? "";
-  }
-}
+  },
+};
 
 // 字典相关公共函数
 export const TextbookReqUtil = {
@@ -68,8 +67,8 @@ export const TextbookReqUtil = {
   // 删除菜单
   delete: async (req: TextbookFetcherReq): Promise<boolean> => {
     return httpClient.get<boolean>(`/textbook/delete/${req.reqId}`);
-  }
-}
+  },
+};
 
 // 章节和知识点关联工具
 export const ChapterAndKnowledgeUtil = {
@@ -94,11 +93,11 @@ export const ChapterAndKnowledgeUtil = {
   // 取消关联
   delete: async (req: ChapterAndKnowledgeFetcherReq): Promise<boolean> => {
     const delReq: DeleteChapterAndKnowledgeReq = {
-      id: req.reqId
+      id: req.reqId,
     };
     return httpClient.post<boolean>("/chapter-knowledge/remove", delReq);
   },
-}
+};
 
 // 题型工具
 export const QuestionCateUtil = {
@@ -126,7 +125,7 @@ export const QuestionCateUtil = {
   delete: async (req: QuestionCateFetcherReq): Promise<boolean> => {
     return httpClient.get<boolean>(`/question-cate/remove/${req.reqId}`);
   },
-}
+};
 
 // 教材其它字典
 export const OtherDictUtil = {
@@ -149,11 +148,11 @@ export const OtherDictUtil = {
       textbookId: req.textbookId,
       typeCode: req.typeCode,
       isSelect: req.isSelect,
-    }
+    };
     return httpClient.post<TextbookOtherDictResp>("/other/dict/add", addReq);
   },
 
   remove: async (req: TextbookOtherDictFetcherReq): Promise<boolean> => {
     return httpClient.get<boolean>(`/other/dict/remove/${req.reqId}`);
-  }
-}
+  },
+};

@@ -1,16 +1,4 @@
-import {
-  Alert,
-  Button,
-  Col,
-  Divider,
-  Drawer,
-  Empty,
-  Flex,
-  Row,
-  Tree,
-  type TreeDataNode,
-  Typography,
-} from "antd";
+import { Alert, Button, Col, Divider, Drawer, Empty, Flex, Row, Tree, type TreeDataNode, Typography } from "antd";
 import React, { useState } from "react";
 import Add from "~/dict/textbook/add";
 import Edit from "~/dict/textbook/edit";
@@ -65,10 +53,7 @@ export default function Index(props: any) {
         </Row>
       ),
       // 递归逻辑：如果存在子节点，则再次调用自身
-      children:
-        item.children && item.children.length > 0
-          ? get_items(item.children)
-          : [],
+      children: item.children && item.children.length > 0 ? get_items(item.children) : [],
     }));
   };
 
@@ -77,11 +62,7 @@ export default function Index(props: any) {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [drawerTitle, setDrawerTitle] = useState<string>("");
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>("");
-  const drawerExtraInfo = (
-    <div className="text-xs text-blue-700">
-      提示: 鼠标触摸边框左右拖动可以调整到适合的宽度
-    </div>
-  );
+  const drawerExtraInfo = <div className="text-xs text-blue-700">提示: 鼠标触摸边框左右拖动可以调整到适合的宽度</div>;
   // 添加菜单
   const showAddDrawer = () => {
     setOpenDrawer(true);
@@ -138,8 +119,7 @@ export default function Index(props: any) {
     <div>
       <Typography.Title level={5}>菜单列表</Typography.Title>
       <Typography.Text type="secondary" italic={true}>
-        该栏目只展示5级菜单, 否则太深不便于展示也不便于操作,
-        菜单一般只需要建到教材列表即可, 比如 学科-学段-出版社-类型-教材列表, 即
+        该栏目只展示5级菜单, 否则太深不便于展示也不便于操作, 菜单一般只需要建到教材列表即可, 比如 学科-学段-出版社-类型-教材列表, 即
         数学-初中-湘教版-教材章节-七年级上册; 只有末级菜单可以删除;
       </Typography.Text>
 
@@ -157,12 +137,7 @@ export default function Index(props: any) {
       </div>
 
       {/* 菜单分割线 */}
-      <Divider
-        titlePlacement="start"
-        variant="dashed"
-        style={{ borderColor: "#7cb305" }}
-        dashed
-      />
+      <Divider titlePlacement="start" variant="dashed" style={{ borderColor: "#7cb305" }} dashed />
 
       {/* 展示错误信息 */}
       {catchError}

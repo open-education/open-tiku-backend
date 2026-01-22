@@ -12,10 +12,7 @@ export function CommonTitle(questionInfo: QuestionBaseInfoResp) {
     <Row gutter={[10, 10]}>
       <Col span={24}>
         {StringValidator.isNonEmpty(questionInfo.title) && (
-          <Markdown
-            remarkPlugins={[remarkMath, remarkGfm]}
-            rehypePlugins={[rehypeKatex]}
-          >
+          <Markdown remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeKatex]}>
             {questionInfo.title}
           </Markdown>
         )}
@@ -34,11 +31,7 @@ export function CommonTitle(questionInfo: QuestionBaseInfoResp) {
           {questionInfo.images?.map((imageName) => {
             return (
               <div key={imageName}>
-                <Image
-                  height={200}
-                  alt="basic"
-                  src={`/api/file/read/${imageName}`}
-                />
+                <Image height={200} alt="basic" src={`/api/file/read/${imageName}`} />
               </div>
             );
           })}

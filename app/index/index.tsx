@@ -47,14 +47,7 @@ export default function Index(props: any) {
         <div className="text-white mr-2.5 text-[16px]">
           <NavLink to="/">开放题库管理</NavLink>
         </div>
-        <Menu
-          theme="dark"
-          selectedKeys={[selectMenuKey]}
-          onClick={onMenuClick}
-          mode="horizontal"
-          items={items}
-          style={{ flex: 1, minWidth: 0 }}
-        />
+        <Menu theme="dark" selectedKeys={[selectMenuKey]} onClick={onMenuClick} mode="horizontal" items={items} style={{ flex: 1, minWidth: 0 }} />
         <User />
       </Header>
       <Outlet />

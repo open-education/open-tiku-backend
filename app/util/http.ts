@@ -1,4 +1,4 @@
-import type {ApiResponse} from "~/type/response";
+import type { ApiResponse } from "~/type/response";
 
 class HttpClient {
   private readonly baseURL: string;
@@ -17,11 +17,7 @@ class HttpClient {
     return this.handleResponse(response);
   }
 
-  async post<T = any>(
-    path: string,
-    data: any,
-    options?: RequestInit
-  ): Promise<T> {
+  async post<T = any>(path: string, data: any, options?: RequestInit): Promise<T> {
     const url = this.buildUrl(path);
     const reqBody = JSON.stringify(data);
     console.log("post: ", url, reqBody);
@@ -45,9 +41,7 @@ class HttpClient {
   private async handleResponse<T = any>(response: Response): Promise<T> {
     if (!response.ok) {
       console.error(`HTTP error: ${response.status}, body: ${response.body}`);
-      throw new Error(
-        `HTTP error! status: ${response.status}, : ${response.body}`
-      );
+      throw new Error(`HTTP error! status: ${response.status}, : ${response.body}`);
     }
     const apiResponse = (await response.json()) as ApiResponse<T>;
     if (apiResponse.code !== 200) {

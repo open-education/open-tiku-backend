@@ -13,8 +13,7 @@ export default function Index(props: any) {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const [leftMenuItemSelectKey, setLeftMenuItemSelectKey] =
-    React.useState<string>("");
+  const [leftMenuItemSelectKey, setLeftMenuItemSelectKey] = React.useState<string>("");
   const onLeftMenuClick: MenuProps["onClick"] = (e) => {
     setLeftMenuItemSelectKey(e.key);
   };

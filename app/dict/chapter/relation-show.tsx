@@ -1,12 +1,4 @@
-import {
-  Alert,
-  Button,
-  Cascader,
-  type CascaderProps,
-  Col,
-  Row,
-  Splitter,
-} from "antd";
+import { Alert, Button, Cascader, type CascaderProps, Col, Row, Splitter } from "antd";
 import React, { useEffect } from "react";
 import type { Textbook, TextbookOption } from "~/type/textbook";
 import { ArrayUtil } from "~/util/object";
@@ -31,74 +23,57 @@ export default function RelationShow(props: any) {
   };
 
   // 章节节点小类
-  const [selectChapterOptions, setSelectChapterOptions] = React.useState<
-    TextbookOption[]
-  >([]);
-  const [chapterOption, setChapterOption] =
-    React.useState<Textbook>(optionInit);
-  const [knowledgeLabelList, setKnowledgeLabelList] = React.useState<
-    Textbook[]
-  >([]);
-  const onSelectChapterOptionChange: CascaderProps<TextbookOption>["onChange"] =
-    (_, selectedOptions) => {
-      if (selectedOptions === undefined) {
-        setChapterOption(optionInit);
-        setKnowledgeLabelList([]);
-        return;
-      }
+  const [selectChapterOptions, setSelectChapterOptions] = React.useState<TextbookOption[]>([]);
+  const [chapterOption, setChapterOption] = React.useState<Textbook>(optionInit);
+  const [knowledgeLabelList, setKnowledgeLabelList] = React.useState<Textbook[]>([]);
+  const onSelectChapterOptionChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
+    if (selectedOptions === undefined) {
+      setChapterOption(optionInit);
+      setKnowledgeLabelList([]);
+      return;
+    }
 
-      const info = selectedOptions[selectedOptions.length - 1].raw;
-      setChapterOption(info);
+    const info = selectedOptions[selectedOptions.length - 1].raw;
+    setChapterOption(info);
 
-      httpClient
-        .post<Textbook[]>("/chapter-knowledge/knowledge", { ids: [info.id] })
-        .then((res) => {
-          setKnowledgeLabelList(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+    httpClient
+      .post<Textbook[]>("/chapter-knowledge/knowledge", { ids: [info.id] })
+      .then((res) => {
+        setKnowledgeLabelList(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // 知识点小类
-  const [selectKnowledgeOptions, setSelectKnowledgeOptions] = React.useState<
-    TextbookOption[]
-  >([]);
-  const [knowledgeOption, setKnowledgeOption] =
-    React.useState<Textbook>(optionInit);
-  const [chapterLabelList, setChapterLabelList] = React.useState<Textbook[]>(
-    [],
-  );
-  const onSelectKnowledgeOptionChange: CascaderProps<TextbookOption>["onChange"] =
-    (_, selectedOptions) => {
-      if (selectedOptions === undefined) {
-        setKnowledgeOption(optionInit);
-        setKnowledgeLabelList([]);
-        return;
-      }
+  const [selectKnowledgeOptions, setSelectKnowledgeOptions] = React.useState<TextbookOption[]>([]);
+  const [knowledgeOption, setKnowledgeOption] = React.useState<Textbook>(optionInit);
+  const [chapterLabelList, setChapterLabelList] = React.useState<Textbook[]>([]);
+  const onSelectKnowledgeOptionChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
+    if (selectedOptions === undefined) {
+      setKnowledgeOption(optionInit);
+      setKnowledgeLabelList([]);
+      return;
+    }
 
-      const info = selectedOptions[selectedOptions.length - 1].raw;
-      setKnowledgeOption(info);
+    const info = selectedOptions[selectedOptions.length - 1].raw;
+    setKnowledgeOption(info);
 
-      httpClient
-        .post<Textbook[]>("/chapter-knowledge/chapter", { ids: [info.id] })
-        .then((res) => {
-          setChapterLabelList(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+    httpClient
+      .post<Textbook[]>("/chapter-knowledge/chapter", { ids: [info.id] })
+      .then((res) => {
+        setChapterLabelList(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // 通过章节或者知识点解除关联, 解除关联后要实时刷新, 也是通过父级标识
   const [chapterIsSelect, setChapterIsSelect] = React.useState<boolean>(false);
-  const [knowledgeIsSelect, setKnowledgeIsSelect] =
-    React.useState<boolean>(false);
-  const onRemoveKnowledgeOptionChange = (
-    id: number,
-    reqType: string,
-    parentId: number,
-  ) => {
+  const [knowledgeIsSelect, setKnowledgeIsSelect] = React.useState<boolean>(false);
+  const onRemoveKnowledgeOptionChange = (id: number, reqType: string, parentId: number) => {
     if (confirm("确认解除关联?")) {
       setChapterIsSelect(reqType === "chapter");
       setKnowledgeIsSelect(reqType === "knowledge");
@@ -126,8 +101,7 @@ export default function RelationShow(props: any) {
       httpClient
         .get<Textbook[]>("/textbook/list/7/all")
         .then((res) => {
-          const textbookOptions: TextbookOption[] =
-            ArrayUtil.mapTextbookToOption(res);
+          const textbookOptions: TextbookOption[] = ArrayUtil.mapTextbookToOption(res);
           // 初始化两天都维护同样的内容即可, 因为后续选择可能会单独改变, 如果不变列表数据用同一份即可
           setSelectChapterOptions(textbookOptions);
           setSelectKnowledgeOptions(textbookOptions);
@@ -177,17 +151,13 @@ export default function RelationShow(props: any) {
 
   return (
     <div className="mt-4">
-      <Splitter
-        style={{ minHeight: 100, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}
-      >
+      <Splitter style={{ minHeight: 100, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}>
         <Splitter.Panel defaultSize="50%" resizable={false}>
           <div className="p-3">
             <div>
               <Row gutter={[12, 12]}>
                 <Col span={24}>
-                  <span className="text-blue-700 font-normal">
-                    选择章节小节名称
-                  </span>
+                  <span className="text-blue-700 font-normal">选择章节小节名称</span>
                 </Col>
               </Row>
             </div>
@@ -217,21 +187,13 @@ export default function RelationShow(props: any) {
                         color="danger"
                         variant="link"
                         onClick={() => {
-                          onRemoveKnowledgeOptionChange(
-                            item.id,
-                            "chapter",
-                            item.parentId,
-                          );
+                          onRemoveKnowledgeOptionChange(item.id, "chapter", item.parentId);
                         }}
                       >
                         解除关联
                       </Button>
                     </Col>
-                    <Col span={10}>
-                      {chapterIsSelect && fetcher.data?.error && (
-                        <Alert title={fetcher.data.error} type="error" />
-                      )}
-                    </Col>
+                    <Col span={10}>{chapterIsSelect && fetcher.data?.error && <Alert title={fetcher.data.error} type="error" />}</Col>
                   </Row>
                 );
               })}
@@ -244,9 +206,7 @@ export default function RelationShow(props: any) {
             <div>
               <Row gutter={[12, 12]}>
                 <Col span={24}>
-                  <span className="text-blue-700 font-normal">
-                    选择知识点小类名称
-                  </span>
+                  <span className="text-blue-700 font-normal">选择知识点小类名称</span>
                 </Col>
               </Row>
             </div>
@@ -276,21 +236,13 @@ export default function RelationShow(props: any) {
                         color="danger"
                         variant="link"
                         onClick={() => {
-                          onRemoveKnowledgeOptionChange(
-                            item.id,
-                            "knowledge",
-                            item.parentId,
-                          );
+                          onRemoveKnowledgeOptionChange(item.id, "knowledge", item.parentId);
                         }}
                       >
                         解除关联
                       </Button>
                     </Col>
-                    <Col span={10}>
-                      {knowledgeIsSelect && fetcher.data?.error && (
-                        <Alert title={fetcher.data.error} type="error" />
-                      )}
-                    </Col>
+                    <Col span={10}>{knowledgeIsSelect && fetcher.data?.error && <Alert title={fetcher.data.error} type="error" />}</Col>
                   </Row>
                 );
               })}

@@ -6,11 +6,7 @@ import { Col, Flex, Row, Tag } from "antd";
 import { getStatusLabel, type Label } from "~/util/approve";
 import { StarFilled } from "@ant-design/icons";
 
-export function CommonTag(
-  questionInfo: QuestionBaseInfoResp,
-  questionTypeList: TextbookOtherDict[],
-  questionTagList: TextbookOtherDict[],
-) {
+export function CommonTag(questionInfo: QuestionBaseInfoResp, questionTypeList: TextbookOtherDict[], questionTagList: TextbookOtherDict[]) {
   const questionTypeDict = ArrayUtil.arrayToDict(questionTypeList, "id");
   const tagsDict = ArrayUtil.arrayToDict(questionTagList, "id");
 
@@ -35,8 +31,7 @@ export function CommonTag(
             );
           })}
           <Tag color="red">
-            {questionInfo.difficultyLevel}{" "}
-            <StarFilled style={{ color: "green" }} />
+            {questionInfo.difficultyLevel} <StarFilled style={{ color: "green" }} />
           </Tag>
           {getApproveTag(questionInfo.status)}
         </Flex>

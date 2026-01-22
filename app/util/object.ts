@@ -1,4 +1,4 @@
-import type {Textbook, TextbookOption} from "~/type/textbook";
+import type { Textbook, TextbookOption } from "~/type/textbook";
 
 export const ArrayUtil = {
   /**
@@ -10,7 +10,7 @@ export const ArrayUtil = {
       label: item.label,
       // 关键：将原始对象挂载到 raw 字段
       raw: item,
-      children: item.children ? ArrayUtil.mapTextbookToOption(item.children) : undefined
+      children: item.children ? ArrayUtil.mapTextbookToOption(item.children) : undefined,
     }));
   },
 
@@ -41,13 +41,10 @@ export const ArrayUtil = {
   },
 
   // 数组转为字典
-  arrayToDict<T, K extends keyof T>(
-    array: T[],
-    key: K
-  ): Record<T[K] extends PropertyKey ? T[K] : never, T> {
+  arrayToDict<T, K extends keyof T>(array: T[], key: K): Record<T[K] extends PropertyKey ? T[K] : never, T> {
     return array.reduce((acc, item) => {
       acc[item[key] as any] = item;
       return acc;
     }, {} as any);
-  }
+  },
 };

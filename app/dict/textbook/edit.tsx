@@ -1,14 +1,4 @@
-import {
-  Alert,
-  Button,
-  Cascader,
-  type CascaderProps,
-  Flex,
-  Input,
-  InputNumber,
-  type InputNumberProps,
-  Typography,
-} from "antd";
+import { Alert, Button, Cascader, type CascaderProps, Flex, Input, InputNumber, type InputNumberProps, Typography } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { StringConst, StringValidator } from "~/util/string";
 import { useFetcher } from "react-router";
@@ -38,17 +28,12 @@ export default function Add(props: any) {
   // 需要默认值信息
   const pathNodes = ArrayUtil.findPath(textbookOptions, id.toString());
   // 去掉最后一层, 该层为当前自己
-  const _values = pathNodes
-    ? pathNodes.slice(0, -1).map((node) => node.label)
-    : [];
+  const _values = pathNodes ? pathNodes.slice(0, -1).map((node) => node.label) : [];
   const [selectValues, _] = useState<string[]>(_values);
 
   // 这个地方需要注意处理, 如果是编辑可以不选择这部分, 此时这部分是没有实际值的, 默认的空是合法的, action 需要特殊处理
   // 如果存在有效值则该值才是目标值
-  const onParentLevelChange: CascaderProps<TextbookOption>["onChange"] = (
-    _,
-    selectedOptions,
-  ) => {
+  const onParentLevelChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
     const option = selectedOptions[selectedOptions.length - 1].raw;
     setParentId(option.id);
     setPathDepth(option.pathDepth + 1);
@@ -56,12 +41,9 @@ export default function Add(props: any) {
 
   // 名称, 编辑时可更新
   const [label, setLabel] = useState<string>(item.label);
-  const onLabelChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setLabel(e.target.value);
-    },
-    [],
-  );
+  const onLabelChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setLabel(e.target.value);
+  }, []);
   // 名称不能为空
   const [labelIsEmpty, setLabelIsEmpty] = useState<boolean>(false);
 
@@ -121,8 +103,7 @@ export default function Add(props: any) {
   };
 
   // 关闭抽屉
-  const setOpenDrawer: React.Dispatch<React.SetStateAction<boolean>> =
-    props.setOpenDrawer;
+  const setOpenDrawer: React.Dispatch<React.SetStateAction<boolean>> = props.setOpenDrawer;
   useEffect(() => {
     if (fetcher.data?.result === true) {
       setOpenDrawer(false);
@@ -158,13 +139,7 @@ export default function Add(props: any) {
 
       <div>
         <Typography.Title level={5}>* 菜单名称简称 - 必填</Typography.Title>
-        <Input
-          value={label}
-          type="text"
-          name="label"
-          placeholder="请输入菜单名称简称"
-          onChange={onLabelChange}
-        />
+        <Input value={label} type="text" name="label" placeholder="请输入菜单名称简称" onChange={onLabelChange} />
         {labelIsEmpty && <Alert title="菜单名称简称不能为空" type="error" />}
         <Typography.Text type="secondary" italic={true}>
           比如 科目菜单 语文, 数学; 出版社菜单为 人教版, 湘教版等; 其它类似...
@@ -172,9 +147,7 @@ export default function Add(props: any) {
       </div>
 
       <div>
-        <Typography.Title level={5}>
-          排序编号(数字) - 关注顺序要填
-        </Typography.Title>
+        <Typography.Title level={5}>排序编号(数字) - 关注顺序要填</Typography.Title>
         <InputNumber
           value={sortOrder}
           type={"number"}
@@ -191,11 +164,7 @@ export default function Add(props: any) {
       </div>
 
       <div className="mt-1.5">
-        <Button
-          type="primary"
-          disabled={fetcher.state !== "idle"}
-          onClick={edit}
-        >
+        <Button type="primary" disabled={fetcher.state !== "idle"} onClick={edit}>
           {fetcher.state === "submitting" ? "提交中..." : "提交"}
         </Button>
       </div>

@@ -1,22 +1,6 @@
-import {
-  Alert,
-  Button,
-  Cascader,
-  type CascaderProps,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  type InputNumberProps,
-  Row,
-  Splitter,
-} from "antd";
+import { Alert, Button, Cascader, type CascaderProps, Col, Form, Input, InputNumber, type InputNumberProps, Row, Splitter } from "antd";
 import React, { useCallback, useEffect } from "react";
-import type {
-  ChapterAndKnowledgeResp,
-  Textbook,
-  TextbookOption,
-} from "~/type/textbook";
+import type { ChapterAndKnowledgeResp, Textbook, TextbookOption } from "~/type/textbook";
 import { httpClient } from "~/util/http";
 import { ArrayUtil } from "~/util/object";
 import { StringConst, StringValidator } from "~/util/string";
@@ -39,16 +23,10 @@ export default function Question(props: any) {
   };
 
   // 章节节点小类
-  const [selectOptions, setSelectOptions] = React.useState<TextbookOption[]>(
-    [],
-  );
+  const [selectOptions, setSelectOptions] = React.useState<TextbookOption[]>([]);
   const [selectOption, setSelectOption] = React.useState<Textbook>(optionInit);
-  const [selectOptionIsEmpty, setSelectOptionIsEmpty] =
-    React.useState<boolean>(false);
-  const onSelectOptionChange: CascaderProps<TextbookOption>["onChange"] = (
-    _,
-    selectedOptions,
-  ) => {
+  const [selectOptionIsEmpty, setSelectOptionIsEmpty] = React.useState<boolean>(false);
+  const onSelectOptionChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
     if (selectedOptions === undefined) {
       setSelectOption(optionInit);
       return;
@@ -60,12 +38,9 @@ export default function Question(props: any) {
   // 编辑名称
   const [label, setLabel] = React.useState<string>("");
   const [labelIsEmpty, setLabelIsEmpty] = React.useState<boolean>(false);
-  const onLabelChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setLabel(e.target.value);
-    },
-    [],
-  );
+  const onLabelChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setLabel(e.target.value);
+  }, []);
 
   // 排序编号
   const [sortOrder, setSortOrder] = React.useState<number>(0);
@@ -80,8 +55,7 @@ export default function Question(props: any) {
       httpClient
         .get<Textbook[]>("/textbook/list/7/all")
         .then((res) => {
-          const textbookOptions: TextbookOption[] =
-            ArrayUtil.mapTextbookToOption(res);
+          const textbookOptions: TextbookOption[] = ArrayUtil.mapTextbookToOption(res);
           setSelectOptions(textbookOptions);
         })
         .catch((err) => {
@@ -90,8 +64,7 @@ export default function Question(props: any) {
     }
   }, [currentStep]);
 
-  const [relationIsEmpty, setRelationIsEmpty] =
-    React.useState<React.ReactNode>("");
+  const [relationIsEmpty, setRelationIsEmpty] = React.useState<React.ReactNode>("");
 
   // 添加题型
   const onAddQuestion = () => {
@@ -110,9 +83,7 @@ export default function Question(props: any) {
     // 题型要存入单独的表来维护
     // 此时我并不知道选择的类型是知识点还是章节, 因此需要查询关联标识
     httpClient
-      .get<ChapterAndKnowledgeResp>(
-        `/chapter-knowledge/info/${selectOption.id}`,
-      )
+      .get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${selectOption.id}`)
       .then((res) => {
         setRelationIsEmpty("");
 
@@ -134,28 +105,20 @@ export default function Question(props: any) {
           });
       })
       .catch((err) => {
-        setRelationIsEmpty(
-          <Alert
-            title={`请先做关联后在追加题型: ${err.toString()}`}
-            type={"error"}
-          />,
-        );
+        setRelationIsEmpty(<Alert title={`请先做关联后在追加题型: ${err.toString()}`} type={"error"} />);
       });
   };
 
   return (
     <div className="mt-4">
-      <Splitter
-        style={{ minHeight: 100, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}
-      >
+      <Splitter style={{ minHeight: 100, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}>
         <Splitter.Panel defaultSize="50%" resizable={false}>
           <div className="p-3">
             <div>
               <Row gutter={[12, 12]}>
                 <Col span={24}>
                   <span className="text-blue-700 font-normal">
-                    选择章节小节名称或者知识点名称均可, 上一步骤关联完成后,
-                    后续的题型均挂在在章节小节和对应的知识点小类下面
+                    选择章节小节名称或者知识点名称均可, 上一步骤关联完成后, 后续的题型均挂在在章节小节和对应的知识点小类下面
                   </span>
                 </Col>
               </Row>
@@ -164,11 +127,7 @@ export default function Question(props: any) {
             <div className="mt-2.5">
               <Row gutter={[12, 12]}>
                 <Col span={24}>
-                  <Form
-                    layout="horizontal"
-                    labelCol={{ span: 3 }}
-                    wrapperCol={{ span: 10 }}
-                  >
+                  <Form layout="horizontal" labelCol={{ span: 3 }} wrapperCol={{ span: 10 }}>
                     <Form.Item label="选择教材章节或知识点类别">
                       <Cascader
                         style={{ width: "100%" }}
@@ -178,25 +137,13 @@ export default function Question(props: any) {
                       />
                     </Form.Item>
 
-                    <div>
-                      {selectOptionIsEmpty && (
-                        <Alert title="请先选择章节或者知识点" type={"error"} />
-                      )}
-                    </div>
+                    <div>{selectOptionIsEmpty && <Alert title="请先选择章节或者知识点" type={"error"} />}</div>
 
                     <Form.Item label="名称: ">
-                      <Input
-                        value={label}
-                        placeholder="请输入名称"
-                        onChange={onLabelChange}
-                      />
+                      <Input value={label} placeholder="请输入名称" onChange={onLabelChange} />
                     </Form.Item>
 
-                    <div>
-                      {labelIsEmpty && (
-                        <Alert title="名称不能为空" type="error" />
-                      )}
-                    </div>
+                    <div>{labelIsEmpty && <Alert title="名称不能为空" type="error" />}</div>
 
                     <Form.Item label="排序编号: ">
                       <InputNumber
@@ -212,19 +159,13 @@ export default function Question(props: any) {
                     </Form.Item>
 
                     <Form.Item>
-                      <Button
-                        color="primary"
-                        variant="dashed"
-                        onClick={onAddQuestion}
-                      >
+                      <Button color="primary" variant="dashed" onClick={onAddQuestion}>
                         追加
                       </Button>
                     </Form.Item>
 
                     <div>
-                      {fetcher.data?.error && (
-                        <Alert title={fetcher.data.error} type={"error"} />
-                      )}
+                      {fetcher.data?.error && <Alert title={fetcher.data.error} type={"error"} />}
                       {relationIsEmpty}
                     </div>
                   </Form>

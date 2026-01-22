@@ -25,14 +25,7 @@ function SingleSelect(props: SingleSelectProps) {
         )}
         {/* 图片, 目前先不处理标签和图片同时存在的情况 */}
         {props.images?.map((imageName) => {
-          return (
-            <Image
-              height={200}
-              key={imageName}
-              alt="basic"
-              src={`/api/file/read/${imageName}`}
-            />
-          );
+          return <Image height={200} key={imageName} alt="basic" src={`/api/file/read/${imageName}`} />;
         })}
       </Col>
     </Row>
@@ -49,11 +42,7 @@ export function CommonSelect(questionInfo: QuestionBaseInfoResp) {
         {questionInfo.options?.map((item) => {
           return (
             <Col span={6} key={item.label}>
-              <SingleSelect
-                label={item.label}
-                content={item.content}
-                images={item.images}
-              />
+              <SingleSelect label={item.label} content={item.content} images={item.images} />
             </Col>
           );
         })}
@@ -65,11 +54,7 @@ export function CommonSelect(questionInfo: QuestionBaseInfoResp) {
         {questionInfo.options?.map((item) => {
           return (
             <Col span={24} key={item.label}>
-              <SingleSelect
-                label={item.label}
-                content={item.content}
-                images={item.images}
-              />
+              <SingleSelect label={item.label} content={item.content} images={item.images} />
             </Col>
           );
         })}
@@ -93,11 +78,7 @@ export function CommonSelect(questionInfo: QuestionBaseInfoResp) {
             {firstHalf.map((item) => {
               return (
                 <Col span={12} key={item.label}>
-                  <SingleSelect
-                    label={item.label}
-                    content={item.content}
-                    images={item.images}
-                  />
+                  <SingleSelect label={item.label} content={item.content} images={item.images} />
                 </Col>
               );
             })}
@@ -108,11 +89,7 @@ export function CommonSelect(questionInfo: QuestionBaseInfoResp) {
             {secondHalf.map((item) => {
               return (
                 <Col span={12} key={item.label}>
-                  <SingleSelect
-                    label={item.label}
-                    content={item.content}
-                    images={item.images}
-                  />
+                  <SingleSelect label={item.label} content={item.content} images={item.images} />
                 </Col>
               );
             })}

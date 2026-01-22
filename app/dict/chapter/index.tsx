@@ -36,8 +36,7 @@ export default function Index(props: any) {
   // 教材章节或者知识点名称, 需要根据父级菜单知道当前属于那一类型
   const [chapterName, setChapterName] = useState<string>("");
   const [chapterNodeIsEmpty, setChapterNodeIsEmpty] = useState<boolean>(false);
-  const [chapterNodeMaxDepthLimit, setChapterNodeMaxDepthLimit] =
-    useState<boolean>(false);
+  const [chapterNodeMaxDepthLimit, setChapterNodeMaxDepthLimit] = useState<boolean>(false);
   const [chapterIsEmpty, setChapterIsEmpty] = useState<boolean>(false);
 
   // 教材章节和知识点名称排序编号
@@ -53,11 +52,7 @@ export default function Index(props: any) {
     setChapterNodeIsEmpty(false);
 
     // 并且该处只能添加第6级和第7级 - 对应的父节点就是 第5级和第6级
-    if (
-      !StringConstUtil.dictChapterNameAddMaxDepthSet.has(
-        nodeTextbookOption.pathDepth,
-      )
-    ) {
+    if (!StringConstUtil.dictChapterNameAddMaxDepthSet.has(nodeTextbookOption.pathDepth)) {
       setChapterNodeMaxDepthLimit(true);
       return;
     }
@@ -130,28 +125,19 @@ export default function Index(props: any) {
             <span>1. 教材章节和知识点类别是平级的</span>
           </Col>
           <Col span={24}>
-            <span>
-              2. 章节节点和知识点小类也是平级的, 这一级要做关联,
-              因为接下来的末级是挂载题目的菜单
-            </span>
+            <span>2. 章节节点和知识点小类也是平级的, 这一级要做关联, 因为接下来的末级是挂载题目的菜单</span>
           </Col>
           <Col span={24}>
             <span>3. 追加 章节小节和知识点小类 需要重新选择父级菜单</span>
           </Col>
           <Col span={24}>
-            <span>
-              4. 关联章节小节和知识点小类后前端才可以添加题目到该节点上
-            </span>
+            <span>4. 关联章节小节和知识点小类后前端才可以添加题目到该节点上</span>
           </Col>
         </Row>
       </div>
 
       {/* 提交错误展示错误信息 */}
-      <div>
-        {fetcher.data?.error && (
-          <Alert title={fetcher.data.error} type="error" />
-        )}
-      </div>
+      <div>{fetcher.data?.error && <Alert title={fetcher.data.error} type="error" />}</div>
 
       {/* 进度条 */}
       <div className="mt-4">
@@ -162,12 +148,7 @@ export default function Index(props: any) {
           items={[
             {
               title: "第一步. 选择教材章节或知识点类别",
-              content: (
-                <Node
-                  textbookOptions={props.textbookOptions}
-                  setNodeTextbookOption={setNodeTextbookOption}
-                />
-              ),
+              content: <Node textbookOptions={props.textbookOptions} setNodeTextbookOption={setNodeTextbookOption} />,
             },
             {
               title: "第二步. 添加节点",
@@ -186,12 +167,7 @@ export default function Index(props: any) {
             },
             {
               title: "第三步. 节点追加查看",
-              content: (
-                <AppendShow
-                  chapterShowItems={chapterShowItems}
-                  setChapterShowItems={setChapterShowItems}
-                />
-              ),
+              content: <AppendShow chapterShowItems={chapterShowItems} setChapterShowItems={setChapterShowItems} />,
             },
             {
               title: "第四步. 关联章节小节和知识点小类",

@@ -5,10 +5,7 @@ import Login from "~/index/login";
 import { LoadingOutlined } from "@ant-design/icons";
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "开放题库管理" },
-    { name: "description", content: "开放题库管理教材, 用户等信息管理" },
-  ];
+  return [{ title: "开放题库管理" }, { name: "description", content: "开放题库管理教材, 用户等信息管理" }];
 }
 
 // 检查是否登录

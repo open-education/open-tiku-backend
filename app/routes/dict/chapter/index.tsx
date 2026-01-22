@@ -1,21 +1,12 @@
 import type { Route } from "./+types/index";
 import { httpClient } from "~/util/http";
-import type {
-  ChapterAndKnowledgeFetcherReq,
-  Textbook,
-  TextbookFetcherReq,
-} from "~/type/textbook";
+import type { ChapterAndKnowledgeFetcherReq, Textbook, TextbookFetcherReq } from "~/type/textbook";
 import { ArrayUtil } from "~/util/object";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import Index from "~/dict/chapter/index";
 import { StringConst, StringConstUtil, StringValidator } from "~/util/string";
-import {
-  ChapterAndKnowledgeUtil,
-  DictSourceUtil,
-  QuestionCateUtil,
-  TextbookReqUtil,
-} from "~/util/dict";
+import { ChapterAndKnowledgeUtil, DictSourceUtil, QuestionCateUtil, TextbookReqUtil } from "~/util/dict";
 
 // 路由加载时获取所有层级信息
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
@@ -36,8 +27,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
   if (StringConstUtil.dictChapterNameSet.has(source)) {
     // 章节节点和知识点添加操作
-    let req: TextbookFetcherReq =
-      TextbookReqUtil.get_fetcher_form_data(formData);
+    let req: TextbookFetcherReq = TextbookReqUtil.get_fetcher_form_data(formData);
 
     // 删除只有id
     try {
@@ -79,8 +69,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     }
   } else if (StringConstUtil.dictChapterKnowledgeSet.has(source)) {
     // 章节和知识点关联相关操作
-    let relationReq: ChapterAndKnowledgeFetcherReq =
-      ChapterAndKnowledgeUtil.get_fetcher_form_data(formData);
+    let relationReq: ChapterAndKnowledgeFetcherReq = ChapterAndKnowledgeUtil.get_fetcher_form_data(formData);
     // 如果是解除关联只有id标识
     if (StringConst.dictChapterKnowledgeRelationRemove === source) {
       try {
@@ -145,10 +134,5 @@ export function HydrateFallback() {
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  return (
-    <Index
-      textbooks={loaderData.textbooks}
-      textbookOptions={loaderData.textbookOptions}
-    />
-  );
+  return <Index textbooks={loaderData.textbooks} textbookOptions={loaderData.textbookOptions} />;
 }

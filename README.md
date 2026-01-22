@@ -53,7 +53,7 @@ Summary
     URL: http://127.0.0.1/backend/node_modules/.vite/deps/react-router.js?v=63655cd9
     Status: 504 Outdated Optimize Dep
     Source: Network
-    Initiator: 
+    Initiator:
     backend:489
 ```
 
@@ -66,7 +66,7 @@ location /api/ {
 }
 ```
 
-或者开发时需要运行 
+或者开发时需要运行
 
 ```
 npm run dev -- --force
@@ -78,7 +78,7 @@ vite 这个垃圾玩意, 又想自动刷新又搞不定，还不如剩下资源�
 
 注意以下5点, 如果自己的配置不一样请对应调整
 
-#### 1. `proxy_pass http://127.0.0.1:5174;` 
+#### 1. `proxy_pass http://127.0.0.1:5174;`
 
 这个配置后面没有 `/`, 转发后要保留 `/backend` 一样的路径, 不然浏览器区分不了资源, ip和端口使用自己电脑的即可
 
@@ -89,7 +89,7 @@ export default defineConfig({
   base: "/backend/", // 这个 base 要对应
   ...
 });
-``` 
+```
 
 #### 3. [react-router.config.ts](react-router.config.ts) 也要对应配置
 
@@ -112,3 +112,15 @@ app.use('/backend/assets', express.static('./build/client/assets', {
 ```
 
 通常线上才有该配置, 也需要一起调整
+
+## 格式化
+
+[VS Code](https://code.visualstudio.com/), 其它 IDE 注意不要引起代码大的格式化变动即可
+
+[Prettier](https://prettier.io/) 代码格式化插件
+
+Editor: Format On Save 格式化时机, 保存时格式化即可
+
+Workbench › Tree: Indent 目录缩进默认8太窄, 加宽更容易区分
+
+Prettier: Print Width 用户空间设置 150 个字符宽度, 现在显示器都比较宽 默认的 80 个字符宽度代码反而到处折行

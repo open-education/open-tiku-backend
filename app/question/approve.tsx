@@ -24,13 +24,7 @@ export function Approve(
     httpClient
       .get<QuestionInfoResp>(`/question/info/${id}`)
       .then((res) => {
-        setDrawerContent(
-          <Info
-            questionInfo={res}
-            questionTypeList={questionTypeList}
-            questionTagList={questionTagList}
-          />,
-        );
+        setDrawerContent(<Info questionInfo={res} questionTypeList={questionTypeList} questionTagList={questionTagList} />);
       })
       .catch((err) => {
         console.error(err);
@@ -57,21 +51,11 @@ export function Approve(
         )}
         <Col span={24}>
           <Flex gap={"small"} justify={"flex-end"}>
-            <Button
-              color="primary"
-              variant="link"
-              onClick={() => onInfoClick(questionInfo.id)}
-            >
+            <Button color="primary" variant="link" onClick={() => onInfoClick(questionInfo.id)}>
               详情
             </Button>
             {questionInfo.status == Status.Draft && (
-              <Button
-                color="primary"
-                variant="link"
-                onClick={() =>
-                  onShowModalClick(questionInfo.id, questionInfo.status)
-                }
-              >
+              <Button color="primary" variant="link" onClick={() => onShowModalClick(questionInfo.id, questionInfo.status)}>
                 审核
               </Button>
             )}

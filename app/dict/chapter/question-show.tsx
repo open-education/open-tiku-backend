@@ -1,11 +1,6 @@
 import { Button, Cascader, type CascaderProps, Col, Row, Splitter } from "antd";
 import React, { useEffect, useState } from "react";
-import type {
-  ChapterAndKnowledgeResp,
-  QuestionCateResp,
-  Textbook,
-  TextbookOption,
-} from "~/type/textbook";
+import type { ChapterAndKnowledgeResp, QuestionCateResp, Textbook, TextbookOption } from "~/type/textbook";
 import { httpClient } from "~/util/http";
 import { ArrayUtil } from "~/util/object";
 import { useFetcher } from "react-router";
@@ -27,78 +22,68 @@ export default function QuestionShow(props: any) {
   };
 
   // 章节节点小类
-  const [selectChapterOptions, setSelectChapterOptions] = useState<
-    TextbookOption[]
-  >([]);
+  const [selectChapterOptions, setSelectChapterOptions] = useState<TextbookOption[]>([]);
   const [chapterOption, setChapterOption] = useState<Textbook>(optionInit);
-  const [chapterLabelList, setChapterLabelList] = useState<QuestionCateResp[]>(
-    [],
-  );
-  const onSelectChapterOptionChange: CascaderProps<TextbookOption>["onChange"] =
-    (_, selectedOptions) => {
-      if (selectedOptions === undefined) {
-        setChapterOption(optionInit);
-        setChapterLabelList([]);
-        return;
-      }
+  const [chapterLabelList, setChapterLabelList] = useState<QuestionCateResp[]>([]);
+  const onSelectChapterOptionChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
+    if (selectedOptions === undefined) {
+      setChapterOption(optionInit);
+      setChapterLabelList([]);
+      return;
+    }
 
-      const info = selectedOptions[selectedOptions.length - 1].raw;
-      setChapterOption(info);
+    const info = selectedOptions[selectedOptions.length - 1].raw;
+    setChapterOption(info);
 
-      // 此时我并不知道选择的类型是知识点还是章节, 因此需要查询关联标识
-      httpClient
-        .get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${info.id}`)
-        .then((res) => {
-          httpClient
-            .get<QuestionCateResp[]>(`/question-cate/list/${res.id}`)
-            .then((res) => {
-              setChapterLabelList(res);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+    // 此时我并不知道选择的类型是知识点还是章节, 因此需要查询关联标识
+    httpClient
+      .get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${info.id}`)
+      .then((res) => {
+        httpClient
+          .get<QuestionCateResp[]>(`/question-cate/list/${res.id}`)
+          .then((res) => {
+            setChapterLabelList(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // 知识点小类
-  const [selectKnowledgeOptions, setSelectKnowledgeOptions] = useState<
-    TextbookOption[]
-  >([]);
+  const [selectKnowledgeOptions, setSelectKnowledgeOptions] = useState<TextbookOption[]>([]);
   const [knowledgeOption, setKnowledgeOption] = useState<Textbook>(optionInit);
-  const [knowledgeLabelList, setKnowledgeLabelList] = useState<
-    QuestionCateResp[]
-  >([]);
-  const onSelectKnowledgeOptionChange: CascaderProps<TextbookOption>["onChange"] =
-    (_, selectedOptions) => {
-      if (selectedOptions === undefined) {
-        setKnowledgeOption(optionInit);
-        setKnowledgeLabelList([]);
-        return;
-      }
+  const [knowledgeLabelList, setKnowledgeLabelList] = useState<QuestionCateResp[]>([]);
+  const onSelectKnowledgeOptionChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
+    if (selectedOptions === undefined) {
+      setKnowledgeOption(optionInit);
+      setKnowledgeLabelList([]);
+      return;
+    }
 
-      const info = selectedOptions[selectedOptions.length - 1].raw;
-      setKnowledgeOption(info);
+    const info = selectedOptions[selectedOptions.length - 1].raw;
+    setKnowledgeOption(info);
 
-      // 此时我并不知道选择的类型是知识点还是章节, 因此需要查询关联标识
-      httpClient
-        .get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${info.id}`)
-        .then((res) => {
-          httpClient
-            .get<QuestionCateResp[]>(`/question-cate/list/${res.id}`)
-            .then((res) => {
-              setKnowledgeLabelList(res);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+    // 此时我并不知道选择的类型是知识点还是章节, 因此需要查询关联标识
+    httpClient
+      .get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${info.id}`)
+      .then((res) => {
+        httpClient
+          .get<QuestionCateResp[]>(`/question-cate/list/${res.id}`)
+          .then((res) => {
+            setKnowledgeLabelList(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // 删除题型
   const onQuestionRemoveClick = (id: number) => {
@@ -126,8 +111,7 @@ export default function QuestionShow(props: any) {
       httpClient
         .get<Textbook[]>("/textbook/list/7/all")
         .then((res) => {
-          const textbookOptions: TextbookOption[] =
-            ArrayUtil.mapTextbookToOption(res);
+          const textbookOptions: TextbookOption[] = ArrayUtil.mapTextbookToOption(res);
           setSelectChapterOptions(textbookOptions);
           setSelectKnowledgeOptions(textbookOptions);
         })
@@ -146,9 +130,7 @@ export default function QuestionShow(props: any) {
       if (StringConst.dictQuestionsRemove === reqType) {
         if (chapterOption.id > 0) {
           httpClient
-            .get<ChapterAndKnowledgeResp>(
-              `/chapter-knowledge/info/${chapterOption.id}`,
-            )
+            .get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${chapterOption.id}`)
             .then((res) => {
               httpClient
                 .get<QuestionCateResp[]>(`/question-cate/list/${res.id}`)
@@ -166,9 +148,7 @@ export default function QuestionShow(props: any) {
 
         if (knowledgeOption.id > 0) {
           httpClient
-            .get<ChapterAndKnowledgeResp>(
-              `/chapter-knowledge/info/${knowledgeOption.id}`,
-            )
+            .get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${knowledgeOption.id}`)
             .then((res) => {
               httpClient
                 .get<QuestionCateResp[]>(`/question-cate/list/${res.id}`)
@@ -189,17 +169,13 @@ export default function QuestionShow(props: any) {
 
   return (
     <div className="mt-4">
-      <Splitter
-        style={{ minHeight: 100, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}
-      >
+      <Splitter style={{ minHeight: 100, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}>
         <Splitter.Panel defaultSize="50%" resizable={false}>
           <div className="p-3">
             <div>
               <Row gutter={[12, 12]} align={"middle"}>
                 <Col span={24}>
-                  <span className="text-blue-700 font-normal">
-                    选择章节小节名称
-                  </span>
+                  <span className="text-blue-700 font-normal">选择章节小节名称</span>
                 </Col>
               </Row>
             </div>
@@ -248,9 +224,7 @@ export default function QuestionShow(props: any) {
             <div>
               <Row gutter={[12, 12]}>
                 <Col span={24}>
-                  <span className="text-blue-700 font-normal">
-                    选择知识点小类名称
-                  </span>
+                  <span className="text-blue-700 font-normal">选择知识点小类名称</span>
                 </Col>
               </Row>
             </div>

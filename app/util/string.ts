@@ -1,10 +1,10 @@
 // 字符串验证工具类
 export const StringValidator = {
   // 检查是否为非空字符串
-  isNonEmpty: (str: any) => typeof str === 'string' && str.length > 0,
+  isNonEmpty: (str: any) => typeof str === "string" && str.length > 0,
 
   // 检查是否为非空白字符串
-  isNonWhitespace: (str: any) => typeof str === 'string' && str.trim().length > 0,
+  isNonWhitespace: (str: any) => typeof str === "string" && str.trim().length > 0,
 
   // 检查是否包含特定内容
   contains: (str: any, search: any) => StringValidator.isNonEmpty(str) && str.includes(search),
@@ -20,26 +20,26 @@ export const StringValidator = {
     if (!StringValidator.isNonEmpty(str)) return false;
     const length = str.length;
     return length >= min && length <= max;
-  }
-}
+  },
+};
 
 // 字符串相关工具函数
 export const StringUtil = {
-  getFirstPart: (str: string | undefined, separator: string = '_'): string => {
-    return str === undefined ? "" : str.split(separator)[0] || '';
+  getFirstPart: (str: string | undefined, separator: string = "_"): string => {
+    return str === undefined ? "" : str.split(separator)[0] || "";
   },
 
-  getLastPart: (str: string | undefined, separator: string = '_'): string => {
+  getLastPart: (str: string | undefined, separator: string = "_"): string => {
     if (str === undefined) return "";
     const lastIndex = str.lastIndexOf(separator);
     return lastIndex === -1 ? str : str.slice(lastIndex + 1);
   },
 
-  removeLastPart: (str: string | undefined, separator: string = '_'): string => {
+  removeLastPart: (str: string | undefined, separator: string = "_"): string => {
     if (str === undefined) return "";
     const lastUnderscoreIndex = str.lastIndexOf(separator);
     if (lastUnderscoreIndex === -1) {
-      return '';
+      return "";
     }
     return str.substring(0, lastUnderscoreIndex);
   },
@@ -48,8 +48,8 @@ export const StringUtil = {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-}
+  },
+};
 
 // 常量维护
 export const StringConst = {
@@ -69,7 +69,7 @@ export const StringConst = {
   dictTextbookOtherRemove: "dictTextbookOtherRemove", // 教材其它字典删除
   dictTextbookOtherType: "question_type", // 题型类型
   dictTextbookOtherTag: "question_tag", // 题型标签
-}
+};
 
 // 常量整合工具
 export const StringConstUtil = {
@@ -78,4 +78,4 @@ export const StringConstUtil = {
   dictChapterKnowledgeSet: new Set<string>([StringConst.dictChapterKnowledgeRelation, StringConst.dictChapterKnowledgeRelationRemove]),
   dictQuestionSet: new Set<string>([StringConst.dictQuestionsAdd, StringConst.dictQuestionsRemove]),
   dictOtherSet: new Set<string>([StringConst.dictTextbookOtherAdd, StringConst.dictTextbookOtherRemove]),
-}
+};

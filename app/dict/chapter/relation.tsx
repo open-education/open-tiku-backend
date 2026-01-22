@@ -1,12 +1,4 @@
-import {
-  Alert,
-  Button,
-  Cascader,
-  type CascaderProps,
-  Col,
-  Row,
-  Splitter,
-} from "antd";
+import { Alert, Button, Cascader, type CascaderProps, Col, Row, Splitter } from "antd";
 import React, { useEffect, useState } from "react";
 import type { Textbook, TextbookOption } from "~/type/textbook";
 import { httpClient } from "~/util/http";
@@ -32,48 +24,30 @@ export default function Relation(props: any) {
   };
 
   // 章节节点小类
-  const [selectChapterOptions, setSelectChapterOptions] = useState<
-    TextbookOption[]
-  >([]);
-  const [selectChapterOption, setSelectChapterOption] =
-    useState<Textbook>(optionInit);
-  const [selectChapterOptionIsEmpty, setSelectChapterOptionIsEmpty] =
-    useState<boolean>(false);
-  const [
-    selectChapterOptionMaxDepthLimit,
-    setSelectChapterOptionMaxDepthLimit,
-  ] = useState<boolean>(false);
-  const onSelectChapterOptionChange: CascaderProps<TextbookOption>["onChange"] =
-    (_, selectedOptions) => {
-      if (selectedOptions === undefined) {
-        setSelectChapterOption(optionInit);
-      } else {
-        setSelectChapterOption(selectedOptions[selectedOptions.length - 1].raw);
-      }
-    };
+  const [selectChapterOptions, setSelectChapterOptions] = useState<TextbookOption[]>([]);
+  const [selectChapterOption, setSelectChapterOption] = useState<Textbook>(optionInit);
+  const [selectChapterOptionIsEmpty, setSelectChapterOptionIsEmpty] = useState<boolean>(false);
+  const [selectChapterOptionMaxDepthLimit, setSelectChapterOptionMaxDepthLimit] = useState<boolean>(false);
+  const onSelectChapterOptionChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
+    if (selectedOptions === undefined) {
+      setSelectChapterOption(optionInit);
+    } else {
+      setSelectChapterOption(selectedOptions[selectedOptions.length - 1].raw);
+    }
+  };
 
   // 知识点小类
-  const [selectKnowledgeOptions, setSelectKnowledgeOptions] = useState<
-    TextbookOption[]
-  >([]);
-  const [selectKnowledgeOption, setSelectKnowledgeOption] =
-    useState<Textbook>(optionInit);
-  const [selectKnowledgeOptionIsEmpty, setSelectKnowledgeOptionIsEmpty] =
-    useState<boolean>(false);
-  const [
-    selectKnowledgeOptionMaxDepthLimit,
-    setSelectKnowledgeOptionMaxDepthLimit,
-  ] = useState<boolean>(false);
-  const onSelectKnowledgeOptionChange: CascaderProps<TextbookOption>["onChange"] =
-    (_, selectedOptions) => {
-      if (selectedOptions === undefined) {
-        setSelectKnowledgeOption(optionInit);
-      } else {
-        setSelectKnowledgeOption(
-          selectedOptions[selectedOptions.length - 1].raw,
-        );
-      }
-    };
+  const [selectKnowledgeOptions, setSelectKnowledgeOptions] = useState<TextbookOption[]>([]);
+  const [selectKnowledgeOption, setSelectKnowledgeOption] = useState<Textbook>(optionInit);
+  const [selectKnowledgeOptionIsEmpty, setSelectKnowledgeOptionIsEmpty] = useState<boolean>(false);
+  const [selectKnowledgeOptionMaxDepthLimit, setSelectKnowledgeOptionMaxDepthLimit] = useState<boolean>(false);
+  const onSelectKnowledgeOptionChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
+    if (selectedOptions === undefined) {
+      setSelectKnowledgeOption(optionInit);
+    } else {
+      setSelectKnowledgeOption(selectedOptions[selectedOptions.length - 1].raw);
+    }
+  };
 
   // 监听进度条是否是第四步, 如果步骤顺序调整请顺带更新索引, 其它步骤不关注该区块内容
   useEffect(() => {
@@ -82,8 +56,7 @@ export default function Relation(props: any) {
       httpClient
         .get<Textbook[]>("/textbook/list/7/all")
         .then((res) => {
-          const textbookOptions: TextbookOption[] =
-            ArrayUtil.mapTextbookToOption(res);
+          const textbookOptions: TextbookOption[] = ArrayUtil.mapTextbookToOption(res);
           // 初始化两天都维护同样的内容即可, 因为后续选择可能会单独改变, 如果不变列表数据用同一份即可
           setSelectChapterOptions(textbookOptions);
           setSelectKnowledgeOptions(textbookOptions);
@@ -101,10 +74,7 @@ export default function Relation(props: any) {
       return;
     }
     setSelectChapterOptionIsEmpty(false);
-    if (
-      StringConst.dictChapterKnowledgeRelationMaxDepth !=
-      selectChapterOption.pathDepth
-    ) {
+    if (StringConst.dictChapterKnowledgeRelationMaxDepth != selectChapterOption.pathDepth) {
       setSelectChapterOptionMaxDepthLimit(true);
       return;
     }
@@ -115,10 +85,7 @@ export default function Relation(props: any) {
       return;
     }
     setSelectKnowledgeOptionIsEmpty(false);
-    if (
-      StringConst.dictChapterKnowledgeRelationMaxDepth !=
-      selectKnowledgeOption.pathDepth
-    ) {
+    if (StringConst.dictChapterKnowledgeRelationMaxDepth != selectKnowledgeOption.pathDepth) {
       setSelectKnowledgeOptionMaxDepthLimit(true);
       return;
     }
@@ -138,17 +105,14 @@ export default function Relation(props: any) {
 
   return (
     <div className="mt-4">
-      <Splitter
-        style={{ minHeight: 100, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}
-      >
+      <Splitter style={{ minHeight: 100, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}>
         <Splitter.Panel defaultSize="50%" resizable={false}>
           <div className="p-3">
             <div>
               <Row gutter={[12, 12]}>
                 <Col span={24}>
                   <span className="text-blue-700 font-normal">
-                    选择章节小节名称-只有题型的上一级需要关联, 并且是一对一关联,
-                    其它层级关联无意义也无需操作
+                    选择章节小节名称-只有题型的上一级需要关联, 并且是一对一关联, 其它层级关联无意义也无需操作
                   </span>
                 </Col>
               </Row>
@@ -169,20 +133,12 @@ export default function Relation(props: any) {
             </div>
 
             <div>
-              {selectChapterOptionIsEmpty && (
-                <Alert title="章节小节名称为空" type={"error"} />
-              )}
-              {selectChapterOptionMaxDepthLimit && (
-                <Alert title="章节小节只能选择第7级" type={"error"} />
-              )}
+              {selectChapterOptionIsEmpty && <Alert title="章节小节名称为空" type={"error"} />}
+              {selectChapterOptionMaxDepthLimit && <Alert title="章节小节只能选择第7级" type={"error"} />}
             </div>
 
             <div className="mt-2.5">
-              <Button
-                color="primary"
-                variant="dashed"
-                onClick={onRelationClick}
-              >
+              <Button color="primary" variant="dashed" onClick={onRelationClick}>
                 关联
               </Button>
             </div>
@@ -193,18 +149,12 @@ export default function Relation(props: any) {
             <div>
               <Row gutter={[12, 12]}>
                 <Col span={24}>
-                  <span className="text-blue-700 font-normal">
-                    选择知识点小类名称
-                  </span>
+                  <span className="text-blue-700 font-normal">选择知识点小类名称</span>
                 </Col>
               </Row>
             </div>
 
-            <div>
-              {fetcher.data?.error && (
-                <Alert title={fetcher.data.error} type={"error"} />
-              )}
-            </div>
+            <div>{fetcher.data?.error && <Alert title={fetcher.data.error} type={"error"} />}</div>
 
             <div className="mt-2.5">
               <Row gutter={[12, 12]}>
@@ -222,12 +172,8 @@ export default function Relation(props: any) {
             </div>
 
             <div>
-              {selectKnowledgeOptionIsEmpty && (
-                <Alert title="知识点小类名称为空" type={"error"} />
-              )}
-              {selectKnowledgeOptionMaxDepthLimit && (
-                <Alert title="知识点小类只能选择第7级" type={"error"} />
-              )}
+              {selectKnowledgeOptionIsEmpty && <Alert title="知识点小类名称为空" type={"error"} />}
+              {selectKnowledgeOptionMaxDepthLimit && <Alert title="知识点小类只能选择第7级" type={"error"} />}
             </div>
           </div>
         </Splitter.Panel>

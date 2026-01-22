@@ -5,13 +5,9 @@ import type { Textbook, TextbookOption } from "~/type/textbook";
 // 父级菜单管理, 不同的类型下会有深度差别
 export default function Node(props: any) {
   const textbookOptions = props.textbookOptions ?? [];
-  const setNodeTextbookOption: React.Dispatch<React.SetStateAction<Textbook>> =
-    props.setNodeTextbookOption;
+  const setNodeTextbookOption: React.Dispatch<React.SetStateAction<Textbook>> = props.setNodeTextbookOption;
 
-  const onParentLevelChange: CascaderProps<TextbookOption>["onChange"] = (
-    _,
-    selectedOptions,
-  ) => {
+  const onParentLevelChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
     if (setNodeTextbookOption) {
       if (selectedOptions === undefined) {
         setNodeTextbookOption({
@@ -30,9 +26,7 @@ export default function Node(props: any) {
   };
 
   return (
-    <Splitter
-      style={{ minHeight: 50, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}
-    >
+    <Splitter style={{ minHeight: 50, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}>
       <Splitter.Panel defaultSize="100%" resizable={false}>
         <div className="p-3">
           <Cascader

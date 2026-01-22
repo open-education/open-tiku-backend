@@ -129,4 +129,3 @@ export interface TextbookOtherDict {
   itemValue: string;
   sortOrder: number;
 }
-

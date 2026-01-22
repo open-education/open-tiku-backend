@@ -67,10 +67,5 @@ export function HydrateFallback() {
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  return (
-    <Index
-      textbooks={loaderData.textbooks}
-      textbookOptions={loaderData.textbookOptions}
-    />
-  );
+  return <Index textbooks={loaderData.textbooks} textbookOptions={loaderData.textbookOptions} />;
 }

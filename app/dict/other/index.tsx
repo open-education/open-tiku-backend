@@ -1,9 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import type {
-  Textbook,
-  TextbookOption,
-  TextbookOtherDictResp,
-} from "~/type/textbook";
+import type { Textbook, TextbookOption, TextbookOtherDictResp } from "~/type/textbook";
 import {
   Alert,
   Button,
@@ -65,10 +61,7 @@ export default function Index(props: any) {
   };
   const [nodeOption, setNodeOption] = useState<Textbook>(optionInit);
   const [nodeOptionIsEmpty, setNodeOptionIsEmpty] = useState<boolean>(false);
-  const onParentLevelChange: CascaderProps<TextbookOption>["onChange"] = (
-    _,
-    selectedOptions,
-  ) => {
+  const onParentLevelChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
     if (selectedOptions === undefined) {
       setNodeOption(optionInit);
     } else {
@@ -79,12 +72,9 @@ export default function Index(props: any) {
   // 字典名称
   const [label, setLabel] = useState<string>("");
   const [labelIsEmpty, setLabelIsEmpty] = useState<boolean>(false);
-  const onLabelChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setLabel(e.target.value);
-    },
-    [],
-  );
+  const onLabelChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setLabel(e.target.value);
+  }, []);
 
   // 排序字段
   const [sortOrder, setSortOrder] = useState<number>(0);
@@ -158,26 +148,17 @@ export default function Index(props: any) {
   };
 
   // 字典内容列表
-  const [otherDictItems, setOtherDictItems] = useState<TextbookOtherDictResp[]>(
-    [],
-  );
+  const [otherDictItems, setOtherDictItems] = useState<TextbookOtherDictResp[]>([]);
   const [otherDictError, setOtherDictError] = useState<React.ReactNode>("");
 
   // 监听字典类型和菜单变化刷新字典列表
   useEffect(() => {
-    if (
-      !StringValidator.isNonEmpty(tagValue) ||
-      nodeOption.id <= 0 ||
-      nodeOption.pathDepth != 3 ||
-      fetcher.data?.error
-    ) {
+    if (!StringValidator.isNonEmpty(tagValue) || nodeOption.id <= 0 || nodeOption.pathDepth != 3 || fetcher.data?.error) {
       return;
     }
 
     httpClient
-      .get<TextbookOtherDictResp[]>(
-        `/other/dict/list/${nodeOption.id}/${tagValue}`,
-      )
+      .get<TextbookOtherDictResp[]>(`/other/dict/list/${nodeOption.id}/${tagValue}`)
       .then((res) => {
         setOtherDictItems(res);
       })
@@ -187,23 +168,14 @@ export default function Index(props: any) {
   }, [tagValue, nodeOption, fetcher.data]);
 
   return (
-    <Splitter
-      vertical
-      style={{ height: 500, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}
-    >
+    <Splitter vertical style={{ height: 500, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}>
       {/* 操作区域 */}
       <Splitter.Panel defaultSize="50%" resizable={false}>
-        <Splitter
-          style={{ minHeight: 100, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}
-        >
+        <Splitter style={{ minHeight: 100, boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}>
           {/* 搜索区域 */}
           <Splitter.Panel defaultSize="50%" resizable={false}>
             <div className="p-3">
-              <Form
-                layout="horizontal"
-                labelCol={{ span: 3 }}
-                wrapperCol={{ span: 16 }}
-              >
+              <Form layout="horizontal" labelCol={{ span: 3 }} wrapperCol={{ span: 16 }}>
                 <Form.Item label="选择字典类型: ">
                   <Select
                     value={tagValue}
@@ -220,9 +192,7 @@ export default function Index(props: any) {
                       },
                     ]}
                   />
-                  {tagValueIsEmpty && (
-                    <Alert title="字典类型为空" type={"error"} />
-                  )}
+                  {tagValueIsEmpty && <Alert title="字典类型为空" type={"error"} />}
                 </Form.Item>
 
                 <Form.Item label="选择学段: ">
@@ -242,20 +212,10 @@ export default function Index(props: any) {
           {/* 添加区域 */}
           <Splitter.Panel defaultSize="50%" resizable={false}>
             <div className="p-3">
-              <Form
-                layout="horizontal"
-                labelCol={{ span: 3 }}
-                wrapperCol={{ span: 16 }}
-              >
+              <Form layout="horizontal" labelCol={{ span: 3 }} wrapperCol={{ span: 16 }}>
                 <Form.Item label="字典名称: ">
-                  <Input
-                    value={label}
-                    onChange={onLabelChange}
-                    placeholder="请输入名称"
-                  />
-                  {labelIsEmpty && (
-                    <Alert title="字典名称为空" type={"error"} />
-                  )}
+                  <Input value={label} onChange={onLabelChange} placeholder="请输入名称" />
+                  {labelIsEmpty && <Alert title="字典名称为空" type={"error"} />}
                 </Form.Item>
                 <Form.Item label="排序编号: ">
                   <InputNumber
@@ -268,19 +228,11 @@ export default function Index(props: any) {
                     placeholder="请输入排序编号, 数字"
                     onChange={onSortOrderChange}
                   />
-                  {sortOrderIsEmpty && (
-                    <Alert title="排序字段为空" type={"error"} />
-                  )}
+                  {sortOrderIsEmpty && <Alert title="排序字段为空" type={"error"} />}
                 </Form.Item>
                 {selectQuestionType && (
                   <Form.Item label="是选择题">
-                    <Radio.Group
-                      options={isSelectOptions}
-                      onChange={onIsSelectChange}
-                      value={isSelect}
-                      optionType="button"
-                      buttonStyle="solid"
-                    />
+                    <Radio.Group options={isSelectOptions} onChange={onIsSelectChange} value={isSelect} optionType="button" buttonStyle="solid" />
                   </Form.Item>
                 )}
                 <Form.Item>
@@ -318,9 +270,7 @@ export default function Index(props: any) {
             );
           })}
 
-          {fetcher.data?.error && (
-            <Alert title={fetcher.data.error} type={"error"} />
-          )}
+          {fetcher.data?.error && <Alert title={fetcher.data.error} type={"error"} />}
 
           {otherDictError}
         </div>
