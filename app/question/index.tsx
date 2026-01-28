@@ -4,9 +4,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { httpClient } from "~/util/http";
 import { ArrayUtil } from "~/util/object";
 import type { QuestionEditStatusReq, QuestionListReq, QuestionListResp } from "~/type/question";
-import { CommonTag } from "~/question/tag";
-import { CommonTitle } from "~/question/title";
-import { CommonSelect } from "~/question/select";
+import { CommonTag } from "~/common/tag";
+import { CommonTitle } from "~/common/title";
+import { CommonSelect } from "~/common/select";
 import "katex/dist/katex.min.css";
 import { Approve } from "~/question/approve";
 import { StringUtil } from "~/util/string";
@@ -246,13 +246,26 @@ export default function Index(props: any) {
             <div key={questionInfo.id}>
               <div className="group relative p-4 pb-4 hover:pb-12 border border-transparent hover:border-blue-500 transition-all duration-300 ease-in-out bg-white overflow-hidden">
                 {/* 标签 */}
-                {CommonTag(questionInfo, questionTypeList, questionTagList)}
+                <CommonTag
+                  questionTypeList={questionTypeList}
+                  questionTagList={questionTagList}
+                  questionTypeId={questionInfo.questionTypeId}
+                  questionTagIds={questionInfo.questionTagIds ?? []}
+                  difficultyLevel={questionInfo.difficultyLevel}
+                  status={questionInfo.status}
+                />
 
                 {/* 标题 */}
-                <div className="mt-2.5">{CommonTitle(questionInfo)}</div>
+                <div className="mt-2.5">
+                  {<CommonTitle id={questionInfo.id} title={questionInfo.title} comment={questionInfo.comment} images={questionInfo.images} />}
+                </div>
 
                 {/* 选项内容 */}
-                <div className="mt-2.5">{CommonSelect(questionInfo)}</div>
+                <div className="mt-2.5">
+                  {questionInfo.options && questionInfo.options.length > 0 && (
+                    <CommonSelect optionsLayout={questionInfo.optionsLayout ?? 1} options={questionInfo.options} />
+                  )}
+                </div>
 
                 {/* 审核信息 */}
                 <div className="absolute bottom-3 right-4 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 flex gap-2">

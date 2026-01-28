@@ -1,10 +1,10 @@
 // 题目详情页面
 import type { TextbookOtherDict } from "~/type/textbook";
 import type { QuestionInfoResp } from "~/type/question";
-import { CommonTag } from "~/question/tag";
+import { CommonTag } from "~/common/tag";
 import { Col, Divider, Flex, Image, Row } from "antd";
-import { CommonTitle } from "~/question/title";
-import { CommonSelect } from "~/question/select";
+import { CommonTitle } from "~/common/title";
+import { CommonSelect } from "~/common/select";
 import { StringValidator } from "~/util/string";
 import Markdown from "react-markdown";
 import remarkMath from "remark-math";
@@ -18,15 +18,28 @@ export default function Info(props: any) {
   return (
     <div>
       {/* 题型和标签 */}
-      {CommonTag(questionInfo.baseInfo, questionTypeList, questionTagList)}
+      <CommonTag
+        questionTypeList={questionTypeList}
+        questionTagList={questionTagList}
+        questionTypeId={questionInfo.baseInfo.questionTypeId}
+        questionTagIds={questionInfo.baseInfo.questionTagIds ?? []}
+        difficultyLevel={questionInfo.baseInfo.difficultyLevel}
+      />
 
       <Divider size="small" variant="dashed" style={{ borderColor: "#7cb305" }} dashed />
 
       {/* 题目标注和图片位置 */}
-      {CommonTitle(questionInfo.baseInfo)}
+      <CommonTitle
+        id={questionInfo.baseInfo.id}
+        title={questionInfo.baseInfo.title}
+        comment={questionInfo.baseInfo.comment}
+        images={questionInfo.baseInfo.images}
+      />
 
       {/* 选项 */}
-      {CommonSelect(questionInfo.baseInfo)}
+      {questionInfo.baseInfo.options && questionInfo.baseInfo.options.length > 0 && (
+        <CommonSelect optionsLayout={questionInfo.baseInfo.optionsLayout ?? 1} options={questionInfo.baseInfo.options} />
+      )}
 
       <Divider size="small" variant="dashed" titlePlacement="start" style={{ borderColor: "#7cb305" }} dashed>
         参考答案
