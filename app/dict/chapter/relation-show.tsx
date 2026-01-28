@@ -98,12 +98,22 @@ export default function RelationShow(props: any) {
   useEffect(() => {
     // 刷新菜单列表
     if (currentStep === 4) {
+      // 刷新菜单列表 - 章节选择7级
       httpClient
         .get<Textbook[]>("/textbook/list/7/all")
         .then((res) => {
           const textbookOptions: TextbookOption[] = ArrayUtil.mapTextbookToOption(res);
-          // 初始化两天都维护同样的内容即可, 因为后续选择可能会单独改变, 如果不变列表数据用同一份即可
           setSelectChapterOptions(textbookOptions);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      // 刷新菜单列表 - 知识点选择6级
+      httpClient
+        .get<Textbook[]>("/textbook/list/6/all")
+        .then((res) => {
+          const textbookOptions: TextbookOption[] = ArrayUtil.mapTextbookToOption(res);
           setSelectKnowledgeOptions(textbookOptions);
         })
         .catch((err) => {

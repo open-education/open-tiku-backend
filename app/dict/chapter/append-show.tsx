@@ -23,6 +23,7 @@ export default function AppendShow(props: any) {
     parentId: 0,
     pathDepth: 0,
     sortOrder: 0,
+    pathType: "",
   };
   const [editChapterNameOption, setEditChapterNameOption] = React.useState<Textbook>(editOptionInit);
   const [selectValues, setSelectValues] = useState<string[]>([]);
@@ -143,6 +144,7 @@ export default function AppendShow(props: any) {
           sortOrder: editChapterSortOrder,
           parentId: editChapterNameOption.id,
           pathDepth: editChapterNameOption.pathDepth + 1,
+          pathType: editChapterNameOption.pathType,
         },
         { method: "post" },
       )

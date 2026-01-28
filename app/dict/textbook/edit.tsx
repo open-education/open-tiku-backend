@@ -1,13 +1,13 @@
-import { Alert, Button, Cascader, type CascaderProps, Flex, Input, InputNumber, type InputNumberProps, Typography } from "antd";
+import { Alert, Button, Cascader, type CascaderProps, Flex, Input, InputNumber, type InputNumberProps, Select, Typography } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
-import { StringConst, StringValidator } from "~/util/string";
+import { StringConst, StringConstUtil, StringValidator } from "~/util/string";
 import { useFetcher } from "react-router";
 import type { Textbook, TextbookOption } from "~/type/textbook";
 import { httpClient } from "~/util/http";
 import { ArrayUtil } from "~/util/object";
 
 // 菜单信息维护
-export default function Add(props: any) {
+export default function Edit(props: any) {
   let fetcher = useFetcher();
 
   // 父级菜单选择信息
@@ -23,6 +23,7 @@ export default function Add(props: any) {
     parentId: 0,
     pathDepth: 0,
     sortOrder: 0,
+    pathType: "",
   });
 
   // 需要默认值信息
@@ -53,6 +54,12 @@ export default function Add(props: any) {
     setSortOrder(Number(value ?? 0));
   };
 
+  // 菜单类型
+  const [pathTypeValue, setPathTypeValue] = useState<string>(item.pathType);
+  const onPathTypeValueChange = (value: string) => {
+    setPathTypeValue(value);
+  };
+
   // 指定父级标识和深度, 默认继承详情的父级和深度, 有选择时更新为选择的目标值
   const [parentId, setParentId] = useState<number>(item.parentId);
   const [pathDepth, setPathDepth] = useState<number>(item.pathDepth);
@@ -65,6 +72,9 @@ export default function Add(props: any) {
         setItem(res);
         // 触发 ui 渲染最新的默认值
         setLabel(res.label);
+        setPathTypeValue(res.pathType);
+        setParentId(res.parentId);
+        setPathDepth(res.pathDepth);
         setSortOrder(res.sortOrder);
       });
     }
@@ -96,6 +106,7 @@ export default function Add(props: any) {
           sortOrder,
           parentId, // 这两个字段需要使用最新的目标值
           pathDepth,
+          pathType: pathTypeValue,
         },
         { method: "post" },
       )
@@ -160,6 +171,14 @@ export default function Add(props: any) {
         />
         <Typography.Text type="secondary" italic={true}>
           默认升序排列, 最小值0, 最大值100, 数字越小越靠前
+        </Typography.Text>
+      </div>
+
+      <div>
+        <Typography.Title level={5}>菜单类型</Typography.Title>
+        <Select value={pathTypeValue} style={{ width: 120 }} onChange={onPathTypeValueChange} options={StringConstUtil.dictTextbookPathTypeOptions} />
+        <Typography.Text type="secondary" italic={true}>
+          默认为公共节点, 需要选择具体的菜单类型
         </Typography.Text>
       </div>
 

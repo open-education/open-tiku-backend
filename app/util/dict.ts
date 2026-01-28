@@ -34,6 +34,7 @@ export const TextbookReqUtil = {
       pathDepth: Number(formData.get("pathDepth")?.toString() ?? 1),
       reqId: Number(formData.get("id")?.toString() ?? 0),
       sortOrder: Number(formData.get("sortOrder")?.toString() ?? 0),
+      pathType: formData.get("pathType")?.toString() ?? "",
     };
   },
 
@@ -43,6 +44,7 @@ export const TextbookReqUtil = {
       label: req.label,
       pathDepth: req.pathDepth,
       sortOrder: req.sortOrder,
+      pathType: req.pathType,
     };
     if (req.parentId > 0) {
       addReq.parentId = req.parentId;
@@ -57,6 +59,7 @@ export const TextbookReqUtil = {
       label: req.label,
       sortOrder: req.sortOrder,
       pathDepth: req.pathDepth,
+      pathType: req.pathType,
     };
     if (req.parentId > 0) {
       editReq.parentId = req.parentId;

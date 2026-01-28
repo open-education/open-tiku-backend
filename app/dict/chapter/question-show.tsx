@@ -19,6 +19,7 @@ export default function QuestionShow(props: any) {
     parentId: 0,
     pathDepth: 0,
     sortOrder: 0,
+    pathType: "",
   };
 
   // 章节节点小类

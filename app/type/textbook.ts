@@ -6,6 +6,7 @@ export interface Textbook {
   key: string;
   sortOrder: number;
   pathDepth: number;
+  pathType: string;
   children?: Textbook[];
 }
 
@@ -15,6 +16,7 @@ export interface CreateTextbookReq {
   label: string;
   pathDepth: number; // 深度需要前端根据选择的栏目自己提供
   sortOrder: number;
+  pathType: string;
 }
 
 // 更新元数据结构
@@ -24,6 +26,7 @@ export interface UpdateTextbookReq {
   label: string;
   pathDepth: number; // 深度需要前端根据选择的栏目自己提供
   sortOrder: number;
+  pathType: string;
 }
 
 // 选择父级菜单时下拉列表数据结构
@@ -41,6 +44,7 @@ export interface TextbookFetcherReq {
   label: string;
   sortOrder: number;
   pathDepth: number;
+  pathType: string;
 }
 
 // 章节和知识点关联请求结构

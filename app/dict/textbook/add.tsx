@@ -1,6 +1,6 @@
-import { Alert, Button, Cascader, type CascaderProps, Flex, Input, InputNumber, type InputNumberProps, Typography } from "antd";
+import { Alert, Button, Cascader, type CascaderProps, Flex, Input, InputNumber, type InputNumberProps, Select, Typography } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
-import { StringConst, StringValidator } from "~/util/string";
+import { StringConst, StringConstUtil, StringValidator } from "~/util/string";
 import { useFetcher } from "react-router";
 import type { Textbook, TextbookOption } from "~/type/textbook";
 
@@ -18,6 +18,7 @@ export default function Add(props: any) {
     parentId: 0,
     pathDepth: 0,
     sortOrder: 0,
+    pathType: "",
   };
   const [textbookOption, setTextbookOption] = useState<Textbook>(textbookOptionInit);
   const onParentLevelChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
@@ -41,6 +42,12 @@ export default function Add(props: any) {
   const [sortOrder, setSortOrder] = useState<number>(0);
   const onSortOrderChange: InputNumberProps["onChange"] = (value) => {
     setSortOrder(Number(value ?? 0));
+  };
+
+  // 菜单类型
+  const [pathTypeValue, setPathTypeValue] = useState<string>(StringConst.dictTextbookPathTypeCommon);
+  const onPathTypeValueChange = (value: string) => {
+    setPathTypeValue(value);
   };
 
   // 保存
@@ -69,6 +76,7 @@ export default function Add(props: any) {
           sortOrder,
           parentId: textbookOption.id,
           pathDepth: textbookOption.pathDepth + 1,
+          pathType: pathTypeValue,
         },
         { method: "post" },
       )
@@ -132,6 +140,14 @@ export default function Add(props: any) {
         />
         <Typography.Text type="secondary" italic={true}>
           默认升序排列, 最小值0, 最大值100, 数字越小越靠前
+        </Typography.Text>
+      </div>
+
+      <div>
+        <Typography.Title level={5}>菜单类型</Typography.Title>
+        <Select value={pathTypeValue} style={{ width: 120 }} onChange={onPathTypeValueChange} options={StringConstUtil.dictTextbookPathTypeOptions} />
+        <Typography.Text type="secondary" italic={true}>
+          默认为公共节点, 需要选择具体的菜单类型
         </Typography.Text>
       </div>
 

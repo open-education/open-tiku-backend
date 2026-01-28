@@ -52,13 +52,22 @@ export default function Relation(props: any) {
   // 监听进度条是否是第四步, 如果步骤顺序调整请顺带更新索引, 其它步骤不关注该区块内容
   useEffect(() => {
     if (currentStep === 3) {
-      // 刷新菜单列表
+      // 刷新菜单列表 - 章节选择7级
       httpClient
         .get<Textbook[]>("/textbook/list/7/all")
         .then((res) => {
           const textbookOptions: TextbookOption[] = ArrayUtil.mapTextbookToOption(res);
-          // 初始化两天都维护同样的内容即可, 因为后续选择可能会单独改变, 如果不变列表数据用同一份即可
           setSelectChapterOptions(textbookOptions);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      // 刷新菜单列表 - 知识点选择6级
+      httpClient
+        .get<Textbook[]>("/textbook/list/6/all")
+        .then((res) => {
+          const textbookOptions: TextbookOption[] = ArrayUtil.mapTextbookToOption(res);
           setSelectKnowledgeOptions(textbookOptions);
         })
         .catch((err) => {
@@ -74,7 +83,7 @@ export default function Relation(props: any) {
       return;
     }
     setSelectChapterOptionIsEmpty(false);
-    if (StringConst.dictChapterKnowledgeRelationMaxDepth != selectChapterOption.pathDepth) {
+    if (StringConst.dictChapterRelationMaxDepth != selectChapterOption.pathDepth) {
       setSelectChapterOptionMaxDepthLimit(true);
       return;
     }
@@ -85,7 +94,7 @@ export default function Relation(props: any) {
       return;
     }
     setSelectKnowledgeOptionIsEmpty(false);
-    if (StringConst.dictChapterKnowledgeRelationMaxDepth != selectKnowledgeOption.pathDepth) {
+    if (StringConst.dictKnowledgeRelationMaxDepth != selectKnowledgeOption.pathDepth) {
       setSelectKnowledgeOptionMaxDepthLimit(true);
       return;
     }
@@ -173,7 +182,7 @@ export default function Relation(props: any) {
 
             <div>
               {selectKnowledgeOptionIsEmpty && <Alert title="知识点小类名称为空" type={"error"} />}
-              {selectKnowledgeOptionMaxDepthLimit && <Alert title="知识点小类只能选择第7级" type={"error"} />}
+              {selectKnowledgeOptionMaxDepthLimit && <Alert title="知识点小类只能选择第6级" type={"error"} />}
             </div>
           </div>
         </Splitter.Panel>

@@ -58,6 +58,7 @@ export default function Index(props: any) {
     parentId: 0,
     pathDepth: 0,
     sortOrder: 0,
+    pathType: "",
   };
   const [nodeOption, setNodeOption] = useState<Textbook>(optionInit);
   const [nodeOptionIsEmpty, setNodeOptionIsEmpty] = useState<boolean>(false);
@@ -153,7 +154,7 @@ export default function Index(props: any) {
 
   // 监听字典类型和菜单变化刷新字典列表
   useEffect(() => {
-    if (!StringValidator.isNonEmpty(tagValue) || nodeOption.id <= 0 || nodeOption.pathDepth != 3 || fetcher.data?.error) {
+    if (!StringValidator.isNonEmpty(tagValue) || nodeOption.id <= 0 || nodeOption.pathDepth != 2 || fetcher.data?.error) {
       return;
     }
 

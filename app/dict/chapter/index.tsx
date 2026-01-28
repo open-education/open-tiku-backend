@@ -31,6 +31,7 @@ export default function Index(props: any) {
     parentId: 0,
     pathDepth: 0,
     sortOrder: 0,
+    pathType: "",
   });
 
   // 教材章节或者知识点名称, 需要根据父级菜单知道当前属于那一类型
@@ -74,6 +75,7 @@ export default function Index(props: any) {
           sortOrder: chapterSortOrder,
           parentId: nodeTextbookOption.id,
           pathDepth: nodeTextbookOption.pathDepth + 1,
+          pathType: nodeTextbookOption.pathType,
         },
         { method: "post" },
       )
@@ -122,16 +124,16 @@ export default function Index(props: any) {
             <span>说明: </span>
           </Col>
           <Col span={24}>
-            <span>1. 教材章节和知识点类别是平级的</span>
+            <span>1. 考点选题和章节选题一共均有8个层级;</span>
           </Col>
           <Col span={24}>
-            <span>2. 章节节点和知识点小类也是平级的, 这一级要做关联, 因为接下来的末级是挂载题目的菜单</span>
+            <span>2. 章节选题的第7层级跟考点选题的第6层是一一对应的, 考点选题的第7级实际上是章节选题第7级的子级列表, 但是不展示也未存储;</span>
           </Col>
           <Col span={24}>
-            <span>3. 追加 章节小节和知识点小类 需要重新选择父级菜单</span>
+            <span>3. </span>
           </Col>
           <Col span={24}>
-            <span>4. 关联章节小节和知识点小类后前端才可以添加题目到该节点上</span>
+            <span>4. </span>
           </Col>
         </Row>
       </div>

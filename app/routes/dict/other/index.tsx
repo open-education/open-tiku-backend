@@ -10,8 +10,8 @@ import { StringConst, StringConstUtil } from "~/util/string";
 
 // 路由加载时获取所有层级信息
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  // 只获取前5层, 否则嵌套太深不便于展示也不便于操作
-  const textbooks = await httpClient.get<Textbook[]>("/textbook/list/3/all");
+  // 只获取前2层, 否则嵌套太深不便于展示也不便于操作
+  const textbooks = await httpClient.get<Textbook[]>("/textbook/list/2/all");
 
   // 转化数据结构供添加和编辑下拉列表使用
   const textbookOptions = ArrayUtil.mapTextbookToOption(textbooks);

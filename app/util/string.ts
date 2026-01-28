@@ -62,13 +62,18 @@ export const StringConst = {
   dictChapterNameRemove: "dictChapterNameRemove", // 教材章节和知识点类删除
   dictChapterKnowledgeRelation: "dictChapterKnowledgeRelation", // 关联章节和知识点
   dictChapterKnowledgeRelationRemove: "dictChapterKnowledgeRelationRemove", // 移除关联章节和知识点
-  dictChapterKnowledgeRelationMaxDepth: 7, // 章节和知识点关联只能关联第7级
+  dictChapterRelationMaxDepth: 7, // 章节关联只能关联第7级
+  dictKnowledgeRelationMaxDepth: 6, // 知识点只能关联第6级
   dictQuestionsAdd: "dictQuestionsAdd", // 追加题型
   dictQuestionsRemove: "dictQuestionsRemove", // 编辑题型
   dictTextbookOtherAdd: "dictTextbookOtherAdd", // 教材其它字典添加
   dictTextbookOtherRemove: "dictTextbookOtherRemove", // 教材其它字典删除
   dictTextbookOtherType: "question_type", // 题型类型
   dictTextbookOtherTag: "question_tag", // 题型标签
+
+  dictTextbookPathTypeCommon: "common", // 公共节点
+  dictTextbookPathTypeChapter: "chapter", // 章节选题
+  dictTextbookPathTypeKnowledge: "knowledge", // 知识点选题
 };
 
 // 常量整合工具
@@ -78,4 +83,20 @@ export const StringConstUtil = {
   dictChapterKnowledgeSet: new Set<string>([StringConst.dictChapterKnowledgeRelation, StringConst.dictChapterKnowledgeRelationRemove]),
   dictQuestionSet: new Set<string>([StringConst.dictQuestionsAdd, StringConst.dictQuestionsRemove]),
   dictOtherSet: new Set<string>([StringConst.dictTextbookOtherAdd, StringConst.dictTextbookOtherRemove]),
+
+  // 菜单节点类型
+  dictTextbookPathTypeOptions: [
+    {
+      value: StringConst.dictTextbookPathTypeCommon,
+      label: "公共节点",
+    },
+    {
+      value: StringConst.dictTextbookPathTypeChapter,
+      label: "章节选题",
+    },
+    {
+      value: StringConst.dictTextbookPathTypeKnowledge,
+      label: "考点选题",
+    },
+  ],
 };
