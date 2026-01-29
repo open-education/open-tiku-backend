@@ -14,7 +14,7 @@ export default function AppendShow(props: any) {
   const chapterShowItems: Textbook[] = props.chapterShowItems ?? [];
 
   /// 编辑区域菜单层级
-  const [editChapterNameOptions, setEditChapterNameOptions] = React.useState<TextbookOption[]>([]);
+  const [editChapterNameOptions, setEditChapterNameOptions] = useState<TextbookOption[]>([]);
   const editOptionInit: Textbook = {
     children: [],
     id: 0,
@@ -25,7 +25,7 @@ export default function AppendShow(props: any) {
     sortOrder: 0,
     pathType: "",
   };
-  const [editChapterNameOption, setEditChapterNameOption] = React.useState<Textbook>(editOptionInit);
+  const [editChapterNameOption, setEditChapterNameOption] = useState<Textbook>(editOptionInit);
   const [selectValues, setSelectValues] = useState<string[]>([]);
   const onParentLevelChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
     if (selectedOptions === undefined) {
@@ -36,7 +36,7 @@ export default function AppendShow(props: any) {
   };
 
   /// 点击编辑区域编辑按钮
-  const [editChapterNameId, setEditChapterNameId] = React.useState<number>(0);
+  const [editChapterNameId, setEditChapterNameId] = useState<number>(0);
   const onEditChapterNameClick = (id: number) => {
     console.log("editChapterName", id);
     setEditChapterNameId(id);
@@ -94,21 +94,21 @@ export default function AppendShow(props: any) {
   };
 
   // 编辑名称
-  const [editChapterName, setEditChapterName] = React.useState<string>("");
+  const [editChapterName, setEditChapterName] = useState<string>("");
   const onEditChapterChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setEditChapterName(e.target.value);
   }, []);
 
   // 排序编号
-  const [editChapterSortOrder, setEditChapterSortOrder] = React.useState<number>(0);
+  const [editChapterSortOrder, setEditChapterSortOrder] = useState<number>(0);
   const onEditChapterSortOrderChange: InputNumberProps["onChange"] = (value) => {
     setEditChapterSortOrder(Number(value ?? 0));
   };
 
   // 为空判断
-  const [chapterNodeIsEmpty, setChapterNodeIsEmpty] = React.useState(false);
-  const [chapterNodeMaxDepthLimit, setChapterNodeMaxDepthLimit] = React.useState<boolean>(false);
-  const [chapterIsEmpty, setChapterIsEmpty] = React.useState(false);
+  const [chapterNodeIsEmpty, setChapterNodeIsEmpty] = useState(false);
+  const [chapterNodeMaxDepthLimit, setChapterNodeMaxDepthLimit] = useState<boolean>(false);
+  const [chapterIsEmpty, setChapterIsEmpty] = useState(false);
 
   // 提交编辑
   const submitEditChapterName = () => {
@@ -182,7 +182,7 @@ export default function AppendShow(props: any) {
             <div>
               <Row gutter={[12, 12]}>
                 <Col span={24}>
-                  <span className="text-blue-700 font-normal">展示章节或知识点名称</span>
+                  <span className="text-blue-700 font-normal">展示章节或考点名称</span>
                 </Col>
               </Row>
             </div>
@@ -255,7 +255,7 @@ export default function AppendShow(props: any) {
             <div>
               <Row gutter={[12, 12]}>
                 <Col span={24}>
-                  <span className="text-blue-700 font-normal">编辑章节或知识点名称</span>
+                  <span className="text-blue-700 font-normal">编辑章节或考点名称</span>
                 </Col>
               </Row>
             </div>
@@ -264,14 +264,14 @@ export default function AppendShow(props: any) {
               <Row gutter={[12, 12]}>
                 <Col span={24}>
                   <Form layout="horizontal" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
-                    <Form.Item label="选择教材章节或知识点类别">
+                    <Form.Item label="选择教材章节或考点类别">
                       <Cascader
                         style={{ width: "80%" }}
                         changeOnSelect={true}
                         value={selectValues}
                         options={editChapterNameOptions}
                         onChange={onParentLevelChange}
-                        placeholder="请选择教材章节或知识点类别"
+                        placeholder="请选择教材章节或考点类别"
                       />
                     </Form.Item>
                     <Form.Item label="名称: ">
@@ -297,8 +297,8 @@ export default function AppendShow(props: any) {
                   </Form>
                 </Col>
                 <Col span={24}>
-                  {chapterNodeIsEmpty && <Alert title="请先选择 第一步: 选择教材章节或知识点类别" type={"error"} />}
-                  {chapterNodeMaxDepthLimit && <Alert title="教材章节或知识点类别父级只能是第5级或第6级" type={"error"} />}
+                  {chapterNodeIsEmpty && <Alert title="请先选择 第一步: 选择教材章节或考点类别" type={"error"} />}
+                  {chapterNodeMaxDepthLimit && <Alert title="教材章节或考点类别父级只能是第5级或第6级" type={"error"} />}
                   {chapterIsEmpty && <Alert title="名称不能为空" type={"error"} />}
                 </Col>
               </Row>

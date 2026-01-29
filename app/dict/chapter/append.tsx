@@ -34,7 +34,7 @@ export default function Append(props: any) {
             <div>
               <Row gutter={[12, 12]}>
                 <Col span={24}>
-                  <span className="text-blue-700 font-normal">追加章节或知识点名称</span>
+                  <span className="text-blue-700 font-normal">追加章节或考点名称</span>
                 </Col>
               </Row>
             </div>
@@ -65,8 +65,8 @@ export default function Append(props: any) {
                   </Form>
                 </Col>
                 <Col span={24}>
-                  {chapterNodeIsEmpty && <Alert title="请先选择 第一步: 选择教材章节或知识点类别" type={"error"} />}
-                  {chapterNodeMaxDepthLimit && <Alert title="择教材章节或知识点类别父级只能是第5级或者第6级" type={"error"} />}
+                  {chapterNodeIsEmpty && <Alert title="请先选择 第一步: 选择教材章节或考点类别" type={"error"} />}
+                  {chapterNodeMaxDepthLimit && <Alert title="择教材章节或考点类别父级只能是第5级或者第6级" type={"error"} />}
                   {chapterIsEmpty && <Alert title="名称不能为空" type={"error"} />}
                 </Col>
               </Row>

@@ -1,5 +1,5 @@
 import { Alert, Button, Cascader, type CascaderProps, Col, Form, Input, InputNumber, type InputNumberProps, Row, Splitter } from "antd";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import type { ChapterAndKnowledgeResp, Textbook, TextbookOption } from "~/type/textbook";
 import { httpClient } from "~/util/http";
 import { ArrayUtil } from "~/util/object";
@@ -24,9 +24,9 @@ export default function Question(props: any) {
   };
 
   // 章节节点小类
-  const [selectOptions, setSelectOptions] = React.useState<TextbookOption[]>([]);
-  const [selectOption, setSelectOption] = React.useState<Textbook>(optionInit);
-  const [selectOptionIsEmpty, setSelectOptionIsEmpty] = React.useState<boolean>(false);
+  const [selectOptions, setSelectOptions] = useState<TextbookOption[]>([]);
+  const [selectOption, setSelectOption] = useState<Textbook>(optionInit);
+  const [selectOptionIsEmpty, setSelectOptionIsEmpty] = useState<boolean>(false);
   const onSelectOptionChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
     if (selectedOptions === undefined) {
       setSelectOption(optionInit);
@@ -37,14 +37,14 @@ export default function Question(props: any) {
   };
 
   // 编辑名称
-  const [label, setLabel] = React.useState<string>("");
-  const [labelIsEmpty, setLabelIsEmpty] = React.useState<boolean>(false);
+  const [label, setLabel] = useState<string>("");
+  const [labelIsEmpty, setLabelIsEmpty] = useState<boolean>(false);
   const onLabelChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setLabel(e.target.value);
   }, []);
 
   // 排序编号
-  const [sortOrder, setSortOrder] = React.useState<number>(0);
+  const [sortOrder, setSortOrder] = useState<number>(0);
   const onSortOrderChange: InputNumberProps["onChange"] = (value) => {
     setSortOrder(Number(value ?? 0));
   };
@@ -65,7 +65,7 @@ export default function Question(props: any) {
     }
   }, [currentStep]);
 
-  const [relationIsEmpty, setRelationIsEmpty] = React.useState<React.ReactNode>("");
+  const [relationIsEmpty, setRelationIsEmpty] = useState<React.ReactNode>("");
 
   // 添加题型
   const onAddQuestion = () => {
@@ -120,7 +120,7 @@ export default function Question(props: any) {
               <Row gutter={[12, 12]}>
                 <Col span={24}>
                   <span className="text-blue-700 font-normal">
-                    选择章节小节名称或者知识点名称均可, 上一步骤关联完成后, 后续的题型均挂在在章节小节和对应的知识点小类下面
+                    追加题型要选择考点选题的第7级, 上一步骤关联完成后, 后续的题型均挂在考点选题的小类下面
                   </span>
                 </Col>
               </Row>
@@ -130,16 +130,11 @@ export default function Question(props: any) {
               <Row gutter={[12, 12]}>
                 <Col span={24}>
                   <Form layout="horizontal" labelCol={{ span: 3 }} wrapperCol={{ span: 10 }}>
-                    <Form.Item label="选择教材章节或知识点类别">
-                      <Cascader
-                        style={{ width: "100%" }}
-                        options={selectOptions}
-                        onChange={onSelectOptionChange}
-                        placeholder="请选择章节小节名称或者知识点名称"
-                      />
+                    <Form.Item label="选择考点类别">
+                      <Cascader style={{ width: "100%" }} options={selectOptions} onChange={onSelectOptionChange} placeholder="请选择考点名称" />
                     </Form.Item>
 
-                    <div>{selectOptionIsEmpty && <Alert title="请先选择章节或者知识点" type={"error"} />}</div>
+                    <div>{selectOptionIsEmpty && <Alert title="请先选择考点" type={"error"} />}</div>
 
                     <Form.Item label="名称: ">
                       <Input value={label} placeholder="请输入名称" onChange={onLabelChange} />

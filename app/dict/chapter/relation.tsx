@@ -1,5 +1,5 @@
 import { Alert, Button, Cascader, type CascaderProps, Col, Row, Splitter } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Textbook, TextbookOption } from "~/type/textbook";
 import { httpClient } from "~/util/http";
 import { ArrayUtil } from "~/util/object";
@@ -21,6 +21,7 @@ export default function Relation(props: any) {
     parentId: 0,
     pathDepth: 0,
     sortOrder: 0,
+    pathType: "",
   };
 
   // 章节节点小类
@@ -52,22 +53,12 @@ export default function Relation(props: any) {
   // 监听进度条是否是第四步, 如果步骤顺序调整请顺带更新索引, 其它步骤不关注该区块内容
   useEffect(() => {
     if (currentStep === 3) {
-      // 刷新菜单列表 - 章节选择7级
+      // 刷新菜单列表 - 章节和考点选择7级
       httpClient
         .get<Textbook[]>("/textbook/list/7/all")
         .then((res) => {
           const textbookOptions: TextbookOption[] = ArrayUtil.mapTextbookToOption(res);
           setSelectChapterOptions(textbookOptions);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      // 刷新菜单列表 - 知识点选择6级
-      httpClient
-        .get<Textbook[]>("/textbook/list/6/all")
-        .then((res) => {
-          const textbookOptions: TextbookOption[] = ArrayUtil.mapTextbookToOption(res);
           setSelectKnowledgeOptions(textbookOptions);
         })
         .catch((err) => {
@@ -158,7 +149,7 @@ export default function Relation(props: any) {
             <div>
               <Row gutter={[12, 12]}>
                 <Col span={24}>
-                  <span className="text-blue-700 font-normal">选择知识点小类名称</span>
+                  <span className="text-blue-700 font-normal">选择考点小类名称</span>
                 </Col>
               </Row>
             </div>
@@ -173,7 +164,7 @@ export default function Relation(props: any) {
                       style={{ width: "100%" }}
                       options={selectKnowledgeOptions}
                       onChange={onSelectKnowledgeOptionChange}
-                      placeholder="请选择知识点小类名称"
+                      placeholder="请选择考点小类名称"
                     />
                   </div>
                 </Col>
@@ -181,7 +172,7 @@ export default function Relation(props: any) {
             </div>
 
             <div>
-              {selectKnowledgeOptionIsEmpty && <Alert title="知识点小类名称为空" type={"error"} />}
+              {selectKnowledgeOptionIsEmpty && <Alert title="考点小类名称为空" type={"error"} />}
               {selectKnowledgeOptionMaxDepthLimit && <Alert title="知识点小类只能选择第6级" type={"error"} />}
             </div>
           </div>

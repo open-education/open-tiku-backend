@@ -1,5 +1,5 @@
 import { Alert, Col, Row, Steps } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Append from "~/dict/chapter/append";
 import AppendShow from "~/dict/chapter/append-show";
 import Relation from "~/dict/chapter/relation";
@@ -81,7 +81,6 @@ export default function Index(props: any) {
       )
       .then((_) => {
         // 要刷新第一步的菜单列表
-        // 要刷新第一步的菜单列表
         httpClient
           .get<Textbook[]>(`/textbook/list/${nodeTextbookOption.id}/part`)
           .then((res) => {
@@ -127,13 +126,19 @@ export default function Index(props: any) {
             <span>1. 考点选题和章节选题一共均有8个层级;</span>
           </Col>
           <Col span={24}>
-            <span>2. 章节选题的第7层级跟考点选题的第6层是一一对应的, 考点选题的第7级实际上是章节选题第7级的子级列表, 但是不展示也未存储;</span>
+            <span>
+              2. 章节选题的第7层级跟考点选题的第6层是一一对应的, 但是考点选题还有细分, 因此目前章节选题实际会对应考点选题第6层级的所有子集,
+              多次进行关联即可;
+            </span>
           </Col>
           <Col span={24}>
-            <span>3. </span>
+            <span>
+              3. 题型均挂载在第7层级下面, 因此章节选题下面包括了考点选题的所有题型, 因此题型请在考点选题下面追加,
+              否则章节选题追加无法关联考点选题的子集;
+            </span>
           </Col>
           <Col span={24}>
-            <span>4. </span>
+            <span>4. 章节选题目前主要是用来查看和选题, 添加题型等后续看是否有细分领域对应关系后再追加;</span>
           </Col>
         </Row>
       </div>
@@ -149,7 +154,7 @@ export default function Index(props: any) {
           orientation="vertical"
           items={[
             {
-              title: "第一步. 选择教材章节或知识点类别",
+              title: "第一步. 选择教材章节或考点类别",
               content: <Node textbookOptions={props.textbookOptions} setNodeTextbookOption={setNodeTextbookOption} />,
             },
             {
@@ -172,11 +177,11 @@ export default function Index(props: any) {
               content: <AppendShow chapterShowItems={chapterShowItems} setChapterShowItems={setChapterShowItems} />,
             },
             {
-              title: "第四步. 关联章节小节和知识点小类",
+              title: "第四步. 关联章节小节和考点小类",
               content: <Relation currentStep={currentStep} />,
             },
             {
-              title: "第五步. 关联章节小节和知识点小类查看",
+              title: "第五步. 关联章节小节和考点小类查看",
               content: <RelationShow currentStep={currentStep} />,
             },
             {

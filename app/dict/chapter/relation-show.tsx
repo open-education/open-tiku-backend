@@ -1,5 +1,5 @@
 import { Alert, Button, Cascader, type CascaderProps, Col, Row, Splitter } from "antd";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { Textbook, TextbookOption } from "~/type/textbook";
 import { ArrayUtil } from "~/util/object";
 import { httpClient } from "~/util/http";
@@ -20,12 +20,13 @@ export default function RelationShow(props: any) {
     parentId: 0,
     pathDepth: 0,
     sortOrder: 0,
+    pathType: "",
   };
 
   // 章节节点小类
-  const [selectChapterOptions, setSelectChapterOptions] = React.useState<TextbookOption[]>([]);
-  const [chapterOption, setChapterOption] = React.useState<Textbook>(optionInit);
-  const [knowledgeLabelList, setKnowledgeLabelList] = React.useState<Textbook[]>([]);
+  const [selectChapterOptions, setSelectChapterOptions] = useState<TextbookOption[]>([]);
+  const [chapterOption, setChapterOption] = useState<Textbook>(optionInit);
+  const [knowledgeLabelList, setKnowledgeLabelList] = useState<Textbook[]>([]);
   const onSelectChapterOptionChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
     if (selectedOptions === undefined) {
       setChapterOption(optionInit);
@@ -47,9 +48,9 @@ export default function RelationShow(props: any) {
   };
 
   // 知识点小类
-  const [selectKnowledgeOptions, setSelectKnowledgeOptions] = React.useState<TextbookOption[]>([]);
-  const [knowledgeOption, setKnowledgeOption] = React.useState<Textbook>(optionInit);
-  const [chapterLabelList, setChapterLabelList] = React.useState<Textbook[]>([]);
+  const [selectKnowledgeOptions, setSelectKnowledgeOptions] = useState<TextbookOption[]>([]);
+  const [knowledgeOption, setKnowledgeOption] = useState<Textbook>(optionInit);
+  const [chapterLabelList, setChapterLabelList] = useState<Textbook[]>([]);
   const onSelectKnowledgeOptionChange: CascaderProps<TextbookOption>["onChange"] = (_, selectedOptions) => {
     if (selectedOptions === undefined) {
       setKnowledgeOption(optionInit);
@@ -71,8 +72,8 @@ export default function RelationShow(props: any) {
   };
 
   // 通过章节或者知识点解除关联, 解除关联后要实时刷新, 也是通过父级标识
-  const [chapterIsSelect, setChapterIsSelect] = React.useState<boolean>(false);
-  const [knowledgeIsSelect, setKnowledgeIsSelect] = React.useState<boolean>(false);
+  const [chapterIsSelect, setChapterIsSelect] = useState<boolean>(false);
+  const [knowledgeIsSelect, setKnowledgeIsSelect] = useState<boolean>(false);
   const onRemoveKnowledgeOptionChange = (id: number, reqType: string, parentId: number) => {
     if (confirm("确认解除关联?")) {
       setChapterIsSelect(reqType === "chapter");
@@ -104,16 +105,6 @@ export default function RelationShow(props: any) {
         .then((res) => {
           const textbookOptions: TextbookOption[] = ArrayUtil.mapTextbookToOption(res);
           setSelectChapterOptions(textbookOptions);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      // 刷新菜单列表 - 知识点选择6级
-      httpClient
-        .get<Textbook[]>("/textbook/list/6/all")
-        .then((res) => {
-          const textbookOptions: TextbookOption[] = ArrayUtil.mapTextbookToOption(res);
           setSelectKnowledgeOptions(textbookOptions);
         })
         .catch((err) => {
@@ -216,7 +207,7 @@ export default function RelationShow(props: any) {
             <div>
               <Row gutter={[12, 12]}>
                 <Col span={24}>
-                  <span className="text-blue-700 font-normal">选择知识点小类名称</span>
+                  <span className="text-blue-700 font-normal">选择考点小类名称</span>
                 </Col>
               </Row>
             </div>
@@ -229,7 +220,7 @@ export default function RelationShow(props: any) {
                       style={{ width: "100%" }}
                       options={selectKnowledgeOptions}
                       onChange={onSelectKnowledgeOptionChange}
-                      placeholder="请选择知识点小类名称"
+                      placeholder="请选择考点小类名称"
                     />
                   </div>
                 </Col>

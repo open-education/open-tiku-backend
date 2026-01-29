@@ -63,7 +63,7 @@ export const StringConst = {
   dictChapterKnowledgeRelation: "dictChapterKnowledgeRelation", // 关联章节和知识点
   dictChapterKnowledgeRelationRemove: "dictChapterKnowledgeRelationRemove", // 移除关联章节和知识点
   dictChapterRelationMaxDepth: 7, // 章节关联只能关联第7级
-  dictKnowledgeRelationMaxDepth: 6, // 知识点只能关联第6级
+  dictKnowledgeRelationMaxDepth: 7, // 知识点只能关联第7级
   dictQuestionsAdd: "dictQuestionsAdd", // 追加题型
   dictQuestionsRemove: "dictQuestionsRemove", // 编辑题型
   dictTextbookOtherAdd: "dictTextbookOtherAdd", // 教材其它字典添加

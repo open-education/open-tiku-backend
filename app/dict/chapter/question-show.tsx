@@ -1,6 +1,6 @@
 import { Button, Cascader, type CascaderProps, Col, Row, Splitter } from "antd";
-import React, { useEffect, useState } from "react";
-import type { ChapterAndKnowledgeResp, QuestionCateResp, Textbook, TextbookOption } from "~/type/textbook";
+import { useEffect, useState } from "react";
+import type { QuestionCateResp, Textbook, TextbookOption } from "~/type/textbook";
 import { httpClient } from "~/util/http";
 import { ArrayUtil } from "~/util/object";
 import { useFetcher } from "react-router";
@@ -38,16 +38,9 @@ export default function QuestionShow(props: any) {
 
     // 此时我并不知道选择的类型是知识点还是章节, 因此需要查询关联标识
     httpClient
-      .get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${info.id}`)
+      .get<QuestionCateResp[]>(`/question-cate/list/${info.id}`)
       .then((res) => {
-        httpClient
-          .get<QuestionCateResp[]>(`/question-cate/list/${res.id}`)
-          .then((res) => {
-            setChapterLabelList(res);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        setChapterLabelList(res);
       })
       .catch((err) => {
         console.log(err);
@@ -70,16 +63,9 @@ export default function QuestionShow(props: any) {
 
     // 此时我并不知道选择的类型是知识点还是章节, 因此需要查询关联标识
     httpClient
-      .get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${info.id}`)
+      .get<QuestionCateResp[]>(`/question-cate/list/${info.id}`)
       .then((res) => {
-        httpClient
-          .get<QuestionCateResp[]>(`/question-cate/list/${res.id}`)
-          .then((res) => {
-            setKnowledgeLabelList(res);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        setKnowledgeLabelList(res);
       })
       .catch((err) => {
         console.log(err);
@@ -131,16 +117,9 @@ export default function QuestionShow(props: any) {
       if (StringConst.dictQuestionsRemove === reqType) {
         if (chapterOption.id > 0) {
           httpClient
-            .get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${chapterOption.id}`)
+            .get<QuestionCateResp[]>(`/question-cate/list/${chapterOption.id}`)
             .then((res) => {
-              httpClient
-                .get<QuestionCateResp[]>(`/question-cate/list/${res.id}`)
-                .then((res) => {
-                  setChapterLabelList(res);
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
+              setChapterLabelList(res);
             })
             .catch((err) => {
               console.log(err);
@@ -149,16 +128,9 @@ export default function QuestionShow(props: any) {
 
         if (knowledgeOption.id > 0) {
           httpClient
-            .get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${knowledgeOption.id}`)
+            .get<QuestionCateResp[]>(`/question-cate/list/${knowledgeOption.id}`)
             .then((res) => {
-              httpClient
-                .get<QuestionCateResp[]>(`/question-cate/list/${res.id}`)
-                .then((res) => {
-                  setKnowledgeLabelList(res);
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
+              setKnowledgeLabelList(res);
             })
             .catch((err) => {
               console.log(err);
@@ -225,7 +197,7 @@ export default function QuestionShow(props: any) {
             <div>
               <Row gutter={[12, 12]}>
                 <Col span={24}>
-                  <span className="text-blue-700 font-normal">选择知识点小类名称</span>
+                  <span className="text-blue-700 font-normal">选择考点小类名称</span>
                 </Col>
               </Row>
             </div>
@@ -238,7 +210,7 @@ export default function QuestionShow(props: any) {
                       style={{ width: "100%" }}
                       options={selectKnowledgeOptions}
                       onChange={onSelectKnowledgeOptionChange}
-                      placeholder="请选择知识点小类名称"
+                      placeholder="请选择考点小类名称"
                     />
                   </div>
                 </Col>

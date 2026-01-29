@@ -29,6 +29,7 @@ export default function Index(props: any) {
     parentId: 0,
     pathDepth: 0,
     sortOrder: 0,
+    pathType: "",
   };
 
   const [nodeOption, setNodeOption] = useState<Textbook>(optionInit);
@@ -48,11 +49,11 @@ export default function Index(props: any) {
       // 需要去找题型类型和标签
       const nodes = ArrayUtil.findPath(textbookOptions, info.id.toString()) ?? [];
       // 题型类型和标签挂载在第三层上
-      if (nodes.length < 3) {
+      if (nodes.length < 2) {
         return;
       }
       // 目前题型和标签类型挂载在第三层上
-      const reqId: number = nodes[2].raw.id;
+      const reqId: number = nodes[1].raw.id;
 
       // 类型是在第三级上, 需要往上找-pathMap
       httpClient
