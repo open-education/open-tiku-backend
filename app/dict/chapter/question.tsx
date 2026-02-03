@@ -84,15 +84,20 @@ export default function Question(props: any) {
     // 题型要存入单独的表来维护
     // 此时我并不知道选择的类型是知识点还是章节, 因此需要查询关联标识
     httpClient
-      .get<ChapterAndKnowledgeResp>(`/chapter-knowledge/info/${selectOption.id}`)
+      .get<ChapterAndKnowledgeResp[]>(`/chapter-knowledge/info/${selectOption.id}`)
       .then((res) => {
         setRelationIsEmpty("");
+
+        if (res.length == 0) {
+          setRelationIsEmpty("关联的考点为空");
+          return;
+        }
 
         fetcher
           .submit(
             {
               source: StringConst.dictQuestionsAdd,
-              relatedId: res.id,
+              relatedId: res[0].id,
               label,
               sortOrder,
               pathType: selectOption.pathType,
