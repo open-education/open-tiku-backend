@@ -196,7 +196,7 @@ export default function Index(props: any) {
                   {tagValueIsEmpty && <Alert title="字典类型为空" type={"error"} />}
                 </Form.Item>
 
-                <Form.Item label="选择学段: ">
+                <Form.Item label="选择第二层科目: ">
                   <Cascader
                     style={{ width: "50%" }}
                     changeOnSelect={true}
@@ -205,7 +205,7 @@ export default function Index(props: any) {
                     placeholder="请选择学段"
                   />
                 </Form.Item>
-                {nodeOptionIsEmpty && <Alert title="学段为空" type={"error"} />}
+                {nodeOptionIsEmpty && <Alert title="第二层科目为空" type={"error"} />}
               </Form>
             </div>
           </Splitter.Panel>

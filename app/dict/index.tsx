@@ -51,6 +51,10 @@ export default function Index(props: any) {
       key: "other",
       label: <NavLink to={"other"}>其它元数据配置</NavLink>,
     },
+    {
+      key: "rule",
+      label: <NavLink to={"rule"}>组卷规则配置</NavLink>,
+    },
   ];
 
   const showLeftOrTopMenu = () => {
