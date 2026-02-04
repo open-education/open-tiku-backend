@@ -1,11 +1,18 @@
 import { Alert, Button, Cascader, Col, Divider, Drawer, Empty, Flex, Form, Row, type CascaderProps } from "antd";
-import { useState } from "react";
-import type { Textbook, TextbookOption } from "~/type/textbook";
+import React, { useState } from "react";
+import type { Textbook, TextbookOption, TextbookOtherDictResp } from "~/type/textbook";
 import Add from "~/dict/rule/add";
+import { httpClient } from "~/util/http";
 
 // 试卷规则维护
 export default function Index(props: any) {
   const textbookOptions = props.textbookOptions ?? [];
+
+  // 请求相关错误
+  const [reqErr, setReqErr] = useState<React.ReactNode>("");
+
+  // 题型列表
+  const [questionTypeList, setQuestionTypeList] = useState<TextbookOtherDictResp[]>([]);
 
   // 菜单变化处理
   const optionInit: Textbook = {
@@ -25,6 +32,15 @@ export default function Index(props: any) {
       setNodeOption(optionInit);
     } else {
       setNodeOption(selectedOptions[selectedOptions.length - 1].raw);
+      // 同时获取题型列表
+      httpClient
+        .get<TextbookOtherDictResp[]>(`/other/dict/list/${nodeOption.id}/question_type`)
+        .then((res) => {
+          setQuestionTypeList(res);
+        })
+        .catch((err) => {
+          setReqErr(<Alert title={`请求错误: ${err}`} type={"error"} />);
+        });
     }
   };
 
@@ -38,7 +54,7 @@ export default function Index(props: any) {
   const showAddDrawer = () => {
     setOpenDrawer(true);
     setDrawerTitle("添加规则");
-    setDrawerContent(<Add />);
+    setDrawerContent(<Add questionTypeList={questionTypeList} />);
   };
   const onCloseDrawer = () => {
     setOpenDrawer(false);
@@ -80,6 +96,8 @@ export default function Index(props: any) {
       {/* 规则展示和编辑 */}
       <div className="mt-2.5">
         <div className="text-blue-700 font-bold">已有规则列表</div>
+        {/* 请求相关错误 */}
+        {reqErr}
         <Empty />
       </div>
 

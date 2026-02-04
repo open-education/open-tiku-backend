@@ -1,9 +1,12 @@
 import { Alert, Form, Input, InputNumber, Select, Tag, type InputNumberProps } from "antd";
 import { useCallback, useState } from "react";
-import { StringConst, StringConstUtil } from "~/util/string";
+import type { TextbookOtherDictResp } from "~/type/textbook";
+import { StringConstUtil } from "~/util/string";
+import { SelectQuestionType } from "~/dict/rule/content";
 
 // 组卷规则添加
 export default function Add(props: any) {
+  const questionTypeList: TextbookOtherDictResp[] = props.questionTypeList ?? [];
   // 层次
   const [level, setLevel] = useState<number>(StringConstUtil.dictTestLevelOptions[0].value);
   const [levelIsEmpty, setLevelIsEmpty] = useState<boolean>(false);
@@ -61,6 +64,8 @@ export default function Add(props: any) {
         <Form.Item label="描述">
           <Input value={description} onChange={onDescriptionChange} placeholder="请输入描述" />
         </Form.Item>
+
+        <SelectQuestionType questionTypeList={questionTypeList} />
       </Form>
     </div>
   );
