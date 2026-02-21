@@ -4,6 +4,9 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  base: "/backend/",
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
+  server: {
+    // 允许通过这些域名访问开发服务器
+    allowedHosts: ["admin-tiku.test"],
+  },
 });
