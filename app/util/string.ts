@@ -74,6 +74,10 @@ export const StringConst = {
   dictTextbookPathTypeCommon: "common", // 公共节点
   dictTextbookPathTypeChapter: "chapter", // 章节选题
   dictTextbookPathTypeKnowledge: "knowledge", // 知识点选题
+
+  dictTestLevelA: 1, // A层
+  dictTestLevelB: 2, // B层
+  dictTestLevelC: 3, // C层
 };
 
 // 常量整合工具
@@ -98,5 +102,12 @@ export const StringConstUtil = {
       value: StringConst.dictTextbookPathTypeKnowledge,
       label: "考点选题",
     },
+  ],
+
+  // 试卷层次
+  dictTestLevelOptions: [
+    { value: StringConst.dictTestLevelA, label: "A层" },
+    { value: StringConst.dictTestLevelB, label: "B层" },
+    { value: StringConst.dictTestLevelC, label: "C层" },
   ],
 };

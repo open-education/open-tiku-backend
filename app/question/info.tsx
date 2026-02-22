@@ -8,7 +8,11 @@ import { CommonSelect } from "~/common/select";
 import { StringValidator } from "~/util/string";
 import Markdown from "react-markdown";
 import remarkMath from "remark-math";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 import rehypeKatex from "rehype-katex";
+import rehypeSanitize from "rehype-sanitize";
+import { allowSchema } from "~/util/schema";
 
 export default function Info(props: any) {
   const questionTypeList: TextbookOtherDict[] = props.questionTypeList ?? [];
@@ -49,7 +53,7 @@ export default function Info(props: any) {
       <Row>
         <Col span={24}>
           {StringValidator.isNonEmpty(questionInfo.extraInfo.answer) && (
-            <Markdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+            <Markdown remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeRaw, rehypeKatex, [rehypeSanitize, allowSchema]]}>
               {questionInfo.extraInfo.answer}
             </Markdown>
           )}
@@ -64,7 +68,7 @@ export default function Info(props: any) {
       <Row>
         <Col span={24}>
           {StringValidator.isNonEmpty(questionInfo.extraInfo.knowledge) && (
-            <Markdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+            <Markdown remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeRaw, rehypeKatex, [rehypeSanitize, allowSchema]]}>
               {questionInfo.extraInfo.knowledge}
             </Markdown>
           )}
@@ -79,7 +83,7 @@ export default function Info(props: any) {
       <Row>
         <Col span={24}>
           {StringValidator.isNonEmpty(questionInfo.extraInfo.analysis?.content) && (
-            <Markdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+            <Markdown remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeRaw, rehypeKatex, [rehypeSanitize, allowSchema]]}>
               {questionInfo.extraInfo.analysis?.content}
             </Markdown>
           )}
@@ -102,7 +106,7 @@ export default function Info(props: any) {
       <Row>
         <Col span={24}>
           {StringValidator.isNonEmpty(questionInfo.extraInfo.process?.content) && (
-            <Markdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+            <Markdown remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeRaw, rehypeKatex, [rehypeSanitize, allowSchema]]}>
               {questionInfo.extraInfo.process?.content}
             </Markdown>
           )}
@@ -125,7 +129,7 @@ export default function Info(props: any) {
       <Row>
         <Col span={24}>
           {StringValidator.isNonEmpty(questionInfo.extraInfo.remark) && (
-            <Markdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+            <Markdown remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeRaw, rehypeKatex, [rehypeSanitize, allowSchema]]}>
               {questionInfo.extraInfo.remark}
             </Markdown>
           )}
