@@ -4,7 +4,7 @@
 
 ## 开发
 
-开发环境 Caddyfile 配置, 安装自己系统的规范添加如下内容即可，本地不需要 https 域名证书指定 80 端口访问或者自行适配即可
+开发环境 Caddyfile 配置, 安装自己系统的规范添加如下内容即可，本地不需要 https 域名证书指定 80 端口访问或者自行适配
 
 ```bash
 [zhangguangxun@b760m open-tiku-api]$ cat /etc/caddy/conf.d/tiku
@@ -53,7 +53,7 @@ admin-tiku.test:80 {
 目前后端接口配置在 .env.development 文件中，形如:
 
 ```
-VITE_API_BASE_URL=http://tiku.test/api
+VITE_API_BASE_URL=http://admin-tiku.test/api
 ```
 
 线上配置是
