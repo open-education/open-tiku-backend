@@ -4,7 +4,11 @@
 
 ## 开发
 
-开发环境 Caddyfile 配置, 安装自己系统的规范添加如下内容即可，本地不需要 https 域名证书指定 80 端口访问或者自行适配
+现在免费的 https 证书申请和更新维护比较繁琐，故采用 [Caddy](https://caddyserver.com/) 来作为 Web 服务
+
+开发环境 Caddyfile 配置, 按照自己系统的规范添加如下内容即可，本地不需要 https 域名证书, 指定 80 端口访问或者自行适配
+
+比如 Arch Linux 的配置在 /etc/caddy/conf.d 目录中, 需要自行注释或者删除默认 Caddyfile 中的根配置或者直接替换
 
 ```bash
 [zhangguangxun@b760m open-tiku-api]$ cat /etc/caddy/conf.d/tiku

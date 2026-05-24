@@ -8,6 +8,9 @@ import { httpClient } from "~/util/http";
 export default function Index(props: any) {
   const textbookOptions = props.textbookOptions ?? [];
 
+  // 添加规则提示
+  const [addRuleErr, setAddRuleErr] = useState<React.ReactNode>("");
+
   // 请求相关错误
   const [reqErr, setReqErr] = useState<React.ReactNode>("");
 
@@ -52,6 +55,13 @@ export default function Index(props: any) {
   const drawerExtraInfo = <div className="text-xs text-blue-700">提示: 鼠标触摸边框左右拖动可以调整到适合的宽度</div>;
   // 添加规则
   const showAddDrawer = () => {
+    // 需要选择二级菜单
+    if (nodeOption.pathDepth != 2) {
+      setAddRuleErr(<Alert title={`添加规则需要选择二级菜单`} type={"error"} />);
+      return;
+    }
+    setAddRuleErr("");
+
     setOpenDrawer(true);
     setDrawerTitle("添加规则");
     setDrawerContent(<Add questionTypeList={questionTypeList} />);
@@ -89,6 +99,9 @@ export default function Index(props: any) {
             </Flex>
           </Col>
         </Row>
+
+        {/* 添加规则相关错误 */}
+        {addRuleErr}
       </div>
 
       <Divider size="small" />
