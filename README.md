@@ -1,6 +1,6 @@
 # 开放题库管理后台
 
-开放题库分为两个前端项目, 一个为用户使用的前端项目 [open-tiku](https://github.com/open-education/open-tiku), 该项目为管理员维护基础信息和做审核等的管理后台项目
+开放题库分为两个前端项目, 一个为用户使用的前端项目 [open-tiku](https://github.com/open-education/open-tiku); 当前项目为管理员维护基础信息和做审核等的操作后台
 
 ## 开发
 
@@ -86,7 +86,7 @@ Prettier: Print Width 用户空间设置 150 个字符宽度, 现在显示器都
 
 ## 构建部署
 
-目前没有CI/CD 等环境, 本地构建借助 `github` 平台完成产出物的发布和部署
+目前没有CI/CD 等流水线, 本地构建后借助 `github` 平台完成产出物的发布和部署
 
 ### 构建
 
@@ -108,7 +108,7 @@ sh deploy.sh -v v0.0.1-beta
 
 ### 静态资源
 
-考虑到没有提供静态文件资源服务, 后端其实有对应的 api 接口读取这些资源, 现在已调整为 软链接 的方式访问这些资源, 本地和线上首次初始化时需要自己手动创建软链接
+目前没有提供静态文件资源服务, 后端其实有对应的 api 接口读取这些资源, 现在已调整为 软链接 的方式访问这些资源, 本地和线上首次初始化时需要自己手动创建软链接
 
 本地 `images` 图片资源存储目录和 `files` 文件资源存储目录不限制存储位置, 构建会删除该部分的内容
 
@@ -126,7 +126,7 @@ lrwxrwxrwx 1 zhangguangxun zhangguangxun  38 Jun  3 13:24 images -> /home/zhangg
 [zhangguangxun@b760m public]$
 ```
 
-线上现有的配置如下, 线上路径固定, 如果机器有变化等请按需要调整即可, 首次部署时已创建, 后续部署时通常无需在处理
+线上现有的配置如下, 线上路径固定, 如果机器有变化等请按需要调整即可, 首次部署时已创建, 后续部署时通常无需再处理
 
 ```bash
 zhangguangxun@VM-0-4-debian:/var/www/open-tiku-backend$ pwd
@@ -143,4 +143,4 @@ lrwxrwxrwx 1 root root    20 Jun  3 15:51 images -> /var/www/meta/images
 zhangguangxun@VM-0-4-debian:/var/www/open-tiku-backend$
 ```
 
-线上的 [Caddyfile](./Caddyfile) 文件内容
+线上的 `Caddyfile` 文件内容请参考项目根目录中的 `Caddfile` 文件内容, 首次部署时自己配置或者直接拷贝类似内容
