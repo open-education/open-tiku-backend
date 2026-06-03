@@ -118,12 +118,12 @@ sh deploy.sh -v v0.0.1-beta
 [zhangguangxun@b760m open-tiku-backend]$ cd public/
 [zhangguangxun@b760m public]$ ls -ahl
 total 24K
-drwxr-xr-x 1 zhangguangxun zhangguangxun  44 Jun  3 13:24 .
+drwxr-xr-x 1 zhangguangxun zhangguangxun  44 Jun  3 19:30 .
 drwxr-xr-x 1 zhangguangxun zhangguangxun 430 Jun  3 18:24 ..
 -rw-r--r-- 1 zhangguangxun zhangguangxun 15K Jan 13 11:41 favicon.ico
-lrwxrwxrwx 1 zhangguangxun zhangguangxun  37 Jun  3 13:24 files -> /home/zhangguangxun/Public/meta/files
-lrwxrwxrwx 1 zhangguangxun zhangguangxun  38 Jun  3 13:24 images -> /home/zhangguangxun/Public/meta/images
-[zhangguangxun@b760m public]$
+lrwxrwxrwx 1 zhangguangxun zhangguangxun  19 Jun  3 19:30 files -> /var/www/meta/files
+lrwxrwxrwx 1 zhangguangxun zhangguangxun  20 Jun  3 19:29 images -> /var/www/meta/images
+[zhangguangxun@b760m public]$ 
 ```
 
 线上现有的配置如下, 线上路径固定, 如果机器有变化等请按需要调整即可, 首次部署时已创建, 后续部署时通常无需再处理
