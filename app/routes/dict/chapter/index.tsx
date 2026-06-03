@@ -2,8 +2,6 @@ import type { Route } from "./+types/index";
 import { httpClient } from "~/util/http";
 import type { ChapterAndKnowledgeFetcherReq, Textbook, TextbookFetcherReq } from "~/type/textbook";
 import { ArrayUtil } from "~/util/object";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
 import Index from "~/dict/chapter/index";
 import { StringConst, StringConstUtil, StringValidator } from "~/util/string";
 import { ChapterAndKnowledgeUtil, DictSourceUtil, QuestionCateUtil, TextbookReqUtil } from "~/util/dict";
@@ -126,11 +124,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   } else {
     return { error: "未知行为", result: false };
   }
-}
-
-// HydrateFallback is rendered while the client loader is running
-export function HydrateFallback() {
-  return <Spin indicator={<LoadingOutlined spin />} />;
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {

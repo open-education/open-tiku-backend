@@ -1,10 +1,11 @@
-import { Alert, Form, Input, InputNumber, Select, Tag, type InputNumberProps } from "antd";
+import { Alert, Checkbox, Form, Input, InputNumber, Select, type GetProp, type InputNumberProps } from "antd";
 import { useCallback, useState } from "react";
 import type { TextbookOtherDictResp } from "~/type/textbook";
 import { StringConstUtil } from "~/util/string";
 
 // 组卷规则添加
 export default function Add(props: any) {
+  // 题型列表
   const questionTypeList: TextbookOtherDictResp[] = props.questionTypeList ?? [];
   // 层次
   const [level, setLevel] = useState<number>(StringConstUtil.dictTestLevelOptions[0].value);
@@ -32,6 +33,12 @@ export default function Add(props: any) {
   const onDescriptionChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setDescription(e.target.value);
   }, []);
+
+  // 选择题目题型
+  const [questionTypeValList, setQuestionTypeValList] = useState<number[]>([]);
+  const onSelectQuestionTypeListChange: GetProp<typeof Checkbox.Group, "onChange"> = (checkedValues) => {
+    setQuestionTypeValList(checkedValues as number[]);
+  };
 
   return (
     <div>
@@ -62,6 +69,18 @@ export default function Add(props: any) {
 
         <Form.Item label="描述">
           <Input value={description} onChange={onDescriptionChange} placeholder="请输入描述" />
+        </Form.Item>
+
+        <Form.Item label="选择题型">
+          <Checkbox.Group onChange={onSelectQuestionTypeListChange}>
+            {questionTypeList.map((item) => {
+              return (
+                <Checkbox value={item.id} key={item.id}>
+                  {item.itemValue}
+                </Checkbox>
+              );
+            })}
+          </Checkbox.Group>
         </Form.Item>
       </Form>
     </div>
