@@ -34,10 +34,12 @@ export default function Index(props: any) {
     if (selectedOptions === undefined) {
       setNodeOption(optionInit);
     } else {
-      setNodeOption(selectedOptions[selectedOptions.length - 1].raw);
+      const lastOption = selectedOptions[selectedOptions.length - 1].raw;
+      setNodeOption(lastOption);
+
       // 同时获取题型列表
       httpClient
-        .get<TextbookOtherDictResp[]>(`/other/dict/list/${nodeOption.id}/question_type`)
+        .get<TextbookOtherDictResp[]>(`/other/dict/list/${lastOption.id}/question_type`)
         .then((res) => {
           setQuestionTypeList(res);
         })
