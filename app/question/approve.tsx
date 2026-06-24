@@ -54,7 +54,7 @@ export function Approve(
             <Button color="primary" variant="link" onClick={() => onInfoClick(questionInfo.id)}>
               详情
             </Button>
-            {questionInfo.status == Status.Draft && (
+            {(questionInfo.status == Status.Draft || questionInfo.status == Status.Pending) && (
               <Button color="primary" variant="link" onClick={() => onShowModalClick(questionInfo.id, questionInfo.status)}>
                 审核
               </Button>
